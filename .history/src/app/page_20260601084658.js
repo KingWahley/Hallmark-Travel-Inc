@@ -34,7 +34,7 @@ export default function Home() {
   const testimonials = [
     {
       id: 1,
-      quote: "On the Windows of our corporate relocations, Hallmark Travel Inc has been a flawless partner. Relocating our team of healthcare nurses to the UK was streamlined beyond expectation.",
+      quote: "On the Windows of our corporate relocations, Aura Global has been a flawless partner. Relocating our team of healthcare nurses to the UK was streamlined beyond expectation.",
       name: "Mike Taylor",
       role: "CEO, MedGroup Inc.",
       from: "Houston, USA",
@@ -158,24 +158,24 @@ export default function Home() {
             </p>
 
             <div className="flex items-center gap-8 mt-8">
-              {/* Visa Services Primary Button */}
+              {/* Find out more Gold Button */}
               <a 
-                href="#services"
+                href="#inquiry-section"
                 className="px-8 py-4 bg-gold-accent hover:bg-amber-600 text-white font-sans font-bold text-[15px] rounded-2xl shadow-xl shadow-gold-accent/25 hover:shadow-gold-accent/35 transition-all duration-300 transform hover:-translate-y-1"
               >
-                Visa Services
+                Find out more
               </a>
 
-              {/* Travel Abroad Secondary Button with Rotating Plane Icon */}
+              {/* Play Demo Button */}
               <a 
                 href="#services"
                 className="flex items-center gap-4 group"
               >
                 <div className="w-14 h-14 rounded-full flex items-center justify-center bg-orange-accent shadow-xl shadow-orange-accent/30 text-white group-hover:scale-110 group-hover:bg-[#c54b34] transition-all duration-300">
-                  <Plane className="w-5 h-5 text-white transform group-hover:rotate-45 transition-transform duration-300" />
+                  <Play className="w-4 h-4 fill-white ml-1" />
                 </div>
                 <span className="text-[15px] font-sans font-bold text-secondary group-hover:text-orange-accent transition-colors duration-300">
-                  Travel Abroad
+                  Play Demo
                 </span>
               </a>
             </div>
@@ -202,6 +202,13 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
                 </div>
+              </div>
+
+             
+
+             
+              <div className="absolute top-1/4 -left-16 z-20 w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-xl border border-gray-50 animate-bounce">
+                <Compass className="w-6 h-6 text-orange-accent" />
               </div>
             </div>
           </div>
@@ -531,7 +538,7 @@ export default function Home() {
               <div className="flex items-center gap-1.5 text-xs text-[#8f92a1] font-bold mb-4">
                 <span>15-28 September</span>
                 <span className="text-gray-300">|</span>
-                <span>by Hallmark Travel</span>
+                <span>by Aura Global</span>
               </div>
 
               {/* Circle Options Icons Row */}
@@ -584,7 +591,7 @@ export default function Home() {
               Immersive Relocation Stories
             </h2>
             <p className="text-[15px] font-medium text-secondary max-w-xl mx-auto mt-4">
-              Explore how Hallmark Travel Inc coordinates high-fidelity migrations, fast-track flight logistics, and local settlements around the globe.
+              Explore how Aura Global coordinates high-fidelity migrations, fast-track flight logistics, and local settlements around the globe.
             </p>
           </div>
 
@@ -892,7 +899,7 @@ export default function Home() {
             <div className="max-w-3xl mx-auto relative z-10 flex flex-col gap-10">
               
               <h3 className="font-serif font-black text-2xl sm:text-3xl md:text-[38px] leading-[1.3] text-[#5e6282] max-w-2xl mx-auto tracking-tight">
-                Subscribe to get information, latest news and other interesting offers about Hallmark Travel Inc
+                Subscribe to get information, latest news and other interesting offers about Aura
               </h3>
 
               {submitStatus === 'success' ? (

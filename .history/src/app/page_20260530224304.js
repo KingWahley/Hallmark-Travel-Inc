@@ -34,7 +34,7 @@ export default function Home() {
   const testimonials = [
     {
       id: 1,
-      quote: "On the Windows of our corporate relocations, Hallmark Travel Inc has been a flawless partner. Relocating our team of healthcare nurses to the UK was streamlined beyond expectation.",
+      quote: "On the Windows of our corporate relocations, Aura Global has been a flawless partner. Relocating our team of healthcare nurses to the UK was streamlined beyond expectation.",
       name: "Mike Taylor",
       role: "CEO, MedGroup Inc.",
       from: "Houston, USA",
@@ -147,35 +147,35 @@ export default function Home() {
           {/* Hero Left Info */}
           <div className="lg:col-span-6 flex flex-col gap-6 text-left relative">
             
-            <h1 className="font-serif font-black text-4xl sm:text-5xl md:text-[64px] leading-[1.08] text-[#181e4b] tracking-tight">
-              Study, <span className="brush-highlight text-orange-accent">travel</span> <br />
-              & relocate in or <br />
-              outside Philippines
+            <h1 className="font-serif font-black text-4xl sm:text-5xl md:text-[72px] leading-[1.08] text-[#181e4b] tracking-tight">
+              Travel, <span className="brush-highlight text-orange-accent">enjoy</span> <br />
+              and live a new <br />
+              and full life
             </h1>
 
             <p className="text-[16px] leading-relaxed text-secondary font-medium max-w-lg mt-3">
-              We are a premier global mobility agency positioned at the gateway of two-way international journeys. Secure your flight bookings, study visa preparations, and local municipal onboarding today.
+              Securing customized visa preparations, premium flights booking, local housing settlement, and academic relocation pathways. Built vanity itself do in preferred to sportsom.
             </p>
 
             <div className="flex items-center gap-8 mt-8">
-              {/* Visa Services Primary Button */}
+              {/* Find out more Gold Button */}
               <a 
-                href="#services"
+                href="#inquiry-section"
                 className="px-8 py-4 bg-gold-accent hover:bg-amber-600 text-white font-sans font-bold text-[15px] rounded-2xl shadow-xl shadow-gold-accent/25 hover:shadow-gold-accent/35 transition-all duration-300 transform hover:-translate-y-1"
               >
-                Visa Services
+                Find out more
               </a>
 
-              {/* Travel Abroad Secondary Button with Rotating Plane Icon */}
+              {/* Play Demo Button */}
               <a 
                 href="#services"
                 className="flex items-center gap-4 group"
               >
                 <div className="w-14 h-14 rounded-full flex items-center justify-center bg-orange-accent shadow-xl shadow-orange-accent/30 text-white group-hover:scale-110 group-hover:bg-[#c54b34] transition-all duration-300">
-                  <Plane className="w-5 h-5 text-white transform group-hover:rotate-45 transition-transform duration-300" />
+                  <Play className="w-4 h-4 fill-white ml-1" />
                 </div>
                 <span className="text-[15px] font-sans font-bold text-secondary group-hover:text-orange-accent transition-colors duration-300">
-                  Travel Abroad
+                  Play Demo
                 </span>
               </a>
             </div>
@@ -202,6 +202,13 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
                 </div>
+              </div>
+
+             
+
+             
+              <div className="absolute top-1/4 -left-16 z-20 w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-xl border border-gray-50 animate-bounce">
+                <Compass className="w-6 h-6 text-orange-accent" />
               </div>
             </div>
           </div>
@@ -237,102 +244,99 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 max-w-6xl mx-auto">
             
-            {/* SERVICE COLUMN A: INBOUND PATHWAYS */}
-            <div className="p-8 rounded-[38px] bg-white shadow-jadoo hover:shadow-jadoo-hover transition-all duration-500 group flex flex-col items-center text-center relative border border-gray-100/80 hover:border-white">
-              {/* Offset decorative block behind the card */}
-              <div className="absolute -left-3.5 -bottom-3.5 w-[90px] h-[90px] bg-gold-accent rounded-tr-[30px] rounded-bl-[30px] -z-10 group-hover:scale-105 transition-transform duration-500 shadow-lg shadow-gold-accent/20" />
-              
-              {/* Illustration Header */}
+            {/* CARD 1: CALCULATED WEATHER */}
+            <div className="p-8 rounded-[36px] bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-jadoo-hover transition-all duration-500 group flex flex-col items-center text-center relative border border-white/40 hover:border-white shadow-sm">
+              {/* Satellite Dish Illustration with Yellow backplate */}
               <div className="relative w-20 h-20 flex items-center justify-center mb-6">
-                <div className="absolute right-1 bottom-1 w-12 h-12 bg-amber-50 rounded-tl-[18px] rounded-br-[18px] rounded-tr-[8px] rounded-bl-[8px]" />
-                <div className="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center text-gold-accent relative z-10">
-                  <Compass className="w-8 h-8" />
-                </div>
+                <div className="absolute right-1 bottom-1 w-12 h-12 bg-[#fff1da] rounded-tl-[18px] rounded-br-[18px] rounded-tr-[8px] rounded-bl-[8px]" />
+                <svg className="w-16 h-16 relative z-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22 42C16 38 12 30 12 22C12 18 13.5 14.5 16 12" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" />
+                  <path d="M28 48C18 42 16 28 16 18C16 14.5 17.5 11 20 8" stroke="#181e4b" strokeWidth="2.5" strokeLinecap="round" />
+                  <path d="M42 42C48 38 52 30 52 22C52 18 50.5 14.5 48 12" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" />
+                  <path d="M16 36C22 44 42 44 48 36C54 28 50 16 48 12L16 12C14 16 10 28 16 36Z" fill="#aee2ff" fillOpacity="0.3" stroke="#2563eb" strokeWidth="3" />
+                  <path d="M32 12V28" stroke="#181e4b" strokeWidth="3" strokeLinecap="round" />
+                  <circle cx="32" cy="12" r="3.5" fill="#df6951" />
+                  <path d="M22 52H42M32 46V52" stroke="#181e4b" strokeWidth="3.5" strokeLinecap="round" />
+                </svg>
               </div>
 
-              <h3 className="font-sans font-black text-2xl text-[#1e1d4c] mb-4">
-                Inbound Mobility
+              <h3 className="font-sans font-black text-[19px] text-[#1e1d4c] mb-4">
+                Calculated Weather
               </h3>
-              <span className="text-xs uppercase font-mono tracking-widest font-black text-gold-accent mb-4 block">
-                Relocate to the Philippines
-              </span>
-              <p className="text-[14px] leading-relaxed text-[#5e6282] font-semibold max-w-sm">
-                We welcome international travelers and students from around the globe seeking world-class, English-medium education and medical clerkships. We manage your consolidated student visa 9F preparation, ticket scheduling, and municipal accommodation settlements.
+              <p className="text-[13.5px] leading-relaxed text-[#5e6282] font-semibold max-w-[210px]">
+                Built Wicket longer admire do barton vanity itself do in it.
               </p>
-
-              {/* Action Link */}
-              <a 
-                href="#inquiry-section" 
-                className="mt-6 flex items-center gap-1.5 text-xs text-gold-accent font-black uppercase tracking-widest hover:underline"
-              >
-                Begin Inbound Pathway <ChevronRight className="w-4 h-4" />
-              </a>
             </div>
 
-            {/* SERVICE COLUMN B: OUTBOUND PATHWAYS */}
-            <div className="p-8 rounded-[38px] bg-white shadow-jadoo hover:shadow-jadoo-hover transition-all duration-500 group flex flex-col items-center text-center relative border border-gray-100/80 hover:border-white">
-              {/* Offset decorative block behind the card */}
-              <div className="absolute -right-3.5 -bottom-3.5 w-[90px] h-[90px] bg-orange-accent rounded-tl-[30px] rounded-br-[30px] -z-10 group-hover:scale-105 transition-transform duration-500 shadow-lg shadow-orange-accent/20" />
+            {/* CARD 2: BEST FLIGHTS (HIGHLIGHTED! COVERS FLOATING RED BACKING CARD!) */}
+            <div className="p-8 rounded-[36px] bg-white shadow-jadoo hover:shadow-jadoo-hover transition-all duration-500 group flex flex-col items-center text-center relative border border-gray-100/80 hover:border-white">
               
-              {/* Illustration Header */}
+              {/* Highlight offset card behind card bottom-left */}
+              <div className="absolute -left-3.5 -bottom-3.5 w-[85px] h-[85px] bg-[#df6951] rounded-tr-[30px] rounded-bl-[30px] -z-10 group-hover:scale-110 transition-transform duration-500 shadow-lg shadow-[#df6951]/20" />
+              
+              {/* Airplane Illustration with Yellow backplate */}
               <div className="relative w-20 h-20 flex items-center justify-center mb-6">
-                <div className="absolute right-1 bottom-1 w-12 h-12 bg-rose-50 rounded-tl-[18px] rounded-br-[18px] rounded-tr-[8px] rounded-bl-[8px]" />
-                <div className="w-16 h-16 rounded-full bg-rose-500/10 flex items-center justify-center text-orange-accent relative z-10">
-                  <Plane className="w-8 h-8 rotate-45" />
-                </div>
+                <div className="absolute right-1 bottom-1 w-12 h-12 bg-[#fff1da] rounded-tl-[18px] rounded-br-[18px] rounded-tr-[8px] rounded-bl-[8px]" />
+                <svg className="w-16 h-16 relative z-10 animate-pulse" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 48C12 48 20 44 26 38L48 16C50.5 13.5 53.5 12 55.5 14C57.5 16 56 19 53.5 21.5L31.5 43.5C25.5 49.5 22 52 22 52L12 48Z" fill="#e0f2fe" stroke="#0284c7" strokeWidth="3" strokeLinejoin="round" />
+                  <path d="M26 38L38 12C39.5 9 41.5 9 41.5 9L35 30" fill="#0284c7" stroke="#0284c7" strokeWidth="1.5" />
+                  <path d="M20 44L14 54C12.5 56.5 10.5 56.5 10.5 56.5L16 47" fill="#0284c7" stroke="#0284c7" strokeWidth="1.5" />
+                  <path d="M18 42L10 32C8.5 30 7.5 30.5 7.5 30.5L14 43.5" fill="#df6951" />
+                  <circle cx="34" cy="30" r="1.5" fill="#181e4b" />
+                  <circle cx="38" cy="26" r="1.5" fill="#181e4b" />
+                  <circle cx="42" cy="22" r="1.5" fill="#181e4b" />
+                </svg>
               </div>
 
-              <h3 className="font-sans font-black text-2xl text-[#1e1d4c] mb-4">
-                Outbound Pathways
+              <h3 className="font-sans font-black text-[19px] text-[#1e1d4c] mb-4">
+                Best Flights
               </h3>
-              <span className="text-xs uppercase font-mono tracking-widest font-black text-orange-accent mb-4 block">
-                Relocate Abroad from Philippines
-              </span>
-              <p className="text-[14px] leading-relaxed text-[#5e6282] font-semibold max-w-sm">
-                We empower Filipino students and professionals aiming to travel and study outside the country. Secure world-class credentials in prestigious programs like Nursing, Dentistry, Pharmacy, MBBS (Medicine), Hospitality Management, and Culinary arts abroad.
+              <p className="text-[13.5px] leading-relaxed text-[#5e6282] font-semibold max-w-[210px]">
+                Engrossed listening. Park gate sell they west hard for the.
               </p>
-
-              {/* Action Link */}
-              <a 
-                href="#inquiry-section" 
-                className="mt-6 flex items-center gap-1.5 text-xs text-orange-accent font-black uppercase tracking-widest hover:underline"
-              >
-                Begin Outbound Pathway <ChevronRight className="w-4 h-4" />
-              </a>
             </div>
 
-            {/* SERVICE COLUMN C: GLOBAL VISA SERVICES */}
-            <div className="p-8 rounded-[38px] bg-white shadow-jadoo hover:shadow-jadoo-hover transition-all duration-500 group flex flex-col items-center text-center relative border border-gray-100/80 hover:border-white">
-              {/* Offset decorative block behind the card */}
-              <div className="absolute -left-3.5 -bottom-3.5 w-[90px] h-[90px] bg-[#0d9488] rounded-tr-[30px] rounded-bl-[30px] -z-10 group-hover:scale-105 transition-transform duration-500 shadow-lg shadow-[#0d9488]/20" />
-              
-              {/* Illustration Header */}
+            {/* CARD 3: LOCAL EVENTS */}
+            <div className="p-8 rounded-[36px] bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-jadoo-hover transition-all duration-500 group flex flex-col items-center text-center relative border border-white/40 hover:border-white shadow-sm">
+              {/* Microphone Illustration with Yellow backplate */}
               <div className="relative w-20 h-20 flex items-center justify-center mb-6">
-                <div className="absolute right-1 bottom-1 w-12 h-12 bg-teal-50 rounded-tl-[18px] rounded-br-[18px] rounded-tr-[8px] rounded-bl-[8px]" />
-                <div className="w-16 h-16 rounded-full bg-teal-500/10 flex items-center justify-center text-[#0d9488] relative z-10">
-                  <ShieldCheck className="w-8 h-8" />
-                </div>
+                <div className="absolute right-1 bottom-1 w-12 h-12 bg-[#fff1da] rounded-tl-[18px] rounded-br-[18px] rounded-tr-[8px] rounded-bl-[8px]" />
+                <svg className="w-16 h-16 relative z-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 52H40M32 44V52" stroke="#4b5563" strokeWidth="3.5" strokeLinecap="round" />
+                  <path d="M20 28C20 38 24 42 32 42C40 42 44 38 44 28" stroke="#4b5563" strokeWidth="3.5" strokeLinecap="round" />
+                  <rect x="25" y="10" width="14" height="24" rx="7" fill="#cbd5e1" stroke="#374151" strokeWidth="3" />
+                  <path d="M25 18H39M25 24H39M32 10V34" stroke="#374151" strokeWidth="2" />
+                </svg>
               </div>
 
-              <h3 className="font-sans font-black text-2xl text-[#1e1d4c] mb-4">
-                Visa & Immigration
+              <h3 className="font-sans font-black text-[19px] text-[#1e1d4c] mb-4">
+                Local Events
               </h3>
-              <span className="text-xs uppercase font-mono tracking-widest font-black text-[#0d9488] mb-4 block">
-                Official Visa & Document Desk
-              </span>
-              <p className="text-[14px] leading-relaxed text-[#5e6282] font-semibold max-w-sm">
-                We handle the heavy lifting for all travel and study permits. Our dedicated desk provides professional student visa (9F) filing support, document authentications (Apostille), credential evaluation filings, health insurance compliance, and outbound embassy processing.
+              <p className="text-[13.5px] leading-relaxed text-[#5e6282] font-semibold max-w-[210px]">
+                Barton vanity itself do in it. Preferd to men it engrossed listening.
               </p>
+            </div>
 
-              {/* Action Link */}
-              <a 
-                href="#inquiry-section" 
-                className="mt-6 flex items-center gap-1.5 text-xs text-[#0d9488] font-black uppercase tracking-widest hover:underline"
-              >
-                Begin Visa Consultation <ChevronRight className="w-4 h-4" />
-              </a>
+            {/* CARD 4: CUSTOMIZATION */}
+            <div className="p-8 rounded-[36px] bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-jadoo-hover transition-all duration-500 group flex flex-col items-center text-center relative border border-white/40 hover:border-white shadow-sm">
+              {/* Gear Illustration with Yellow backplate */}
+              <div className="relative w-20 h-20 flex items-center justify-center mb-6">
+                <div className="absolute right-1 bottom-1 w-12 h-12 bg-[#fff1da] rounded-tl-[18px] rounded-br-[18px] rounded-tr-[8px] rounded-bl-[8px]" />
+                <svg className="w-16 h-16 relative z-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="32" cy="32" r="14" fill="#cbd5e1" stroke="#4b5563" strokeWidth="3.5" />
+                  <path d="M32 8V14M32 50V56M14 32H8M56 32H50M17 17L21.5 21.5M42.5 42.5L47 47M17 47L21.5 42.5M42.5 21.5L47 17" stroke="#4b5563" strokeWidth="4" strokeLinecap="round" />
+                  <circle cx="32" cy="32" r="5" fill="#f8fafc" stroke="#4b5563" strokeWidth="3" />
+                </svg>
+              </div>
+
+              <h3 className="font-sans font-black text-[19px] text-[#1e1d4c] mb-4">
+                Customization
+              </h3>
+              <p className="text-[13.5px] leading-relaxed text-[#5e6282] font-semibold max-w-[210px]">
+                We deliver outsourced aviation services for military customers
+              </p>
             </div>
 
           </div>
@@ -369,26 +373,27 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12 max-w-5xl mx-auto relative z-10">
             
-            {/* DESTINATION 1: MANILA, PHILIPPINES */}
+            {/* DESTINATION 1: ROME, ITALTY (REPLICATING ORIGINAL IMAGE TYPO EXPLICITLY!) */}
             <div className="bg-white rounded-[32px] overflow-hidden shadow-jadoo hover:shadow-jadoo-hover transition-all duration-500 hover:-translate-y-2 group flex flex-col relative border border-[#efebe5]">
               <div className="h-80 overflow-hidden relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&w=600&q=80" 
-                  alt="Manila study relocation" 
+                  src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=600&q=80" 
+                  alt="Rome Colosseum Jadoo" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
               </div>
               <div className="p-7 flex flex-col gap-5 text-left bg-white relative z-10">
                 <div className="flex items-center justify-between text-[17px] font-black text-[#5e6282] font-sans">
-                  <span>Manila, Philippines</span>
-                  <span className="text-[#181e4b] font-black">Inbound</span>
+                  <span>Rome, Italty</span>
+                  <span className="text-[#181e4b] font-black">$5,42k</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm font-bold text-[#181e4b] font-sans">
+                  {/* Jadoo custom navigation cursor arrow */}
                   <svg className="w-4 h-4 text-[#181e4b] fill-current" viewBox="0 0 24 24">
                     <path d="M21 3L3 10.5L10.5 13.5L13.5 21L21 3Z" />
                   </svg>
-                  <span className="text-secondary font-semibold">9F Student Visa Support</span>
+                  <span className="text-secondary font-semibold">10 Days Trip</span>
                 </div>
               </div>
             </div>
@@ -398,7 +403,7 @@ export default function Home() {
               <div className="h-80 overflow-hidden relative">
                 <img 
                   src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=600&q=80" 
-                  alt="London Relocation" 
+                  alt="London Parliament Jadoo" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
@@ -406,37 +411,37 @@ export default function Home() {
               <div className="p-7 flex flex-col gap-5 text-left bg-white relative z-10">
                 <div className="flex items-center justify-between text-[17px] font-black text-[#5e6282] font-sans">
                   <span>London, UK</span>
-                  <span className="text-[#181e4b] font-black">Outbound</span>
+                  <span className="text-[#181e4b] font-black">$4.2k</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm font-bold text-[#181e4b] font-sans">
                   <svg className="w-4 h-4 text-[#181e4b] fill-current" viewBox="0 0 24 24">
                     <path d="M21 3L3 10.5L10.5 13.5L13.5 21L21 3Z" />
                   </svg>
-                  <span className="text-secondary font-semibold">Nursing & MBBS Pathways</span>
+                  <span className="text-secondary font-semibold">12 Days Trip</span>
                 </div>
               </div>
             </div>
 
-            {/* DESTINATION 3: GENEVA, EUROPE */}
+            {/* DESTINATION 3: FULL EUROPE */}
             <div className="bg-white rounded-[32px] overflow-hidden shadow-jadoo hover:shadow-jadoo-hover transition-all duration-500 hover:-translate-y-2 group flex flex-col relative border border-[#efebe5]">
               <div className="h-80 overflow-hidden relative">
                 <img 
                   src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&q=80" 
-                  alt="Geneva Relocation" 
+                  alt="Europe Relocation Jadoo" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
               </div>
               <div className="p-7 flex flex-col gap-5 text-left bg-white relative z-10">
                 <div className="flex items-center justify-between text-[17px] font-black text-[#5e6282] font-sans">
-                  <span>Geneva, Switzerland</span>
-                  <span className="text-[#181e4b] font-black">Outbound</span>
+                  <span>Full Europe</span>
+                  <span className="text-[#181e4b] font-black">$15k</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm font-bold text-[#181e4b] font-sans">
                   <svg className="w-4 h-4 text-[#181e4b] fill-current" viewBox="0 0 24 24">
                     <path d="M21 3L3 10.5L10.5 13.5L13.5 21L21 3Z" />
                   </svg>
-                  <span className="text-secondary font-semibold">Dentistry & Culinary Arts</span>
+                  <span className="text-secondary font-semibold">28 Days Trip</span>
                 </div>
               </div>
             </div>
@@ -461,7 +466,7 @@ export default function Home() {
               Easy and Fast
             </span>
             <h2 className="font-serif font-black text-3xl sm:text-5xl text-[#181e4b] leading-tight max-w-md">
-              Secure Your International Move In 3 Easy Steps
+              Book Your Next Trip In 3 Easy Steps
             </h2>
 
             <div className="flex flex-col gap-8 mt-8">
@@ -472,9 +477,9 @@ export default function Home() {
                   <Compass className="w-5 h-5" />
                 </div>
                 <div className="flex flex-col">
-                  <h4 className="font-black text-[16px] text-primary">Consult Your Pathway</h4>
+                  <h4 className="font-black text-[16px] text-primary">Choose Relocation Destination</h4>
                   <p className="text-[13.5px] text-secondary font-medium leading-relaxed mt-1 max-w-sm">
-                    Select either an Inbound Pathway (relocating to study/travel in the Philippines) or an Outbound Pathway (relocating abroad from the Philippines).
+                    Select your target study-relocation or flight country and consult with our global migration team.
                   </p>
                 </div>
               </div>
@@ -485,9 +490,9 @@ export default function Home() {
                   <Compass className="w-5 h-5" />
                 </div>
                 <div className="flex flex-col">
-                  <h4 className="font-black text-[16px] text-primary">Secure Visas & Flight Bookings</h4>
+                  <h4 className="font-black text-[16px] text-primary">Assemble Visas & Flights File</h4>
                   <p className="text-[13.5px] text-secondary font-medium leading-relaxed mt-1 max-w-sm">
-                    Let our mobility experts draft your student visa 9F files or prepare outbound visa sponsorships, while we secure consolidated flight tickets.
+                    Secure consolidated flight routing and let advisors draft your visa files.
                   </p>
                 </div>
               </div>
@@ -498,9 +503,9 @@ export default function Home() {
                   <Compass className="w-5 h-5" />
                 </div>
                 <div className="flex flex-col">
-                  <h4 className="font-black text-[16px] text-primary">Relocate & Settle In</h4>
+                  <h4 className="font-black text-[16px] text-primary">Embark & Initiate Settlement</h4>
                   <p className="text-[13.5px] text-secondary font-medium leading-relaxed mt-1 max-w-sm">
-                    Fly on your scheduled date and meet your local municipal coordinator for university onboarding and housing settlement.
+                    Relocate on your scheduled date and meet your local municipal coordinator for onboarding.
                   </p>
                 </div>
               </div>
@@ -527,11 +532,11 @@ export default function Home() {
               </div>
 
               {/* Title Date metadata */}
-              <h4 className="font-black text-[#080809] text-[17px] tracking-wide mb-1.5">Study in Manila</h4>
+              <h4 className="font-black text-[#080809] text-[17px] tracking-wide mb-1.5">Trip To Greece</h4>
               <div className="flex items-center gap-1.5 text-xs text-[#8f92a1] font-bold mb-4">
-                <span>15-28 September</span>
+                <span>14-29 June</span>
                 <span className="text-gray-300">|</span>
-                <span>by Hallmark Travel</span>
+                <span>by Robbin joseph</span>
               </div>
 
               {/* Circle Options Icons Row */}
@@ -556,6 +561,36 @@ export default function Home() {
                 <button className="text-secondary hover:text-orange-accent transition-colors duration-300">
                   <Heart className="w-4 h-4" />
                 </button>
+              </div>
+
+              {/* THE FLOATING Rome Progress Card Overlay Widget (EXACTLY REPLICATED!) */}
+              <div className="absolute -right-12 bottom-[15%] bg-white/95 backdrop-blur-sm p-4 rounded-2xl shadow-floating-progress border border-white flex gap-3.5 items-center w-64 z-20 animate-float-card-delayed">
+                
+                {/* Avatar Icon */}
+                <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border-2 border-white shadow-sm">
+                  <img 
+                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80" 
+                    alt="Guide coordinator profile avatar" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* Progress details */}
+                <div className="flex flex-col text-left flex-grow">
+                  <span className="text-[10px] text-secondary uppercase tracking-widest font-black">Ongoing</span>
+                  <h5 className="font-black text-[13.5px] text-[#080809] mt-0.5">Trip to Rome</h5>
+                  
+                  {/* Progress Indicator */}
+                  <div className="flex flex-col mt-2 gap-1.5">
+                    <div className="flex justify-between items-center text-[10px] font-black text-orange-accent">
+                      <span>40% completed</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-[#f5f5f7] rounded-full overflow-hidden">
+                      <div className="h-full bg-orange-accent rounded-full" style={{ width: '40%' }} />
+                    </div>
+                  </div>
+                </div>
+
               </div>
 
             </div>
@@ -584,7 +619,7 @@ export default function Home() {
               Immersive Relocation Stories
             </h2>
             <p className="text-[15px] font-medium text-secondary max-w-xl mx-auto mt-4">
-              Explore how Hallmark Travel Inc coordinates high-fidelity migrations, fast-track flight logistics, and local settlements around the globe.
+              Explore how Aura Global coordinates high-fidelity migrations, fast-track flight logistics, and local settlements around the globe.
             </p>
           </div>
 
@@ -763,107 +798,34 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------------------------- */}
-          {/* ---------------------------------------------------- */}
-      {/* 6.5 KNOWLEDGE HUB RELOCATION BLUEPRINTS (SEO BLOG GRID) */}
+      {/* 6. PARTNERS CORPORATE LOGOS SECTION */}
       {/* ---------------------------------------------------- */}
-      <section className="py-24 relative overflow-hidden bg-gradient-to-b from-[#faf6f0]/40 to-transparent">
-        {/* Decorative grids */}
-        <div className="absolute top-10 left-10 w-24 h-24 bg-grid-dots-gray opacity-20 pointer-events-none select-none" />
-        
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <section className="py-20 relative bg-gradient-to-b from-transparent via-[#faf6f0]/30 to-transparent">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-wrap items-center justify-between gap-12 md:gap-16">
           
-          {/* Section Header */}
-          <div className="text-center mb-16">
-            <span className="text-[15px] uppercase tracking-[0.22em] font-black text-secondary">
-              Relocation Resources
-            </span>
-            <h2 className="font-serif font-black text-3xl sm:text-5xl text-[#181e4b] mt-3">
-              Knowledge Hub & Blueprints
-            </h2>
-            <p className="text-[15px] font-medium text-secondary max-w-xl mx-auto mt-4">
-              Access our top-ranked, expert-written resources to guide your studies and travel licensing pathways around nursing, dentistry, pharmacy, medicine, and culinary arts.
-            </p>
+          {/* Logo Jetstar */}
+          <div className="partner-grayscale flex items-center justify-center cursor-pointer mx-auto md:mx-0">
+            <span className="font-sans font-black text-2xl tracking-tight text-[#181e4b]">Jetstar</span>
           </div>
 
-          {/* Dynamic Grid */}
-          {posts.length === 0 ? (
-            // Placeholder skeletons
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="bg-white/60 border border-gray-100 rounded-[32px] p-6 h-96 animate-pulse flex flex-col gap-4">
-                  <div className="h-48 bg-gray-200 rounded-2xl w-full" />
-                  <div className="h-6 bg-gray-200 rounded w-1/3" />
-                  <div className="h-8 bg-gray-200 rounded w-3/4" />
-                  <div className="h-12 bg-gray-200 rounded w-full" />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-              {posts.slice(0, 3).map(post => {
-                const postDate = post.published_at ? new Date(post.published_at).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric'
-                }) : 'Published';
+          {/* Logo Expedia */}
+          <div className="partner-grayscale flex items-center justify-center cursor-pointer mx-auto md:mx-0">
+            <span className="font-serif font-black text-3xl tracking-tighter text-[#181e4b]">Expedia</span>
+          </div>
 
-                return (
-                  <article 
-                    key={post.id}
-                    className="bg-white rounded-[32px] overflow-hidden border border-gray-100/80 hover:border-violet-100 shadow-jadoo hover:shadow-jadoo-hover transition-all duration-500 hover:-translate-y-2 group flex flex-col justify-between"
-                  >
-                    <div className="relative h-48 overflow-hidden">
-                      <img 
-                        src={post.featured_image || "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=400&q=80"}
-                        alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute top-4 left-4 px-3 py-1 text-[9px] uppercase tracking-widest font-black rounded-full bg-orange-accent text-white font-sans">
-                        {post.category}
-                      </div>
-                    </div>
+          {/* Logo Qantas */}
+          <div className="partner-grayscale flex items-center justify-center cursor-pointer mx-auto md:mx-0">
+            <span className="font-sans font-black text-2xl tracking-wide text-[#181e4b]">QANTAS</span>
+          </div>
 
-                    <div className="p-6 flex-grow flex flex-col justify-between gap-4 text-left">
-                      <div className="flex flex-col gap-2">
-                        {/* Meta */}
-                        <div className="flex items-center gap-4 text-[10px] text-secondary/70 font-bold mb-1">
-                          <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {postDate}</span>
-                        </div>
-                        
-                        <h3 className="font-serif font-black text-lg text-[#181e4b] group-hover:text-orange-accent transition-colors duration-300 line-clamp-2">
-                          {post.title}
-                        </h3>
-                        <p className="text-[13px] font-medium text-secondary line-clamp-3 leading-relaxed">
-                          {post.excerpt}
-                        </p>
-                      </div>
+          {/* Logo Alitalia */}
+          <div className="partner-grayscale flex items-center justify-center cursor-pointer mx-auto md:mx-0">
+            <span className="font-sans font-bold text-xl italic text-[#181e4b]">Alitalia</span>
+          </div>
 
-                      <div className="flex items-center justify-between border-t border-gray-50 pt-4 mt-2">
-                        <Link 
-                          href={`/blog/${post.slug}`}
-                          className="flex items-center gap-1.5 text-xs text-orange-accent font-sans font-black uppercase tracking-wider hover:underline"
-                        >
-                          Read Blueprint <ChevronRight className="w-3.5 h-3.5 stroke-[3]" />
-                        </Link>
-                        <span className="text-[10px] tracking-wide text-secondary/60 font-mono font-bold uppercase">
-                          {post.tags?.[0] ? `#${post.tags[0]}` : ''}
-                        </span>
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Explore Button */}
-          <div className="text-center mt-14">
-            <Link 
-              href="/blog" 
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-orange-accent border border-gray-100 hover:border-orange-accent text-[#181e4b] hover:text-white font-sans font-black text-xs uppercase tracking-widest rounded-2xl shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
-            >
-              Explore All relocation insights <ChevronRight className="w-4 h-4" />
-            </Link>
+          {/* Logo AXA */}
+          <div className="partner-grayscale flex items-center justify-center cursor-pointer mx-auto md:mx-0">
+            <span className="font-sans font-black text-3xl tracking-normal text-[#181e4b]">AXA</span>
           </div>
 
         </div>
@@ -892,7 +854,7 @@ export default function Home() {
             <div className="max-w-3xl mx-auto relative z-10 flex flex-col gap-10">
               
               <h3 className="font-serif font-black text-2xl sm:text-3xl md:text-[38px] leading-[1.3] text-[#5e6282] max-w-2xl mx-auto tracking-tight">
-                Subscribe to get information, latest news and other interesting offers about Hallmark Travel Inc
+                Subscribe to get information, latest news and other interesting offers about Aura
               </h3>
 
               {submitStatus === 'success' ? (
