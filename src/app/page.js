@@ -20,6 +20,13 @@ import {
 } from 'lucide-react';
 import { getBlogPosts, submitInquiry } from '@/lib/db';
 
+const formatDateUTC = (dateStr) => {
+  if (!dateStr) return 'Published';
+  const d = new Date(dateStr);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
+};
+
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -801,11 +808,7 @@ export default function Home() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
               {posts.slice(0, 3).map(post => {
-                const postDate = post.published_at ? new Date(post.published_at).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric'
-                }) : 'Published';
+                const postDate = formatDateUTC(post.published_at);
 
                 return (
                   <article 
@@ -870,62 +873,48 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------------------------- */}
-      {/* 7. NEWSLETTER PURPLE CARD CAPTURE SECTION */}
+      {/* 7. FULL-WIDTH CALL TO ACTION SECTION */}
       {/* ---------------------------------------------------- */}
-      <section id="inquiry-section" className="py-24 relative overflow-hidden">
-        
-        {/* Curved Lavender Concentric Rings Box Wrapper */}
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <section id="inquiry-section" className="py-24 relative overflow-hidden bg-gradient-to-br from-[#181e4b] to-[#282f6e] text-white">
+        {/* Background micro-dot highlights */}
+        <div className="absolute inset-0 bg-grid-dots opacity-[0.03] pointer-events-none" />
+        <div className="absolute top-[10%] left-[20%] w-[350px] h-[350px] bg-accent/10 rounded-full blur-[120px] pointer-events-none animate-pulse" />
+        <div className="absolute bottom-[10%] right-[20%] w-[350px] h-[350px] bg-gold-accent/10 rounded-full blur-[120px] pointer-events-none animate-pulse" />
+
+        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 text-center flex flex-col items-center">
+          <div className="w-16 h-16 rounded-3xl bg-accent/20 border border-accent/35 flex items-center justify-center text-orange-accent mb-8 shadow-lg shadow-orange-accent/10 animate-bounce">
+            <Plane className="w-8 h-8" />
+          </div>
+
+          <span className="text-xs sm:text-sm uppercase tracking-[0.25em] font-black text-orange-accent mb-4 font-mono">
+            Get In Touch
+          </span>
           
-          {/* Main lavender container with custom visual anchors */}
-          <div className="bg-[#f5f1fe] p-8 md:p-20 rounded-[40px] rounded-tl-[120px] border border-violet-100/50 text-center relative overflow-hidden max-w-5xl mx-auto shadow-xl shadow-violet-500/5">
-            
-            {/* concentric rings graphic elements */}
-            <div className="absolute -right-20 -bottom-20 w-[450px] h-[450px] border-4 border-violet-500/5 rounded-full pointer-events-none" />
-            <div className="absolute -left-20 -top-20 w-[450px] h-[450px] border-4 border-violet-500/5 rounded-full pointer-events-none" />
-            
-            {/* FLOATING CORAL PAPER PLANE ON TOP RIGHT BORDER */}
-            <div className="absolute -right-3 -top-3 w-14 h-14 bg-gradient-to-br from-violet-500 to-indigo-600 rounded-full flex items-center justify-center text-white shadow-2xl animate-bounce z-20">
-              <Send className="w-6 h-6 rotate-12 -ml-0.5" />
-            </div>
+          <h2 className="font-serif font-black text-3xl sm:text-5xl md:text-[54px] leading-[1.15] text-white max-w-4xl tracking-tight mb-6">
+            Ready to Begin Your <br className="hidden sm:inline" />
+            International Journey?
+          </h2>
 
-            <div className="max-w-3xl mx-auto relative z-10 flex flex-col gap-10">
-              
-              <h3 className="font-serif font-black text-2xl sm:text-3xl md:text-[38px] leading-[1.3] text-[#5e6282] max-w-2xl mx-auto tracking-tight">
-                Subscribe to get information, latest news and other interesting offers about Hallmark Travel Inc
-              </h3>
+          <p className="text-sm sm:text-base leading-relaxed text-gray-300 font-medium max-w-2xl mb-12">
+            Whether you want to study in the Philippines or relocate for global careers, our dedicated visa and travel experts handle every detail of your transition. Let’s build your path today.
+          </p>
 
-              {submitStatus === 'success' ? (
-                <div className="text-center py-6 animate-fade-in-up">
-                  <span className="px-6 py-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 rounded-2xl text-[15px] font-black inline-block shadow-sm">
-                    ✓ Thank you! You have been subscribed successfully.
-                  </span>
-                </div>
-              ) : (
-                <form onSubmit={handleFormSubmit} className="flex flex-col sm:flex-row items-center gap-4 max-w-2xl mx-auto w-full">
-                  <div className="relative flex-grow w-full">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input 
-                      type="email" 
-                      required
-                      value={form.email}
-                      onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))}
-                      placeholder="Your email"
-                      className="w-full pl-12 pr-4 py-4.5 bg-white border border-gray-100 rounded-2xl text-sm text-[#181e4b] font-medium focus:ring-2 focus:ring-orange-accent focus:outline-none shadow-sm placeholder-gray-400"
-                    />
-                  </div>
-                  
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full sm:w-auto px-10 py-4.5 bg-orange-accent hover:bg-[#c54b34] disabled:bg-orange-accent/50 text-white font-sans font-black text-sm uppercase tracking-widest rounded-2xl transition-all duration-300 shadow-xl shadow-orange-accent/20 hover:shadow-orange-accent/30 hover:-translate-y-0.5"
-                  >
-                    {submitting ? 'Subscribing...' : 'Subscribe'}
-                  </button>
-                </form>
-              )}
+          <div className="flex flex-col sm:flex-row items-center gap-6 w-full max-w-md justify-center">
+            {/* Primary Action */}
+            <a 
+              href="#services" 
+              className="w-full sm:w-auto px-10 py-4.5 bg-gold-accent hover:bg-amber-600 text-white font-sans font-bold text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-gold-accent/25 hover:shadow-gold-accent/35 transition-all duration-300 transform hover:-translate-y-1 text-center"
+            >
+              Book Visa Consultation
+            </a>
 
-            </div>
+            {/* Secondary Action */}
+            <Link 
+              href="/blog" 
+              className="w-full sm:w-auto px-10 py-4.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/25 text-white font-sans font-bold text-xs uppercase tracking-widest rounded-2xl transition-all duration-300 transform hover:-translate-y-1 text-center"
+            >
+              Explore Relocation Guides
+            </Link>
           </div>
         </div>
       </section>

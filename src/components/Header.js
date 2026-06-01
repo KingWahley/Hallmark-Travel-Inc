@@ -10,6 +10,10 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  if (pathname && pathname.startsWith('/dashboard')) {
+    return null;
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
@@ -51,55 +55,35 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* DESKTOP NAVIGATION AND LOGIN */}
+        {/* DESKTOP NAVIGATION */}
         <div className="hidden md:flex items-center gap-10">
           <nav className="flex items-center gap-8 font-sans">
-            <a 
-              href="#destinations" 
-              onClick={(e) => handleScrollToSection(e, 'destinations')}
-              className="text-[13.5px] text-[#212863] hover:text-[#df6951] font-medium transition-colors"
+            <Link 
+              href="/" 
+              className={`text-[13.5px] hover:text-[#df6951] font-medium transition-colors ${
+                pathname === '/' ? 'text-orange-accent' : 'text-[#212863]'
+              }`}
             >
-              Destinations
-            </a>
-            <a 
-              href="#departures" 
-              onClick={(e) => handleScrollToSection(e, 'departures')}
-              className="text-[13.5px] text-[#212863] hover:text-[#df6951] font-medium transition-colors"
-            >
-              Flights
-            </a>
+              Home
+            </Link>
             <Link 
               href="/blog" 
               className={`text-[13.5px] hover:text-[#df6951] font-medium transition-colors ${
-                pathname === '/blog' ? 'text-orange-accent' : 'text-[#212863]'
+                pathname.startsWith('/blog') ? 'text-orange-accent' : 'text-[#212863]'
               }`}
             >
               Relocation Hub
-            </Link>
-            <Link 
-              href="/admin" 
-              className={`text-[13.5px] hover:text-[#df6951] font-medium transition-colors ${
-                pathname.startsWith('/admin') ? 'text-orange-accent' : 'text-[#212863]'
-              }`}
-            >
-              Admin Desk
             </Link>
           </nav>
 
           {/* Action links */}
           <div className="flex items-center gap-6 font-sans">
-            <Link 
-              href="/admin/login" 
-              className="text-[13.5px] text-[#212863] hover:text-orange-accent font-medium transition-colors"
-            >
-              Login
-            </Link>
             <a 
               href="#inquiry-section" 
               onClick={(e) => handleScrollToSection(e, 'inquiry-section')}
               className="px-5 py-1.5 border border-[#212863]/60 hover:border-orange-accent hover:bg-orange-accent hover:text-white rounded-md text-[13.5px] text-[#212863] font-medium transition-all duration-300"
             >
-              Sign up
+              Book Consultation
             </a>
             <div className="flex items-center gap-0.5 text-[13px] text-[#212863] cursor-pointer font-medium">
               <span>EN</span>
@@ -124,20 +108,13 @@ export default function Header() {
         mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="flex flex-col gap-6 mt-8 text-left font-sans font-semibold">
-          <a 
-            href="#destinations" 
-            onClick={(e) => handleScrollToSection(e, 'destinations')}
+          <Link 
+            href="/" 
+            onClick={() => setMobileMenuOpen(false)}
             className="text-lg text-primary hover:text-orange-accent"
           >
-            Destinations
-          </a>
-          <a 
-            href="#departures" 
-            onClick={(e) => handleScrollToSection(e, 'departures')}
-            className="text-lg text-primary hover:text-orange-accent"
-          >
-            Flights
-          </a>
+            Home
+          </Link>
           <Link 
             href="/blog" 
             onClick={() => setMobileMenuOpen(false)}
@@ -145,27 +122,13 @@ export default function Header() {
           >
             Relocation Hub
           </Link>
-          <Link 
-            href="/admin" 
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-lg text-primary hover:text-orange-accent"
-          >
-            Admin Desk
-          </Link>
           <div className="w-full h-[1px] bg-gray-100 my-2" />
-          <Link 
-            href="/admin/login" 
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-lg text-primary hover:text-orange-accent"
-          >
-            Login
-          </Link>
           <a 
             href="#inquiry-section" 
             onClick={(e) => handleScrollToSection(e, 'inquiry-section')}
             className="w-full py-3 bg-orange-accent text-white text-center rounded-xl text-base font-semibold"
           >
-            Sign up
+            Book Consultation
           </a>
         </div>
       </div>

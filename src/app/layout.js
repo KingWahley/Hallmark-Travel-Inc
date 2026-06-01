@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
+import MainWrapper from "@/components/MainWrapper";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -53,9 +54,9 @@ export default function RootLayout({ children }) {
       <body className="bg-background text-foreground min-h-full flex flex-col font-sans">
         <SmoothScroll>
           <Header />
-          <main className="flex-grow pt-[73px] md:pt-[85px]">
+          <MainWrapper>
             {children}
-          </main>
+          </MainWrapper>
           <Footer />
         </SmoothScroll>
       </body>

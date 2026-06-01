@@ -270,6 +270,17 @@ export async function getBlogPosts(includeDrafts = false) {
       
       const { data, error } = await query;
       if (error) throw error;
+
+      // Auto-seed table if it is completely empty
+      if (data && data.length === 0) {
+        console.log("Supabase blog_posts table is empty. Seeding initial travel blueprints...");
+        const { error: seedErr } = await supabase.from('blog_posts').insert(PRESEEDED_BLOG_POSTS);
+        if (!seedErr) {
+          const { data: refetched } = await query;
+          if (refetched) return refetched;
+        }
+      }
+      
       return data;
     } catch (err) {
       console.warn("getBlogPosts: Supabase connection failed, falling back to local database.");
@@ -431,6 +442,20 @@ export async function getInquiries() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
+
+      // Auto-seed table if it is completely empty
+      if (data && data.length === 0) {
+        console.log("Supabase inquiries table is empty. Seeding initial inquiries...");
+        const { error: seedErr } = await supabase.from('inquiries').insert(PRESEEDED_INQUIRIES);
+        if (!seedErr) {
+          const { data: refetched } = await supabase
+            .from('inquiries')
+            .select('*')
+            .order('created_at', { ascending: false });
+          if (refetched) return refetched;
+        }
+      }
+      
       return data;
     } catch (err) {
       console.warn("getInquiries: Supabase fetch failed, falling back to local inquiries database.");

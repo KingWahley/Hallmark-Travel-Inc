@@ -16,6 +16,126 @@ import {
 } from 'lucide-react';
 import { getBlogPostById, saveBlogPost } from '@/lib/db';
 
+// =========================================================================
+// TEXT-TO-HTML PARSING ENGINE FOR BEGINNER-FRIENDLY PLAIN TEXT AREA CMS
+// =========================================================================
+
+// Convert HTML markup to clean, beginner-friendly double-newline plain text
+function htmlToPlainText(html) {
+  if (!html) return '';
+  let text = html;
+  
+  // Replace section headers with double-newlined headers
+  text = text.replace(/<h[1-6][^>]*>(.*?)<\/h[1-6]>/gi, '\n\n$1\n\n');
+  
+  // Replace paragraphs with double newlines
+  text = text.replace(/<p[^>]*>(.*?)<\/p>/gi, '\n\n$1\n\n');
+  
+  // Replace list items with clean bullet lines
+  text = text.replace(/<li[^>]*>(.*?)<\/li>/gi, '- $1\n');
+  
+  // Strip all other HTML block and inline elements (like ul, ol, strong, em, a)
+  text = text.replace(/<[^>]+>/g, '');
+  
+  // Decode HTML entities
+  text = text
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+
+  // Format spacing cleanly
+  const lines = text.split('\n');
+  const formattedLines = [];
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    
+    if (line.startsWith('-')) {
+      // If previous line was a list item, add single newline, otherwise double
+      const prev = formattedLines[formattedLines.length - 1];
+      if (prev && prev.startsWith('-')) {
+        formattedLines.push(line);
+      } else {
+        formattedLines.push('');
+        formattedLines.push(line);
+      }
+    } else {
+      formattedLines.push('');
+      formattedLines.push(line);
+    }
+  }
+  
+  return formattedLines.join('\n').trim();
+}
+
+// Convert plain text with paragraph separation back into structured, clean HTML tags
+function plainTextToHtml(text) {
+  if (!text) return '';
+  
+  // Split blocks by double-newlines
+  const blocks = text.split(/\r?\n\r?\n/);
+  const htmlBlocks = [];
+  
+  let inList = false;
+  let listType = '';
+  let currentListItems = [];
+  
+  const flushList = () => {
+    if (currentListItems.length > 0) {
+      const listHtml = `<${listType}>\n  ` + currentListItems.map(item => `<li>${item}</li>`).join('\n  ') + `\n</${listType}>`;
+      htmlBlocks.push(listHtml);
+      currentListItems = [];
+      inList = false;
+    }
+  };
+
+  for (let i = 0; i < blocks.length; i++) {
+    let block = blocks[i].trim();
+    if (!block) continue;
+    
+    // Check if the block is a list (every line starts with bullet or number)
+    const lines = block.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+    const isUnorderedList = lines.every(line => line.startsWith('-') || line.startsWith('*'));
+    const isOrderedList = lines.every(line => /^\d+\.\s/.test(line));
+    
+    if (isUnorderedList || isOrderedList) {
+      flushList();
+      listType = isUnorderedList ? 'ul' : 'ol';
+      inList = true;
+      
+      lines.forEach(line => {
+        const cleanLine = line.replace(/^[-*]\s*/, '').replace(/^\d+\.\s*/, '').trim();
+        currentListItems.push(cleanLine);
+      });
+      
+      flushList();
+    } else {
+      flushList();
+      
+      // Section header criteria: single-line, under 90 chars, no ending punctuation like . or ! or ?
+      const isHeader = 
+        lines.length === 1 && 
+        block.length < 90 && 
+        !/[.?!,]$/.test(block) &&
+        !block.toLowerCase().startsWith('http');
+        
+      if (isHeader) {
+        htmlBlocks.push(`<h2>${block}</h2>`);
+      } else {
+        const pContent = lines.join(' ');
+        htmlBlocks.push(`<p>${pContent}</p>`);
+      }
+    }
+  }
+  
+  flushList();
+  return htmlBlocks.join('\n\n');
+}
+
 export default function AdminPostForm({ postId = null }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -43,7 +163,7 @@ export default function AdminPostForm({ postId = null }) {
     // Session lock
     const session = sessionStorage.getItem('hallmark_admin_session');
     if (!session) {
-      router.push('/admin/login');
+      router.push('/dashboard/login');
       return;
     }
 
@@ -56,7 +176,7 @@ export default function AdminPostForm({ postId = null }) {
             setSlug(post.slug || '');
             setCategory(post.category || 'Study & Relocation');
             setExcerpt(post.excerpt || '');
-            setContent(post.content || '');
+            setContent(htmlToPlainText(post.content || ''));
             setFeaturedImage(post.featured_image || '');
             setAuthor(post.author || 'Global Mobility Advisor');
             setMetaTitle(post.meta_title || '');
@@ -78,9 +198,10 @@ export default function AdminPostForm({ postId = null }) {
     }
   }, [postId, router]);
 
-  // Auto Generate Slug logic
-  const handleAutoSlug = () => {
-    const generated = title
+  // Auto Generate Slug logic in background
+  const handleTitleChange = (val) => {
+    setTitle(val);
+    const generated = val
       .toLowerCase()
       .trim()
       .replace(/[^\w\s-]/g, '') // remove special chars
@@ -136,7 +257,7 @@ export default function AdminPostForm({ postId = null }) {
         slug,
         category,
         excerpt,
-        content,
+        content: plainTextToHtml(content),
         featured_image: featuredImage,
         author,
         meta_title: metaTitle || title,
@@ -155,7 +276,7 @@ export default function AdminPostForm({ postId = null }) {
       
       // Send admin back to cockpit panel after save
       setTimeout(() => {
-        router.push('/admin');
+        router.push('/dashboard');
       }, 1500);
 
     } catch (err) {
@@ -178,312 +299,319 @@ export default function AdminPostForm({ postId = null }) {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-8">
+    <div className="min-h-screen bg-slate-50 text-slate-700 py-12 relative overflow-hidden font-sans">
       
-      {/* Navigation and Actions Row */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-card-border/60 pb-6 mb-8">
-        <div className="flex items-center gap-3 text-left">
-          <Link
-            href="/admin"
-            className="p-2.5 rounded-xl bg-background border border-card-border hover:border-accent text-foreground/75 hover:text-accent transition-all duration-300"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Link>
-          <div className="flex flex-col">
-            <h1 className="font-display font-bold text-xl text-white">
-              {postId ? 'Edit Relocation Blueprint' : 'Write Relocation Blueprint'}
-            </h1>
-            <span className="text-[10px] uppercase tracking-widest text-accent font-semibold">SEO Article Composer</span>
+      {/* Soft elegant background glows */}
+      <div className="absolute top-[10%] left-[5%] w-[35rem] h-[35rem] bg-[#df6951]/4 rounded-full blur-[120px] pointer-events-none z-0" />
+      <div className="absolute bottom-[10%] right-[5%] w-[35rem] h-[35rem] bg-[#f1a501]/4 rounded-full blur-[120px] pointer-events-none z-0" />
+
+      <div className="max-w-5xl mx-auto px-6 relative z-10">
+        
+        {/* Navigation and Title Row */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6 mb-8 text-left">
+          <div className="flex items-center gap-3">
+            <Link
+              href="/dashboard"
+              className="p-2.5 rounded-xl bg-white border border-slate-200 hover:border-[#df6951] text-slate-500 hover:text-[#df6951] transition-all duration-300 shadow-xs"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Link>
+            <div className="flex flex-col">
+              <h1 className="font-sans font-bold text-xl text-slate-800">
+                {postId ? 'Edit Blog Article' : 'Write New Blog Post'}
+              </h1>
+              <span className="text-[10px] uppercase tracking-wider text-[#df6951] font-bold mt-1">
+                Blog Article Writer
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {success && (
-        <div className="p-4 bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 text-xs rounded-xl flex items-center gap-2.5 mb-6 animate-fade-in-up font-light">
-          <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0" />
-          <span>Blueprint successfully saved. Redirecting to operational console...</span>
-        </div>
-      )}
+        {success && (
+          <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs rounded-xl flex items-center gap-2.5 mb-6 animate-fade-in-up font-medium text-left">
+            <CheckCircle className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+            <span>Article successfully saved! Redirecting to dashboard portal...</span>
+          </div>
+        )}
 
-      {error && (
-        <div className="p-4 bg-red-950/40 border border-red-500/20 text-red-400 text-xs rounded-xl flex items-start gap-2.5 mb-6 animate-fade-in-up font-light">
-          <Info className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-          <span>{error}</span>
-        </div>
-      )}
+        {error && (
+          <div className="p-4 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-start gap-2.5 mb-6 animate-fade-in-up font-medium text-left">
+            <Info className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+            <span>{error}</span>
+          </div>
+        )}
 
-      {/* Editor Body */}
-      <form onSubmit={handleFormSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8 text-left">
-        
-        {/* Left main form parameters */}
-        <div className="lg:col-span-8 flex flex-col gap-6">
+        {/* Editor Body */}
+        <form onSubmit={handleFormSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8 text-left">
           
-          {/* Main info card */}
-          <div className="glass p-6 sm:p-8 rounded-2xl border border-card-border/70 flex flex-col gap-5">
-            <h3 className="font-display font-bold text-sm text-white uppercase tracking-wider border-b border-card-border/40 pb-3">Core Content</h3>
+          {/* Left Main Form Section */}
+          <div className="lg:col-span-8 flex flex-col gap-6">
             
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="post-title" className="text-[10px] uppercase tracking-wider text-foreground/60 font-semibold">Article Title *</label>
-              <input 
-                type="text" 
-                id="post-title"
-                required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Nursing in the Philippines: The Ultimate Relocation Pathway"
-                className="px-4 py-3 bg-background/80 border border-card-border rounded-xl text-xs text-white focus:border-accent focus:outline-none transition-colors"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {/* Core Content Card */}
+            <div className="bg-white border border-slate-200/80 p-6 sm:p-8 rounded-2xl flex flex-col gap-5 shadow-xs">
+              <h3 className="font-sans font-bold text-sm text-slate-800 uppercase tracking-wide border-b border-slate-100 pb-3">
+                Article Details
+              </h3>
+              
+              {/* Title input */}
               <div className="flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
-                  <label htmlFor="post-slug" className="text-[10px] uppercase tracking-wider text-foreground/60 font-semibold">URL Slug *</label>
-                  <button
-                    type="button"
-                    onClick={handleAutoSlug}
-                    className="text-[9px] text-accent uppercase font-bold hover:underline"
-                  >
-                    Auto-Generate
-                  </button>
-                </div>
+                <label htmlFor="post-title" className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Article Title (Headline) *</label>
                 <input 
                   type="text" 
-                  id="post-slug"
+                  id="post-title"
                   required
-                  value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
-                  placeholder="nursing-in-the-philippines-relocation-pathway"
-                  className="px-4 py-3 bg-background/80 border border-card-border rounded-xl text-xs text-white font-mono focus:border-accent focus:outline-none transition-colors"
+                  value={title}
+                  onChange={(e) => handleTitleChange(e.target.value)}
+                  placeholder="e.g. Relocating to the Philippines: A Complete Guide for Nurses"
+                  className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:border-[#df6951] focus:bg-white focus:outline-none transition-colors"
                 />
+                <span className="text-[9px] text-slate-400">Provide an engaging, friendly title for your article. The web link (URL) is automatically generated in the background.</span>
               </div>
 
+              {/* Category input (single, full-width) */}
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="post-category" className="text-[10px] uppercase tracking-wider text-foreground/60 font-semibold">Category</label>
+                <label htmlFor="post-category" className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Article Category</label>
                 <select 
                   id="post-category"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="px-4 py-3 bg-background/80 border border-card-border rounded-xl text-xs text-white focus:border-accent focus:outline-none transition-colors appearance-none cursor-pointer"
+                  className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:border-[#df6951] focus:bg-white focus:outline-none transition-colors cursor-pointer"
                 >
                   <option value="Study & Relocation">Study & Relocation</option>
                   <option value="Travel & Relocation">Travel & Relocation</option>
                 </select>
+                <span className="text-[9px] text-slate-400">Select which section this article belongs to.</span>
+              </div>
+
+              {/* Excerpt */}
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="post-excerpt" className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Short Description (Teaser) *</label>
+                <textarea 
+                  id="post-excerpt"
+                  rows={2}
+                  value={excerpt}
+                  onChange={(e) => setExcerpt(e.target.value)}
+                  placeholder="e.g. Discover how nurses are seamlessly relocating and finding career paths in the Philippines with our visa assistance blueprints."
+                  className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:border-[#df6951] focus:bg-white focus:outline-none transition-colors resize-none"
+                />
+                <span className="text-[9px] text-slate-400">Write a short 1 or 2 sentence summary to display on the blog catalog list.</span>
+              </div>
+
+              {/* Main Content */}
+              <div className="flex flex-col gap-1.5 font-sans">
+                <label htmlFor="post-content" className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Article Body Content *</label>
+                <textarea 
+                  id="post-content"
+                  required
+                  rows={12}
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  placeholder="Write your article naturally here. Separate paragraphs with an empty line. You can create section headers by writing them on their own line without ending punctuation (like a period). e.g.:&#10;&#10;Why Relocate for Nursing Studies&#10;&#10;Pursuing nursing studies abroad unlocks..."
+                  className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:border-[#df6951] focus:bg-white focus:outline-none transition-colors resize-y font-medium"
+                />
+                <span className="text-[9px] text-slate-400">Write your story naturally in plain text. Leave a blank line to separate paragraphs. Single-line titles on their own line will automatically be formatted as premium headings. No HTML tags needed!</span>
               </div>
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="post-excerpt" className="text-[10px] uppercase tracking-wider text-foreground/60 font-semibold">Excerpt Summary *</label>
-              <textarea 
-                id="post-excerpt"
-                rows={2}
-                value={excerpt}
-                onChange={(e) => setExcerpt(e.target.value)}
-                placeholder="A brief 2-sentence marketing teaser outlining the relocation path..."
-                className="px-4 py-3 bg-background/80 border border-card-border rounded-xl text-xs text-white focus:border-accent focus:outline-none transition-colors resize-none"
-              />
+            {/* Dynamic FAQ Panel */}
+            <div className="bg-white border border-slate-200/80 p-6 sm:p-8 rounded-2xl flex flex-col gap-5 shadow-xs">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-2">
+                  <HelpCircle className="w-4 h-4 text-[#df6951]" />
+                  <h3 className="font-sans font-bold text-sm text-slate-800 uppercase tracking-wide">
+                    Frequently Asked Questions (FAQ)
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAddFaq}
+                  className="px-3 py-1 bg-[#df6951]/10 border border-[#df6951]/20 text-[#df6951] text-[10px] font-bold uppercase rounded-lg hover:bg-[#df6951] hover:text-white transition-colors flex items-center gap-1 font-mono"
+                >
+                  <Plus className="w-3.5 h-3.5" /> Add Question
+                </button>
+              </div>
+              <p className="text-[10px] text-slate-400 -mt-2">
+                Add common questions and answers. These will automatically appear at the bottom of the article and help with search engine rankings.
+              </p>
+
+              {faqs.length === 0 ? (
+                <div className="text-center py-6 border border-dashed border-slate-250 rounded-xl text-slate-400 text-xs font-light">
+                  No questions defined yet. Click "Add Question" above to include frequently asked questions.
+                </div>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  {faqs.map((faq, idx) => (
+                    <div key={idx} className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col gap-3 relative">
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveFaq(idx)}
+                        className="absolute right-4 top-4 text-slate-400 hover:text-red-500 p-1"
+                        title="Remove FAQ item"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                      
+                      <div className="flex flex-col gap-1 pr-6 text-left">
+                        <span className="text-[8px] uppercase tracking-wider text-[#df6951] font-bold font-mono">FAQ Question #{idx+1}</span>
+                        <input 
+                          type="text"
+                          value={faq.question}
+                          onChange={(e) => handleFaqChange(idx, 'question', e.target.value)}
+                          placeholder="e.g. Is this dental degree internationally recognized?"
+                          className="px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:border-[#df6951] focus:outline-none"
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-1 text-left">
+                        <span className="text-[8px] uppercase tracking-wider text-[#df6951] font-bold font-mono">FAQ Answer #{idx+1}</span>
+                        <textarea 
+                          rows={2}
+                          value={faq.answer}
+                          onChange={(e) => handleFaqChange(idx, 'answer', e.target.value)}
+                          placeholder="e.g. Yes! Graduates receive full international recognition through accredited pathways..."
+                          className="px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:border-[#df6951] focus:outline-none resize-none"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="post-content" className="text-[10px] uppercase tracking-wider text-foreground/60 font-semibold">Rich HTML Content *</label>
-              <textarea 
-                id="post-content"
-                required
-                rows={12}
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="<h2>Section Header</h2> <p>Insert detailed editorial narrative containing licensing guides, checklists...</p>"
-                className="px-4 py-3 bg-background/80 border border-card-border rounded-xl text-xs text-white font-mono focus:border-accent focus:outline-none transition-colors resize-y"
-              />
-            </div>
           </div>
 
-          {/* Dynamic FAQ Panel */}
-          <div className="glass p-6 sm:p-8 rounded-2xl border border-card-border/70 flex flex-col gap-5">
-            <div className="flex items-center justify-between border-b border-card-border/40 pb-3">
-              <div className="flex items-center gap-1.5">
-                <HelpCircle className="w-4 h-4 text-accent" />
-                <h3 className="font-display font-bold text-sm text-white uppercase tracking-wider">Dynamic FAQ Schema Items</h3>
+          {/* Right Sidebar - Publish Parameters & Settings */}
+          <div className="lg:col-span-4 flex flex-col gap-6">
+            
+            {/* Publish Settings Panel */}
+            <div className="bg-white border border-slate-200/80 p-6 rounded-2xl flex flex-col gap-4 shadow-xs">
+              <h3 className="font-sans font-bold text-xs text-slate-800 uppercase tracking-wide border-b border-slate-100 pb-2">Publish Settings</h3>
+              
+              <div className="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-200/60">
+                <span className="text-[10px] uppercase text-slate-500 font-bold font-mono">Visibility Status</span>
+                <button
+                  type="button"
+                  onClick={() => setIsPublished(!isPublished)}
+                  className={`px-3 py-1.5 rounded-lg text-[9px] uppercase tracking-wider font-bold transition-all border ${
+                    isPublished 
+                      ? 'bg-emerald-50 border-emerald-250 text-emerald-600' 
+                      : 'bg-slate-100 border-slate-200 text-slate-500'
+                  }`}
+                >
+                  {isPublished ? 'Publish Live' : 'Save as Draft'}
+                </button>
               </div>
+              <p className="text-[9px] text-slate-400">
+                {isPublished ? 'Live posts are instantly visible to visitors.' : 'Draft posts are saved privately.'}
+              </p>
+
               <button
-                type="button"
-                onClick={handleAddFaq}
-                className="px-3 py-1 bg-accent/15 border border-accent/25 text-accent text-[10px] font-display uppercase tracking-widest font-semibold rounded-lg hover:bg-accent hover:text-background transition-colors duration-300 flex items-center gap-1"
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 bg-[#df6951] hover:bg-[#df6951]/95 text-white font-semibold text-xs uppercase tracking-widest rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-md shadow-[#df6951]/10"
               >
-                <Plus className="w-3.5 h-3.5" /> Add FAQ Item
+                <Save className="w-4 h-4" />
+                {loading ? 'Saving Article...' : 'Save Blog Article'}
               </button>
             </div>
 
-            {faqs.length === 0 ? (
-              <div className="text-center py-6 border border-dashed border-card-border/50 rounded-xl text-foreground/45 text-xs font-light">
-                No FAQ pairs are defined. Adding FAQs automatically builds HTML5 structured FAQ Schemas.
+            {/* Google Search Settings (SEO) */}
+            <div className="bg-white border border-slate-200/80 p-6 rounded-2xl flex flex-col gap-4 shadow-xs">
+              <h3 className="font-sans font-bold text-xs text-slate-800 uppercase tracking-wide border-b border-slate-100 pb-2">Google Search Settings (SEO)</h3>
+
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="meta-title" className="text-[9px] uppercase text-slate-500 font-bold font-mono">Google Search Title</label>
+                <input 
+                  type="text" 
+                  id="meta-title"
+                  value={metaTitle}
+                  onChange={(e) => setMetaTitle(e.target.value)}
+                  placeholder="Headline displayed on Google results"
+                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:border-[#df6951] focus:bg-white focus:outline-none"
+                />
+                <span className="text-[8px] text-slate-400">Headline shown in search results. Leave blank to use article title.</span>
               </div>
-            ) : (
-              <div className="flex flex-col gap-4">
-                {faqs.map((faq, idx) => (
-                  <div key={idx} className="p-4 bg-background/40 border border-card-border rounded-xl flex flex-col gap-3 relative">
+
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="meta-desc" className="text-[9px] uppercase text-slate-500 font-bold font-mono">Google Search Description</label>
+                <textarea 
+                  id="meta-desc"
+                  rows={3}
+                  value={metaDescription}
+                  onChange={(e) => setMetaDescription(e.target.value)}
+                  placeholder="Summary paragraph shown on Google results"
+                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:border-[#df6951] focus:bg-white focus:outline-none resize-none"
+                />
+                <span className="text-[8px] text-slate-400">Short text paragraph shown under the headline on Google.</span>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="tags-input" className="text-[9px] uppercase text-slate-500 font-bold font-mono">Search Tags / Keywords</label>
+                <input 
+                  type="text" 
+                  id="tags-input"
+                  value={tagsInput}
+                  onChange={(e) => setTagsInput(e.target.value)}
+                  placeholder="e.g. travel, nursing, visa"
+                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:border-[#df6951] focus:bg-white focus:outline-none"
+                />
+                <span className="text-[8px] text-slate-400">Simple search words related to this post, separated by commas.</span>
+              </div>
+            </div>
+
+            {/* Blog Post Images Panel */}
+            <div className="bg-white border border-slate-200/80 p-6 rounded-2xl flex flex-col gap-4 shadow-xs">
+              <h3 className="font-sans font-bold text-xs text-slate-800 uppercase tracking-wide border-b border-slate-100 pb-2">Blog Post Images</h3>
+              
+              <div className="flex flex-col gap-1.5 font-sans">
+                <label htmlFor="featured-image" className="text-[9px] uppercase text-slate-500 font-bold font-mono">Main Cover Image Link</label>
+                <input 
+                  type="text" 
+                  id="featured-image"
+                  value={featuredImage}
+                  onChange={(e) => setFeaturedImage(e.target.value)}
+                  placeholder="https://images.unsplash.com/photo-..."
+                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 placeholder-slate-400 focus:border-[#df6951] focus:bg-white focus:outline-none font-mono"
+                />
+                <span className="text-[8px] text-slate-400">Paste a link to a picture, or choose one of our presets below.</span>
+              </div>
+
+              {/* Quick Image Presets */}
+              <div className="flex flex-col gap-1.5 mt-1">
+                <span className="text-[9px] uppercase text-slate-500 font-bold font-mono">Quick Image Presets</span>
+                <div className="grid grid-cols-2 gap-2">
+                  {imagePresets.map(preset => (
                     <button
+                      key={preset.label}
                       type="button"
-                      onClick={() => handleRemoveFaq(idx)}
-                      className="absolute right-4 top-4 text-foreground/40 hover:text-red-400 p-1"
-                      title="Remove FAQ item"
+                      onClick={() => setFeaturedImage(preset.url)}
+                      className="px-2 py-1.5 bg-slate-50 hover:bg-[#df6951]/10 border border-slate-200 rounded-lg text-[9px] font-bold text-slate-500 hover:text-[#df6951] transition-all duration-300"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      {preset.label}
                     </button>
-                    
-                    <div className="flex flex-col gap-1 pr-6">
-                      <span className="text-[8px] uppercase tracking-widest text-accent font-semibold">FAQ Question #{idx+1}</span>
-                      <input 
-                        type="text"
-                        value={faq.question}
-                        onChange={(e) => handleFaqChange(idx, 'question', e.target.value)}
-                        placeholder="e.g. Is this dental degree internationally recognized?"
-                        className="px-3 py-2 bg-background/80 border border-card-border rounded-lg text-xs text-white focus:border-accent focus:outline-none"
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <span className="text-[8px] uppercase tracking-widest text-accent font-semibold">FAQ Answer #{idx+1}</span>
-                      <textarea 
-                        rows={2}
-                        value={faq.answer}
-                        onChange={(e) => handleFaqChange(idx, 'answer', e.target.value)}
-                        placeholder="Provide details about the licensing board..."
-                        className="px-3 py-2 bg-background/80 border border-card-border rounded-lg text-xs text-white focus:border-accent focus:outline-none resize-none"
-                      />
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            )}
-          </div>
 
-        </div>
-
-        {/* Right side parameters (SEO, Status, Presets) */}
-        <div className="lg:col-span-4 flex flex-col gap-6">
-          
-          {/* Action trigger card */}
-          <div className="glass p-6 rounded-2xl border border-card-border flex flex-col gap-4">
-            <h3 className="font-display font-bold text-xs text-white uppercase tracking-wider border-b border-card-border/40 pb-2">Publish Matrix</h3>
-            
-            <div className="flex items-center justify-between bg-background/50 p-3 rounded-xl border border-card-border/40">
-              <span className="text-[10px] uppercase tracking-wider text-foreground/75 font-semibold">Status State</span>
-              <button
-                type="button"
-                onClick={() => setIsPublished(!isPublished)}
-                className={`px-3 py-1.5 rounded-lg text-[9px] uppercase tracking-widest font-bold transition-all border ${
-                  isPublished 
-                    ? 'bg-emerald-500/15 border-emerald-500/25 text-emerald-400' 
-                    : 'bg-foreground/5 border-card-border text-foreground/50'
-                }`}
-              >
-                {isPublished ? 'Publish Live' : 'Draft Copy'}
-              </button>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3.5 bg-accent hover:bg-accent-hover text-background font-display font-semibold text-xs uppercase tracking-widest rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-accent/15"
-            >
-              <Save className="w-4 h-4" />
-              {loading ? 'Saving to Database...' : 'Save Relocation Guide'}
-            </button>
-          </div>
-
-          {/* SEO card */}
-          <div className="glass p-6 rounded-2xl border border-card-border flex flex-col gap-4">
-            <h3 className="font-display font-bold text-xs text-white uppercase tracking-wider border-b border-card-border/40 pb-2">Search Engine Optimization</h3>
-
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="meta-title" className="text-[9px] uppercase tracking-wider text-foreground/50 font-semibold">SEO Meta Title</label>
-              <input 
-                type="text" 
-                id="meta-title"
-                value={metaTitle}
-                onChange={(e) => setMetaTitle(e.target.value)}
-                placeholder="Override search title (max 60 chars)"
-                className="px-3 py-2 bg-background/80 border border-card-border rounded-lg text-xs text-white focus:border-accent focus:outline-none"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="meta-desc" className="text-[9px] uppercase tracking-wider text-foreground/50 font-semibold">SEO Meta Description</label>
-              <textarea 
-                id="meta-desc"
-                rows={3}
-                value={metaDescription}
-                onChange={(e) => setMetaDescription(e.target.value)}
-                placeholder="Custom snippet displayed on search result nodes (max 160 chars)"
-                className="px-3 py-2 bg-background/80 border border-card-border rounded-lg text-xs text-white focus:border-accent focus:outline-none resize-none"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="tags-input" className="text-[9px] uppercase tracking-wider text-foreground/50 font-semibold">Metadata Tags</label>
-              <input 
-                type="text" 
-                id="tags-input"
-                value={tagsInput}
-                onChange={(e) => setTagsInput(e.target.value)}
-                placeholder="e.g. nursing, philippines, study visa"
-                className="px-3 py-2 bg-background/80 border border-card-border rounded-lg text-xs text-white focus:border-accent focus:outline-none"
-              />
-              <span className="text-[8px] text-foreground/45">Separate values with commas.</span>
-            </div>
-          </div>
-
-          {/* Featured Image Preset and URL Card */}
-          <div className="glass p-6 rounded-2xl border border-card-border flex flex-col gap-4">
-            <h3 className="font-display font-bold text-xs text-white uppercase tracking-wider border-b border-card-border/40 pb-2">Image Assets</h3>
-            
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="featured-image" className="text-[9px] uppercase tracking-wider text-foreground/50 font-semibold">Featured Image URL</label>
-              <input 
-                type="text" 
-                id="featured-image"
-                value={featuredImage}
-                onChange={(e) => setFeaturedImage(e.target.value)}
-                placeholder="https://images.unsplash.com/photo-..."
-                className="px-3 py-2 bg-background/80 border border-card-border rounded-lg text-xs text-white focus:border-accent focus:outline-none font-mono"
-              />
-            </div>
-
-            {/* Presets List */}
-            <div className="flex flex-col gap-1.5 mt-2">
-              <span className="text-[9px] uppercase tracking-wider text-foreground/40 font-medium">Quick Travel Stock Presets</span>
-              <div className="grid grid-cols-2 gap-2">
-                {imagePresets.map(preset => (
-                  <button
-                    key={preset.label}
-                    type="button"
-                    onClick={() => setFeaturedImage(preset.url)}
-                    className="px-2 py-1.5 bg-background/60 hover:bg-accent/15 border border-card-border rounded-lg text-[9px] uppercase tracking-wider font-semibold text-foreground/80 hover:text-accent transition-all duration-300"
-                  >
-                    {preset.label}
-                  </button>
-                ))}
+              <div className="flex flex-col gap-1.5 mt-2">
+                <label htmlFor="post-author" className="text-[9px] uppercase text-slate-500 font-bold font-mono">Author Name</label>
+                <input 
+                  type="text" 
+                  id="post-author"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                  placeholder="Global Mobility Advisor"
+                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:border-[#df6951] focus:bg-white focus:outline-none"
+                />
+                <span className="text-[8px] text-slate-400">The name of the writer shown at the top of the post.</span>
               </div>
             </div>
 
-            <div className="flex flex-col gap-1.5 mt-2">
-              <label htmlFor="post-author" className="text-[9px] uppercase tracking-wider text-foreground/50 font-semibold">Article Author</label>
-              <input 
-                type="text" 
-                id="post-author"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
-                placeholder="Global Mobility Advisor"
-                className="px-3 py-2 bg-background/80 border border-card-border rounded-lg text-xs text-white focus:border-accent focus:outline-none"
-              />
-            </div>
           </div>
 
-        </div>
+        </form>
 
-      </form>
-
+      </div>
     </div>
   );
 }

@@ -1,12 +1,18 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export default function SmoothScroll({ children }) {
+  const pathname = usePathname();
+  const isDashboard = pathname && pathname.startsWith('/dashboard');
+
   useEffect(() => {
+    if (isDashboard) return;
+
     // Register ScrollTrigger with GSAP
     gsap.registerPlugin(ScrollTrigger);
 
@@ -22,8 +28,16 @@ export default function SmoothScroll({ children }) {
       infinite: false,
     });
 
+    // Reset scroll position to top on page load/transition
+    lenis.scrollTo(0, { immediate: true });
+
     // Update ScrollTrigger on Lenis scroll
     lenis.on('scroll', ScrollTrigger.update);
+
+    // Force ScrollTrigger to recalculate layout dimensions after page paints
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
 
     // Connect Lenis to GSAP Ticker
     const updateRaf = (time) => {
@@ -38,8 +52,10 @@ export default function SmoothScroll({ children }) {
     return () => {
       lenis.destroy();
       gsap.ticker.remove(updateRaf);
+      clearTimeout(timer);
     };
-  }, []);
+  }, [isDashboard, pathname]);
 
   return <>{children}</>;
 }
+
