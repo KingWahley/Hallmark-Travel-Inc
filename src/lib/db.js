@@ -358,8 +358,8 @@ export async function getBlogPosts(includeDrafts = false) {
       let query = supabase.from('blog_posts').select('*').order('published_at', { ascending: false });
       
       if (!includeDrafts) {
-        // Only return posts with published_at in the past
-        query = query.not('published_at', 'is', null).lte('published_at', new Date().toISOString());
+        // Return all posts that are not drafts (published_at is not null)
+        query = query.not('published_at', 'is', null);
       }
       
       const { data, error } = await query;
@@ -377,14 +377,15 @@ export async function getBlogPosts(includeDrafts = false) {
       
       return data;
     } catch (err) {
-      console.warn("getBlogPosts: Supabase connection failed, falling back to local database.");
+      console.error("getBlogPosts: Supabase connection failed:", err);
+      throw new Error(`Supabase Database Query Failed: ${err.message || err}`);
     }
   }
 
   // Fallback Mock Logic
   const db = getLocalStorageDB();
   if (includeDrafts) return db.posts;
-  return db.posts.filter(p => p.published_at && new Date(p.published_at) <= new Date());
+  return db.posts.filter(p => p.published_at !== null);
 }
 
 export async function getBlogPostBySlug(slug) {
@@ -399,7 +400,8 @@ export async function getBlogPostBySlug(slug) {
       if (error) throw error;
       if (data) return data;
     } catch (err) {
-      console.warn(`getBlogPostBySlug: Supabase fetch failed for slug "${slug}", falling back to local database.`);
+      console.error(`getBlogPostBySlug: Supabase fetch failed for slug "${slug}":`, err);
+      throw new Error(`Supabase Fetch Failed: ${err.message || err}`);
     }
   }
 
@@ -420,7 +422,8 @@ export async function getBlogPostById(id) {
       if (error) throw error;
       if (data) return data;
     } catch (err) {
-      console.warn(`getBlogPostById: Supabase fetch failed for ID "${id}", falling back to local database.`);
+      console.error(`getBlogPostById: Supabase fetch failed for ID "${id}":`, err);
+      throw new Error(`Supabase Fetch Failed: ${err.message || err}`);
     }
   }
 
@@ -457,7 +460,8 @@ export async function saveBlogPost(postData) {
         return data;
       }
     } catch (err) {
-      console.warn("saveBlogPost: Supabase insert/update failed, writing to local mock database.");
+      console.error("saveBlogPost: Supabase insert/update failed:", err);
+      throw new Error(`Supabase Save Failed: ${err.message || err}`);
     }
   }
 
@@ -485,7 +489,8 @@ export async function deleteBlogPost(id) {
       if (error) throw error;
       return true;
     } catch (err) {
-      console.warn(`deleteBlogPost: Supabase delete failed for ID "${id}", removing from local database.`);
+      console.error(`deleteBlogPost: Supabase delete failed for ID "${id}":`, err);
+      throw new Error(`Supabase Delete Failed: ${err.message || err}`);
     }
   }
 
@@ -513,7 +518,8 @@ export async function submitInquiry(inquiryData) {
       if (error) throw error;
       return data;
     } catch (err) {
-      console.warn("submitInquiry: Supabase submission failed, caching entry in local mock database.");
+      console.error("submitInquiry: Supabase submission failed:", err);
+      throw new Error(`Supabase Inquiry Submission Failed: ${err.message || err}`);
     }
   }
 
@@ -552,7 +558,8 @@ export async function getInquiries() {
       
       return data;
     } catch (err) {
-      console.warn("getInquiries: Supabase fetch failed, falling back to local inquiries database.");
+      console.error("getInquiries: Supabase fetch failed:", err);
+      throw new Error(`Supabase Fetch Failed: ${err.message || err}`);
     }
   }
 
@@ -573,7 +580,8 @@ export async function updateInquiryStatus(id, status) {
       if (error) throw error;
       return data;
     } catch (err) {
-      console.warn(`updateInquiryStatus: Supabase status update failed for ID "${id}", modifying local database.`);
+      console.error(`updateInquiryStatus: Supabase status update failed for ID "${id}":`, err);
+      throw new Error(`Supabase Status Update Failed: ${err.message || err}`);
     }
   }
 

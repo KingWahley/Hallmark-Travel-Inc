@@ -12,9 +12,12 @@ import {
   HelpCircle, 
   Info,
   CheckCircle,
-  FileText
+  FileText,
+  Upload,
+  Loader2
 } from 'lucide-react';
 import { getBlogPostById, saveBlogPost } from '@/lib/db';
+import { supabase, isSupabaseConfigured } from '@/lib/supabaseClient';
 
 // =========================================================================
 // TEXT-TO-HTML PARSING ENGINE FOR BEGINNER-FRIENDLY PLAIN TEXT AREA CMS
@@ -159,6 +162,10 @@ export default function AdminPostForm({ postId = null }) {
   // Dynamic FAQs State (JSON Array)
   const [faqs, setFaqs] = useState([]);
 
+  // Image Upload State
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+
   useEffect(() => {
     // Session lock
     const session = sessionStorage.getItem('hallmark_admin_session');
@@ -225,6 +232,73 @@ export default function AdminPostForm({ postId = null }) {
 
   const handleRemoveFaq = (index) => {
     setFaqs(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Limit file size to 5MB
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError('Image size exceeds 5MB limit.');
+      return;
+    }
+
+    setUploading(true);
+    setUploadError(null);
+
+    if (isSupabaseConfigured) {
+      try {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2, 15)}-${Date.now()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        // Upload file to Supabase storage
+        const { data, error } = await supabase.storage
+          .from('blog-images')
+          .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: false
+          });
+
+        if (error) {
+          // If bucket does not exist, throw a descriptive error
+          if (error.message.includes('bucket not found') || error.message.includes('does not exist')) {
+            throw new Error("The 'blog-images' storage bucket does not exist in your Supabase project. Please create a public bucket named 'blog-images' in your Supabase Storage dashboard, or run the SQL setup script to initialize storage permissions.");
+          }
+          throw error;
+        }
+
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+          .from('blog-images')
+          .getPublicUrl(filePath);
+
+        setFeaturedImage(publicUrl);
+      } catch (err) {
+        console.error("Supabase Storage Upload Error:", err);
+        setUploadError(err.message || 'Storage upload failed. Try again.');
+      } finally {
+        setUploading(false);
+      }
+    } else {
+      // Offline / LocalStorage Mock Fallback: Convert to Base64
+      try {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setFeaturedImage(reader.result);
+          setUploading(false);
+        };
+        reader.onerror = () => {
+          setUploadError('Failed to read file locally.');
+          setUploading(false);
+        };
+        reader.readAsDataURL(file);
+      } catch (err) {
+        setUploadError('Local file reader error.');
+        setUploading(false);
+      }
+    }
   };
 
   // Quick Unsplash image templates to help admins set visuals
@@ -563,8 +637,66 @@ export default function AdminPostForm({ postId = null }) {
             <div className="bg-white border border-slate-200/80 p-6 rounded-2xl flex flex-col gap-4 shadow-xs">
               <h3 className="font-sans font-bold text-xs text-slate-800 uppercase tracking-wide border-b border-slate-100 pb-2">Blog Post Images</h3>
               
+              {/* Image Preview Box if featuredImage exists */}
+              {featuredImage && (
+                <div className="relative aspect-video w-full rounded-xl overflow-hidden border border-slate-200 bg-slate-100 group">
+                  <img 
+                    src={featuredImage} 
+                    alt="Cover preview" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setFeaturedImage('')}
+                      className="px-3 py-1.5 bg-red-650 hover:bg-red-750 text-white text-[10px] uppercase font-bold tracking-wider rounded-lg transition-all"
+                    >
+                      Remove Cover Image
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* File Upload Area */}
+              <div className="flex flex-col gap-2">
+                <label className="text-[9px] uppercase text-slate-500 font-bold font-mono">Upload Local Image</label>
+                
+                <div className="relative border-2 border-dashed border-slate-200 hover:border-[#df6951]/50 rounded-xl p-4 bg-slate-50 hover:bg-[#df6951]/2 transition-all flex flex-col items-center justify-center text-center cursor-pointer group">
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploading}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-20"
+                  />
+                  <div className="flex flex-col items-center gap-2 relative z-10">
+                    {uploading ? (
+                      <Loader2 className="w-6 h-6 text-[#df6951] animate-spin" />
+                    ) : (
+                      <Upload className="w-6 h-6 text-slate-400 group-hover:text-[#df6951] transition-colors" />
+                    )}
+                    <div className="flex flex-col">
+                      <span className="text-[11px] font-bold text-slate-600 group-hover:text-slate-800">
+                        {uploading ? 'Uploading cover image...' : 'Click or Drag to Upload'}
+                      </span>
+                      <span className="text-[9px] text-slate-400 mt-0.5">Supports PNG, JPG, JPEG up to 5MB</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {uploadError && (
+                  <span className="text-[9px] font-semibold text-red-500 mt-1">{uploadError}</span>
+                )}
+              </div>
+
+              {/* Or manual URL Link input */}
+              <div className="relative flex py-1.5 items-center">
+                <div className="flex-grow border-t border-slate-200"></div>
+                <span className="flex-shrink mx-3 text-[9px] text-slate-450 font-bold uppercase font-mono">or paste direct link</span>
+                <div className="flex-grow border-t border-slate-200"></div>
+              </div>
+
               <div className="flex flex-col gap-1.5 font-sans">
-                <label htmlFor="featured-image" className="text-[9px] uppercase text-slate-500 font-bold font-mono">Main Cover Image Link</label>
                 <input 
                   type="text" 
                   id="featured-image"
@@ -573,7 +705,6 @@ export default function AdminPostForm({ postId = null }) {
                   placeholder="https://images.unsplash.com/photo-..."
                   className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 placeholder-slate-400 focus:border-[#df6951] focus:bg-white focus:outline-none font-mono"
                 />
-                <span className="text-[8px] text-slate-400">Paste a link to a picture, or choose one of our presets below.</span>
               </div>
 
               {/* Quick Image Presets */}
