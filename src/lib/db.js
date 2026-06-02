@@ -4,169 +4,205 @@ import { supabase, isSupabaseConfigured } from './supabaseClient';
 const PRESEEDED_BLOG_POSTS = [
   {
     id: "post-1",
-    title: "Nursing in the Philippines: The Ultimate Global Relocation & Career Pathway",
-    slug: "nursing-in-the-philippines-relocation-pathway",
+    title: "Can I Get a Job in the US as a Philippines Graduate? The Global Mobility Blueprint",
+    slug: "job-in-us-as-philippines-graduate-mobility-blueprint",
     category: "Study & Relocation",
-    excerpt: "Discover why the Philippines is recognized globally as a premier education hub for healthcare professionals, and how to navigate the visa, study, and international licensing journey.",
+    excerpt: "An exhaustive breakdown of how graduates from the Philippines—specifically in Nursing, MBBS/Medicine, Pharmacy, and Dentistry—can secure premium employment and licensing in the United States.",
     content: `
-<h2>The Global Demand for Healthcare Professionals</h2>
-<p>In recent years, the global demand for qualified nurses has soared to unprecedented levels. Healthcare organizations across North America, the United Kingdom, the Middle East, and Australia are actively searching for dedicated, highly-skilled medical professionals. Amidst this rising tide, the Philippines has established itself as an unparalleled international powerhouse for nursing education and global relocation pathways.</p>
+<h2>Bridging the Gap: Philippine Credentials to US Careers</h2>
+<p>For decades, the Philippines has been a primary global exporter of world-class professional talent. If you have graduated from or are planning to pursue higher education in the Philippines, you may ask: <strong>Can I get a job in the US as a Philippines graduate?</strong></p>
 
-<p>Studying nursing in the Philippines offers a distinct advantage for international students and aspiring global citizens alike. In this comprehensive guide, we will unpack how this tropical educational center equips you with world-class medical training and robust global mobility credentials.</p>
+<p>The short answer is <strong>yes</strong>. However, the path requires navigating distinct professional credential evaluations, licensing examinations, and immigration pathways. Below, we break down the exact step-by-step career routes for healthcare and technical professionals seeking global mobility to the United States.</p>
 
-<h2>Why Pursue Nursing in the Philippines?</h2>
-<p>The nursing educational system in the Philippines is structured specifically to meet global benchmarks. Here is what makes the destination stand out:</p>
+<h2>1. Nursing (BSN): The Premier US Relocation Track</h2>
+<p>Philippine-trained nurses represent the backbone of many US healthcare facilities. The curriculum of a Bachelor of Science in Nursing (BSN) in the Philippines is highly aligned with western standards. To relocate as a registered nurse (RN) in the US, graduates must complete the following:</p>
 <ul>
-  <li><strong>English-Medium Instruction:</strong> Unlike many countries where language barriers hinder academic growth, all medical and nursing courses in the Philippines are taught 100% in English, matching western university curricula.</li>
-  <li><strong>High clinical exposure:</strong> Nursing curricula include extensive, hands-on clinical clerkships in major tertiary hospitals, ensuring clinical readiness.</li>
-  <li><strong>Affordable Premium Living:</strong> Compared to high western tuition costs, the Philippines offers elite, internationally recognized medical education at a fraction of the cost, making your global relocation capital-efficient.</li>
+  <li><strong>Credentials Evaluation:</strong> Submit your transcript to the Commission on Graduates of Foreign Nursing Schools (CGFNS) for a CES report, verifying that your degree is equivalent to a US BSN.</li>
+  <li><strong>NCLEX-RN Examination:</strong> Register with a US State Board of Nursing (such as New York or Texas, which do not require Social Security Numbers for foreign applicants) and pass the NCLEX-RN exam.</li>
+  <li><strong>English Proficiency:</strong> Pass an approved language exam like IELTS (Academic) or TOEFL.</li>
+  <li><strong>Visa Sponsorship:</strong> Relocate via the EB-3 immigrant visa (Green Card) or H-1B specialty occupation visa sponsored by US hospitals.</li>
 </ul>
 
-<h2>Relocation Checklist & Licensing Pipelines</h2>
-<p>Transitioning from a student in the Philippines to a registered nurse in the US, UK, or Canada involves a clear, strategic path. Your checklist should include:</p>
+<h2>2. MBBS / MD: Practicing Medicine in the United States</h2>
+<p>Graduates from Philippine medical schools (holding a Doctor of Medicine or MD degree) are considered International Medical Graduates (IMGs) in the US. The transition requires the ECFMG certification pathway:</p>
 <ol>
-  <li><strong>Securing a Student Visa (9F):</strong> Supported fully by our relocation advisors, ensuring proper embassy approvals.</li>
-  <li><strong>Completing the Bachelor of Science in Nursing (BSN):</strong> A comprehensive 4-year degree focusing on intensive clinical practices.</li>
-  <li><strong>Succeeding in NCLEX & IELTS Exams:</strong> Philippine medical schools structure their prep programs explicitly around international licensing standardizations.</li>
+  <li><strong>ECFMG Registration:</strong> Ensure your Philippine medical school is listed in the World Directory of Medical Schools.</li>
+  <li><strong>USMLE Exams:</strong> Pass the United States Medical Licensing Examination (USMLE) Step 1 (basic sciences) and Step 2 CK (clinical knowledge).</li>
+  <li><strong>Residency Match:</strong> Apply through the Electronic Residency Application Service (ERAS) to secure a residency position via the National Resident Matching Program (NRMP).</li>
+  <li><strong>Clinical Visa:</strong> Obtain a J-1 clinical visa or H-1B visa sponsored by your matching hospital.</li>
 </ol>
+
+<h2>3. Pharmacy & Dentistry Careers in the US</h2>
+<p>For Pharmacy and Dentistry graduates, the pathways are highly structured:</p>
+<ul>
+  <li><strong>Pharmacy:</strong> Foreign Pharmacy Graduate Examination Committee (FPGEC) certification is mandatory. This requires passing the FPGEE, taking the TOEFL iBT, and subsequently completing a set number of internship hours in a US state before taking the NAPLEX and MPJE licensing exams.</li>
+  <li><strong>Dentistry (DMD):</strong> Foreign-trained dentists must pass the Integrated National Board Dental Examination (INBDE). Most US states then require graduates to complete a 2-year Advanced Standing Program (DDS/DMD) at an accredited US dental school to qualify for state clinical licensing.</li>
+</ul>
+
+<h2>Step-by-Step US Job Placement Roadmap</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Course / Field</th>
+      <th>US Licensing Exam</th>
+      <th>Evaluation Agency</th>
+      <th>Primary US Visa</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Nursing</strong></td>
+      <td>NCLEX-RN</td>
+      <td>CGFNS / WES</td>
+      <td>EB-3 Green Card / H-1B</td>
+    </tr>
+    <tr>
+      <td><strong>Medicine / MD</strong></td>
+      <td>USMLE Step 1 & 2</td>
+      <td>ECFMG / EPIC</td>
+      <td>J-1 Exchange / H-1B</td>
+    </tr>
+    <tr>
+      <td><strong>Pharmacy</strong></td>
+      <td>FPGEE + NAPLEX</td>
+      <td>NABP / FPGEC</td>
+      <td>H-1B / EB-3</td>
+    </tr>
+    <tr>
+      <td><strong>Dentistry</strong></td>
+      <td>INBDE + Advanced DDS</td>
+      <td>ECE / WES</td>
+      <td>H-1B / H-4 EAD</td>
+    </tr>
+  </tbody>
+</table>
     `,
-    featured_image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80",
-    meta_title: "Nursing in the Philippines Guide - Relocation & Study Visa Path",
-    meta_description: "Your comprehensive relocation checklist and study visa guide to pursuing nursing in the Philippines. Learn about English-medium curricula, licensing, and international placements.",
+    featured_image: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=800&q=80",
+    meta_title: "Can I Get a US Job as a Philippines Graduate? Licensing & Visa Guide",
+    meta_description: "An exhaustive breakdown of how graduates from the Philippines in Nursing, Medicine, Pharmacy, and Dentistry can secure premium employment and licensing in the US.",
     faq: [
       {
-        question: "Is a nursing degree from the Philippines recognized in the United States?",
-        answer: "Yes. The Bachelor of Science in Nursing (BSN) from accredited Philippine universities meets the educational requirements for the CGFNS and NCLEX exam boards, allowing graduates to register as nurses in the US and Canada."
+        question: "Do I need a US green card before applying for US licensing?",
+        answer: "No. You can sit for the NCLEX-RN or USMLE exams as an international candidate. Once you pass, US healthcare recruiters or hospital networks will sponsor your visa (EB-3 or H-1B) to bring you to the US."
       },
       {
-        question: "What are the language requirements for nursing programs in the Philippines?",
-        answer: "All educational programs are conducted in English. However, students must fulfill clinical requirements in regional hospitals, where speaking conversational English is widely practiced."
+        question: "Is the Philippine nursing curriculum taught in English?",
+        answer: "Yes, all university-level nursing instruction in the Philippines is conducted 100% in English, matching US textbook standards, which simplifies credentials evaluation."
       }
     ],
-    tags: ["nursing", "philippines", "medical study", "relocation guide"],
+    tags: ["US Careers", "NCLEX", "USMLE", "Visa Sponsorship", "Global Licensure"],
     author: "Elena Rostova (Global Relocation Lead)",
-    published_at: "2026-01-10T12:00:00.000Z",
-    created_at: "2026-01-10T12:00:00.000Z",
-    updated_at: "2026-01-10T12:00:00.000Z"
+    published_at: "2026-05-10T12:00:00.000Z",
+    created_at: "2026-05-10T12:00:00.000Z",
+    updated_at: "2026-05-10T12:00:00.000Z"
   },
   {
     id: "post-2",
-    title: "The Comprehensive MBBS Guide: Navigating Medicine Studies Abroad",
-    slug: "mbbs-guide-medicine-studies-abroad",
-    category: "Study & Relocation",
-    excerpt: "Thinking of studying medicine abroad? Our premium guide details the top global destinations, application requirements, and global mobility paths for prospective doctors.",
+    title: "What Jobs Can I Get with a Bachelor’s Degree from the Philippines?",
+    slug: "jobs-with-bachelors-degree-from-philippines-career-guide",
+    category: "Travel & Relocation",
+    excerpt: "Discover the high-paying international and domestic career pathways available to graduates holding degrees in Accountancy, MBA, Computer Science, and Tourism & Hospitality.",
     content: `
-<h2>The Journey to Becoming a Global Physician</h2>
-<p>Securing a seat in an international medical school is one of the most rewarding pursuits for students worldwide. An MBBS (Bachelor of Medicine, Bachelor of Surgery) degree completed in a leading global institution represents the ultimate stepping stone toward global medical mobility.</p>
+<h2>Unlocking Your Philippine Degree's Global Value</h2>
+<p>If you are holding or pursuing a university degree in the Philippines, you are positioned in one of the most dynamic educational hubs in Asia. A major question faced by foreign and domestic students alike is: <strong>What jobs can I get with a bachelor’s degree from the Philippines?</strong></p>
 
-<p>Whether your goal is to practice medicine in Europe, the United States, or Asia, our comprehensive relocation assistance team has compiled this premier guide to outline the exact milestones required to turn your medical dream into reality.</p>
+<p>Philippine degrees carry tremendous international weight due to their strict alignment with global standards, particularly in tech, finance, business, and service sectors. Below, we explore the specific career pathways for Accountancy, MBA, Computer Science, and Tourism/Hospitality graduates.</p>
 
-<h2>Top Global Destinations for MBBS</h2>
-<p>Choosing where to relocate for your medical studies depends on academic recognition, clinical licensing agreements, and quality of lifestyle. The top relocation destinations include:</p>
+<h2>1. Accountancy & MBA: The Global Corporate & Advisory Track</h2>
+<p>The Philippines is a primary global hub for business process outsourcing and financial operations. A Bachelor of Science in Accountancy (BSA) or an MBA from the Philippines opens doors to:</p>
 <ul>
-  <li><strong>The Philippines:</strong> Renowned for US-modeled medical systems, high clinical exposure, and stellar USMLE pass rates.</li>
-  <li><strong>Central & Eastern Europe:</strong> Countries like Poland, Hungary, and Georgia offer prestigious English-medium medical degrees recognized across the EU.</li>
-  <li><strong>United Kingdom & Caribbean:</strong> High-prestige acceleration tracks that prepare students for prompt residency matches.</li>
+  <li><strong>Multinational Audit & Advisory:</strong> Major international firms like EY, PwC, Deloitte, and KPMG have extensive operational divisions in Taguig (BGC) and Makati. Local graduates are highly recruited for international client advisory, financial analytics, and taxation roles.</li>
+  <li><strong>Global Management Consultancies:</strong> MBA graduates are recruited by multinational enterprises for regional project management, corporate strategy, and business development roles.</li>
+  <li><strong>Remote Financial Consulting:</strong> The rise of remote accounting platforms has allowed Philippine CPAs and financial analysts to work directly for firms in the US, Australia, and the UK, commanding premium hourly rates.</li>
 </ul>
 
-<h2>Embarking on the Application Process</h2>
-<p>Successful medical relocation requires navigating complex visa processes and credential audits. A typical migration timeline requires:</p>
+<h2>2. Computer Science: Software Engineering & Global Tech Visas</h2>
+<p>Computer Science and Tech degrees from the Philippines are highly valued internationally because programming languages are universal. Graduates can secure:</p>
+<ul>
+  <li><strong>Global Tech Sponsorships:</strong> Countries like Germany, Singapore, and Canada actively sponsor experienced software engineers, cloud developers, and cybersecurity analysts. Having a Philippine Bachelor's degree verified by WES allows for rapid points-based visa processing (like Canada's Express Entry).</li>
+  <li><strong>Remote Software Development:</strong> Technical graduates work directly for international tech startups as full-stack developers, UI/UX designers, or DevOps engineers, earning high incomes without relocating.</li>
+  <li><strong>Tech BPO Leadership:</strong> Leading technical hubs in Manila recruit IT graduates for enterprise database administration, system architecture, and tech leadership roles.</li>
+</ul>
+
+<h2>3. International Tourism & Hospitality Management</h2>
+<p>The Philippines is globally recognized as the gold standard for luxury hospitality, cruise staffing, and tourism logistics:</p>
 <ol>
-  <li>Academic evaluation of your high school sciences (Biology, Chemistry, Physics).</li>
-  <li>Securing medical student visa approvals and certified health records.</li>
-  <li>Applying for licensing validation frameworks (like ECFMG for the United States).</li>
+  <li><strong>Global Cruise Lines:</strong> Hospitality graduates are highly recruited for executive management, guest relations, and culinary leadership roles on major luxury cruise vessels globally.</li>
+  <li><strong>Luxury International Hotels:</strong> Career paths in five-star hotels across the Middle East (Dubai, Doha), Singapore, and the US (via J-1 internships) are widely open to graduates.</li>
+  <li><strong>Tourism Desks & Destination Management:</strong> Corporate logistics roles in travel agencies, airline operations, and corporate travel desks globally.</li>
 </ol>
     `,
-    featured_image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=800&q=80",
-    meta_title: "Ultimate MBBS Guide - Medicine Studies & Relocation Abroad",
-    meta_description: "Navigate global medical relocation with our comprehensive MBBS guide. Learn about visa pathways, USMLE preparation, and clinical internships in prime international destinations.",
+    featured_image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
+    meta_title: "What Jobs Can I Get with a Bachelor's Degree from the Philippines?",
+    meta_description: "A comprehensive guide to high-paying international careers for Philippine graduates in Accountancy, MBA, Computer Science, and Tourism & Hospitality.",
     faq: [
       {
-        question: "What is the duration of an MBBS program abroad?",
-        answer: "Typically, MBBS programs last between 5 to 6 years, which includes structured clinical rotations and mandatory internship periods."
+        question: "Can an international student work in the Philippines after graduation?",
+        answer: "Yes, graduates can transition to a Special Work Permit (SWP) or an Alien Employment Permit (AEP) if they secure corporate job offers in multinational companies or local enterprises."
       },
       {
-        question: "Is clinical licensing assistance provided after graduation?",
-        answer: "Yes, our study & relocation assistance packages include step-by-step guidance for USMLE, PLAB, and national licensing board exams to transition you smoothly into hospital residency programs."
+        question: "Are remote jobs from US and Australia open to Philippine CPAs?",
+        answer: "Yes. Many international companies hire Philippine CPAs and financial analysts remotely for international bookkeeping, cloud auditing, and strategic corporate taxation roles."
       }
     ],
-    tags: ["MBBS", "medicine abroad", "relocation advice", "visa support"],
+    tags: ["Career Guide", "Accountancy", "Tech Careers", "Hospitality", "Remote Work"],
     author: "Dr. Marcus Vance (International Mobility Consultant)",
-    published_at: "2026-02-15T09:30:00.000Z",
-    created_at: "2026-02-15T09:30:00.000Z",
-    updated_at: "2026-02-15T09:30:00.000Z"
+    published_at: "2026-05-18T10:00:00.000Z",
+    created_at: "2026-05-18T10:00:00.000Z",
+    updated_at: "2026-05-18T10:00:00.000Z"
   },
   {
     id: "post-3",
-    title: "Best Dentistry Schools Globally: Dynamic Relocation & Licensing Guide",
-    slug: "best-dentistry-schools-globally-relocation",
+    title: "Is a Philippines Degree Accepted in Other Countries? Equivalency & WES Master Guide",
+    slug: "philippines-degree-accepted-in-other-countries-equivalency",
     category: "Study & Relocation",
-    excerpt: "Explore the highest-rated dental programs globally that offer smooth licensing pathways to practice in the US, UK, and Canada, complete with visa and relocation details.",
+    excerpt: "A master guide outlining the global academic equivalency of Philippine university degrees across the US, UK, Canada, Australia, and the Middle East.",
     content: `
-<h2>The Evolution of Modern Dentistry Studies</h2>
-<p>Dentistry has evolved rapidly into a highly technical, aesthetic, and lucrative medical specialty. Obtaining a Doctor of Dental Medicine (DMD) or Doctor of Dental Surgery (DDS) degree from an internationally accredited dental academy is an outstanding path to global professional success.</p>
+<h2>Universal Recognition of Philippine Degrees</h2>
+<p>When planning your international educational path, the foremost question is often: <strong>Is a Philippines degree accepted in other countries?</strong></p>
 
-<p>For individuals planning their relocation and educational journeys, aligning your degree with international licensing requirements is critical. In this article, we cover the top global dentistry schools and outline the visa pathways that make relocations stress-free.</p>
+<p>The answer is a resounding <strong>yes</strong>. The academic system in the Philippines is closely modeled on the United States educational system. Since the implementation of the K-12 program (aligning primary and secondary education with 12-year global benchmarks), Philippine university degrees are recognized as equivalent to US and Canadian four-year bachelor's degrees by leading credentials evaluation agencies worldwide.</p>
 
-<h2>Key Metrics for Selecting an International Dental School</h2>
-<p>When selecting a destination, look for institutions that provide:</p>
+<h2>1. Credential Evaluations: The Key to Equivalency (WES, ECE, CES)</h2>
+<p>To officially present your degree to foreign employers, licensing boards, or universities, you must obtain a credentials evaluation report:</p>
 <ul>
-  <li><strong>Digital Dentistry Labs:</strong> Modern clinics utilize 3D printing, CAD/CAM dentistry, and digital imagery.</li>
-  <li><strong>Global License Alignment:</strong> Programs that match NDEB (Canada) or ADAT (US) exam syllabi.</li>
-  <li><strong>Integrated Student Visas:</strong> Countries that grant post-study work permits to practice in regional dental groups.</li>
+  <li><strong>World Education Services (WES):</strong> WES evaluates degrees for Canada and the United States. Accredited Philippine universities are routinely evaluated as equivalent to a **Four-Year US/Canadian Bachelor's Degree**, qualifying you for Master's programs and corporate positions.</li>
+  <li><strong>Educational Credential Evaluators (ECE):</strong> Commonly utilized for medical, dental, and specialized technical fields in the US.</li>
+  <li><strong>Commission on Graduates of Foreign Nursing Schools (CGFNS):</strong> Specifically evaluates nursing credentials for US state licensing boards.</li>
 </ul>
+
+<h2>2. International Board Recognition and Accords</h2>
+<p>Many professional fields in the Philippines are signatory to or aligned with global accords:</p>
+<ol>
+  <li><strong>Medical and Healthcare Boards:</strong> Degrees in MBBS/Medicine, Dentistry, and Pharmacy from accredited institutions are recognized by major licensing boards across the Middle East (DHA in Dubai, NHRA in Bahrain), the UK (GMC, GDC), and Australia.</li>
+  <li><strong>Accountancy Alignments:</strong> Philippine CPAs are highly regarded, and credits are easily validated by foreign accounting boards (such as CPA Australia or state boards in the US).</li>
+  <li><strong>Washington Accord Alignment:</strong> Engineering and technical curricula follow international outcomes-based models, facilitating easy equivalency in the UK, Australia, and the EU.</li>
+</ol>
+
+<h2>Why the English-Medium Curriculum Matters</h2>
+<p>Because English is the official language of instruction in all universities in the Philippines, you completely bypass the need for tedious translation processes. Your syllabus, transcripts, and diplomas are issued natively in English, saving thousands in certification fees and dramatically speeding up your visa and relocation timeline.</p>
     `,
-    featured_image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80",
-    meta_title: "Top Dentistry Schools Abroad - Relocation & Visa Assistance",
-    meta_description: "Uncover top-rated dentistry schools with straightforward immigration pathways. Learn how our relocation team helps you manage dental school applications and visa files.",
+    featured_image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80",
+    meta_title: "Is a Philippines Degree Accepted in Other Countries? WES Equivalency Guide",
+    meta_description: "Learn how university degrees from the Philippines are evaluated as equivalent to US & Canadian degrees by WES, CGFNS, and international licensing boards.",
     faq: [
       {
-        question: "Can I practice dentistry in Canada with an international degree?",
-        answer: "Yes, but you must complete the NDEB equivalency process, which includes written exams and clinical skill assessments. Relocating through accredited university paths simplifies this timeline."
+        question: "Does WES evaluate a Philippine Bachelor's as equivalent to a US Bachelor's?",
+        answer: "Yes, for accredited universities, WES routinely evaluates standard 4-year Bachelor of Science degrees from the Philippines as equivalent to a 4-year US Bachelor's degree."
+      },
+      {
+        question: "Do I need to translate my transcripts from the Philippines?",
+        answer: "No, all university transcripts, syllabi, and graduation certificates in the Philippines are natively issued in English, which simplifies global credentials checks."
       }
     ],
-    tags: ["dentistry", "DMD", "immigration pathway", "dental study"],
-    author: "Elena Rostova (Global Relocation Lead)",
-    published_at: "2026-03-05T14:15:00.000Z",
-    created_at: "2026-03-05T14:15:00.000Z",
-    updated_at: "2026-03-05T14:15:00.000Z"
+    tags: ["Degree Acceptance", "WES", "Equivalency", "Credential Check", "Study Abroad"],
+    author: "Dr. Marcus Vance (International Mobility Consultant)",
+    published_at: "2026-05-25T11:00:00.000Z",
+    created_at: "2026-05-25T11:00:00.000Z",
+    updated_at: "2026-05-25T11:00:00.000Z"
   },
   {
     id: "post-4",
-    title: "Exploring Hospitality & Culinary Studies Abroad: The Visa Blueprint",
-    slug: "hospitality-culinary-studies-visa-blueprint",
-    category: "Travel & Relocation",
-    excerpt: "Turn your passion for culinary arts and hotel management into a global career. Study in the world's hospitality capitals with our premium relocation assistance.",
-    content: `
-<h2>A Recipe for Global Career Success</h2>
-<p>Hospitality and culinary arts represent one of the world's most dynamic and universally mobile sectors. Studying at an elite hotel school in Switzerland or a master culinary academy in France does not just teach you world-class skills—it unlocks an immediate pathway to global visa sponsorship and relocation.</p>
-
-<p>Our international travel assistance experts have created this guide to demonstrate how you can pair top-tier training with seamless immigration and travel setups.</p>
-
-<h2>Top Regions for Culinary & Hotel Studies</h2>
-<ul>
-  <li><strong>Switzerland:</strong> The global standard for luxury hospitality administration and business management.</li>
-  <li><strong>France & Italy:</strong> Iconic culinary academies that blend traditional heritage with modern gastronomic technologies.</li>
-  <li><strong>Singapore & Spain:</strong> High-growth hubs offering rapid internships in premium Michelin-starred establishments.</li>
-</ul>
-    `,
-    featured_image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80",
-    meta_title: "Hospitality & Culinary Studies Abroad - Global Travel & Visa",
-    meta_description: "Learn how to secure student visa pathways and culinary placements in Switzerland, France, and Spain with our expert travel and relocation support.",
-    faq: [
-      {
-        question: "Do hospitality programs include paid internships?",
-        answer: "Yes, the vast majority of international hotel administration programs include mandatory 6-month paid internships in luxury hotels and resorts."
-      }
-    ],
-    tags: ["hospitality", "culinary arts", "switzerland", "travel logistics"],
-    author: "Dr. Marcus Vance (International Mobility Consultant)",
-    published_at: "2026-04-18T10:00:00.000Z",
-    created_at: "2026-04-18T10:00:00.000Z",
-    updated_at: "2026-04-18T10:00:00.000Z"
-  },
-  {
-    id: "post-5",
     title: "Pharmacy Pathways: Study & Licensure Relocation Blueprints",
     slug: "pharmacy-study-relocation-licensure-blueprint",
     category: "Study & Relocation",
@@ -175,15 +211,25 @@ const PRESEEDED_BLOG_POSTS = [
 <h2>A Gateway to Global Pharmaceutical Careers</h2>
 <p>As the global healthcare infrastructure expands, pharmacists have emerged as critical front-line clinical advisors. From hospital pharmacies to corporate biotech research, obtaining a Bachelor or Doctor of Pharmacy (PharmD) from a top-tier accredited university represents an exceptional global mobility pathway.</p>
 
-<p>Whether you are looking to travel to the Philippines to secure affordable, world-class English-medium pharmacy training, or planning your relocation outside the country to practice in the US, UK, or Canada—our travel and relocation desk has outlined your comprehensive blueprint below.</p>
+<p>Whether you are looking to study pharmacy in the Philippines to secure affordable, world-class English-medium training, or planning your relocation outside the country to practice in the US, UK, or Canada—our travel and relocation desk has outlined your comprehensive blueprint below.</p>
 
-<h2>Why Study Pharmacy in the Philippines?</h2>
-<p>The Philippines is highly recognized as a key hub for pharmaceutical education. The advantages include:</p>
+<h2>1. Canada Pharmacy Licensing (PEBC Pathway)</h2>
+<p>For international graduates seeking to practice in Canada, the Pharmacy Examining Board of Canada (PEBC) handles credentials evaluations:</p>
 <ul>
-  <li><strong>US-Aligned Curricula:</strong> Leading universities offer comprehensive pharmacy programs that seamlessly align with global board requirements.</li>
-  <li><strong>Stellar Board Success Rates:</strong> Local colleges structure their academic modules to prepare students directly for international exams.</li>
-  <li><strong>Intensive Internship Modules:</strong> Features hands-on clinical and industrial rotations in major corporate laboratories and medical clinics.</li>
+  <li><strong>Document Evaluation:</strong> Assess your academic transcripts and pharmacy degree credentials for equivalence.</li>
+  <li><strong>PEBC Evaluating Examination (EE):</strong> A comprehensive written test assessing pharmaceutical knowledge.</li>
+  <li><strong>PEBC Qualifying Examination:</strong> Completed in two parts: Part I (Multiple Choice Questions) and Part II (OSCE - Objective Structured Clinical Examination).</li>
+  <li><strong>Practical Training:</strong> Complete regional internship requirements to register as a clinical pharmacist.</li>
 </ul>
+
+<h2>2. UK OSPAP Pathway for International Pharmacists</h2>
+<p>Immigration to the United Kingdom as a pharmacist requires completing the Overseas Pharmacists Assessment Programme (OSPAP):</p>
+<ol>
+  <li><strong>Eligibility Check:</strong> Apply to the General Pharmaceutical Council (GPhC) for qualification screening.</li>
+  <li><strong>OSPAP Postgraduate Diploma:</strong> Complete a structured 1-year university course in the UK.</li>
+  <li><strong>Pre-Registration Placement:</strong> Complete a 52-week paid clinical training period under GPhC supervision.</li>
+  <li><strong>GPhC Registration Assessment:</strong> Pass the final professional licensing board exam.</li>
+</ol>
     `,
     featured_image: "https://images.unsplash.com/photo-1586015555751-63bb77f4322a?auto=format&fit=crop&w=800&q=80",
     meta_title: "Pharmacy Studies & Global Licensing - Relocation Visa Guide",
@@ -191,14 +237,56 @@ const PRESEEDED_BLOG_POSTS = [
     faq: [
       {
         question: "Is a pharmacy degree from the Philippines globally recognized?",
-        answer: "Yes, degrees from accredited universities meet the educational eligibility requirements for licensing boards internationally, including PEBC in Canada and FPGEC in the United States."
+        answer: "Yes, degrees from accredited universities meet the educational eligibility requirements for licensing boards internationally, including PEBC in Canada and GPhC in the United States."
       }
     ],
-    tags: ["pharmacy", "pharmacist", "relocation guide", "study abroad"],
+    tags: ["Pharmacy", "Pharmacist Licensure", "PEBC Canada", "UK OSPAP"],
     author: "Elena Rostova (Global Relocation Lead)",
-    published_at: "2026-05-10T11:00:00.000Z",
-    created_at: "2026-05-10T11:00:00.000Z",
-    updated_at: "2026-05-10T11:00:00.000Z"
+    published_at: "2026-05-01T10:00:00.000Z",
+    created_at: "2026-05-01T10:00:00.000Z",
+    updated_at: "2026-05-01T10:00:00.000Z"
+  },
+  {
+    id: "post-5",
+    title: "Navigating Student Visa (9F) Timelines for Studying in the Philippines: Expat Guide",
+    slug: "student-visa-9f-timelines-philippines-guide",
+    category: "Travel & Relocation",
+    excerpt: "A step-by-step master guide on securing your 9F student visa, document legalization, and medical clearances to study in the Philippines.",
+    content: `
+<h2>Your Pathway to Studying in the Philippines</h2>
+<p>The Philippines has rapidly emerged as one of the most cost-effective and premium English-medium educational destinations in the world. If you have been accepted into a program (whether Nursing, CS, Dentistry, or MBBS), securing your <strong>9F Student Visa</strong> is the next critical milestone.</p>
+
+<p>Our travel logistics and immigration experts have compiled this step-by-step timeline to guide your student visa application and conversion, ensuring a seamless relocation.</p>
+
+<h2>Step 1: Receive Your Notice of Acceptance (NOA)</h2>
+<p>Your official visa process begins only after you have been admitted by a Higher Education Institution (HEI) accredited by the Bureau of Immigration (BI). The university will issue your Notice of Acceptance and submit your documents to the Commission on Higher Education (CHED).</p>
+
+<h2>Step 2: Legalization and Apostille of Documents</h2>
+<p>Before submitting documents to the Philippine embassy in your home country, you must legalize the following papers through the Apostille convention:</p>
+<ul>
+  <li>High School transcripts and Certificate of Graduation.</li>
+  <li>National Police Clearance or NBI Clearance equivalent.</li>
+  <li>Certified Medical Clearance Certificate, including chest X-ray and lab results.</li>
+  <li>Affidavit of Support or financial statements showing sufficient educational funds.</li>
+</ul>
+
+<h2>Step 3: Conversion and Bureau of Immigration Compliance</h2>
+<p>Upon landing in the Philippines on a standard entry visa, our relocation coordinators will assist you in visiting the Bureau of Immigration (BI) offices in Manila or Taguig to complete your conversion to a 9F Student Visa. You will be issued an Alien Certificate of Registration (ACR-I Card) which acts as your official identity card and allows for multiple entries into the country during your academic program.</p>
+    `,
+    featured_image: "https://images.unsplash.com/photo-1554151228-14d9def656e4?auto=format&fit=crop&w=800&q=80",
+    meta_title: "Philippine 9F Student Visa Guide - Timelines & Legalization",
+    meta_description: "A complete step-by-step expat guide to applying for a 9F Student Visa to study in the Philippines, including CHED approvals and BI conversions.",
+    faq: [
+      {
+        question: "How long does it take to convert to a 9F student visa?",
+        answer: "Typically, the Bureau of Immigration processing takes between 2 to 4 weeks once all Apostilled local credentials and medical clearances are submitted."
+      }
+    ],
+    tags: ["Student Visa", "9F Visa", "Immigration Check", "Apostille Guidelines"],
+    author: "Elena Rostova (Global Relocation Lead)",
+    published_at: "2026-04-20T11:00:00.000Z",
+    created_at: "2026-04-20T11:00:00.000Z",
+    updated_at: "2026-04-20T11:00:00.000Z"
   }
 ];
 
@@ -208,8 +296,8 @@ const PRESEEDED_INQUIRIES = [
     name: "Jonathan Harker",
     email: "jharker@example.com",
     phone: "+44 20 7946 0958",
-    service: "International Travel Assistance",
-    message: "I need assistance securing a multi-entry Schengen business visa and arranging travel logistics for our executive team relocating to Lisbon.",
+    service: "Travel & Tours Packages",
+    message: "I need assistance booking a luxury custom travel package for our executive board to tour El Nido and Boracay.",
     status: "new",
     created_at: "2026-05-25T11:45:00.000Z"
   },
@@ -218,7 +306,7 @@ const PRESEEDED_INQUIRIES = [
     name: "Sophia Martinez",
     email: "sophia.m@example.com",
     phone: "+1 (555) 321-7654",
-    service: "Study & Relocation Assistance",
+    service: "Study Abroad (Focus: Philippines)",
     message: "I am interested in applying to a BSN nursing program in the Philippines. I would love guidance on student visa 9F timelines and accredited university enrollments.",
     status: "contacted",
     created_at: "2026-05-26T15:20:00.000Z"
@@ -231,6 +319,12 @@ function getLocalStorageDB() {
   
   let posts = localStorage.getItem('agency_blog_posts');
   let inquiries = localStorage.getItem('agency_inquiries');
+  
+  // Clean client cache if it still holds outdated preseeded posts, forcing sync with new articles
+  if (posts && (!posts.includes('job-in-us-as-philippines-graduate') || !posts.includes('pharmacy-study-relocation-licensure-blueprint'))) {
+    localStorage.removeItem('agency_blog_posts');
+    posts = null;
+  }
   
   if (!posts) {
     localStorage.setItem('agency_blog_posts', JSON.stringify(PRESEEDED_BLOG_POSTS));

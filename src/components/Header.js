@@ -49,9 +49,14 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
         
         {/* JADOO-STYLE LOGO */}
-        <Link href="/" className="flex items-center group">
-          <span className="font-sans font-extrabold text-2xl tracking-tight text-primary">
-            Hallmark<span className="text-orange-accent">.</span>
+        <Link href="/" className="flex items-center gap-3 group">
+          <img 
+            src="/logo.png" 
+            alt="Hallmark Travel Inc. Logo" 
+            className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105" 
+          />
+          <span className="font-sans font-extrabold text-xl tracking-tight text-primary hidden sm:inline-block">
+            Hallmark <span className="text-orange-accent">Travel</span>
           </span>
         </Link>
 
@@ -67,24 +72,31 @@ export default function Header() {
               Home
             </Link>
             <Link 
+              href="/about" 
+              className={`text-[13.5px] hover:text-[#df6951] font-medium transition-colors ${
+                pathname.startsWith('/about') ? 'text-orange-accent' : 'text-[#212863]'
+              }`}
+            >
+              About Us
+            </Link>
+            <Link 
               href="/blog" 
               className={`text-[13.5px] hover:text-[#df6951] font-medium transition-colors ${
                 pathname.startsWith('/blog') ? 'text-orange-accent' : 'text-[#212863]'
               }`}
             >
-              Relocation Hub
+              Blog
             </Link>
           </nav>
 
           {/* Action links */}
           <div className="flex items-center gap-6 font-sans">
-            <a 
-              href="#inquiry-section" 
-              onClick={(e) => handleScrollToSection(e, 'inquiry-section')}
+            <Link 
+              href="/contact" 
               className="px-5 py-1.5 border border-[#212863]/60 hover:border-orange-accent hover:bg-orange-accent hover:text-white rounded-md text-[13.5px] text-[#212863] font-medium transition-all duration-300"
             >
               Book Consultation
-            </a>
+            </Link>
             <div className="flex items-center gap-0.5 text-[13px] text-[#212863] cursor-pointer font-medium">
               <span>EN</span>
               <span className="text-[10px]">▼</span>
@@ -116,20 +128,27 @@ export default function Header() {
             Home
           </Link>
           <Link 
+            href="/about" 
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-lg text-primary hover:text-orange-accent"
+          >
+            About Us
+          </Link>
+          <Link 
             href="/blog" 
             onClick={() => setMobileMenuOpen(false)}
             className="text-lg text-primary hover:text-orange-accent"
           >
-            Relocation Hub
+            Blog
           </Link>
           <div className="w-full h-[1px] bg-gray-100 my-2" />
-          <a 
-            href="#inquiry-section" 
-            onClick={(e) => handleScrollToSection(e, 'inquiry-section')}
+          <Link 
+            href="/contact" 
+            onClick={() => setMobileMenuOpen(false)}
             className="w-full py-3 bg-orange-accent text-white text-center rounded-xl text-base font-semibold"
           >
             Book Consultation
-          </a>
+          </Link>
         </div>
       </div>
     </header>

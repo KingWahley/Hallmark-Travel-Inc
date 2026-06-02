@@ -41,50 +41,50 @@ export default function Home() {
   const testimonials = [
     {
       id: 1,
-      quote: "On the Windows of our corporate relocations, Hallmark Travel Inc has been a flawless partner. Relocating our team of healthcare nurses to the UK was streamlined beyond expectation.",
-      name: "Mike Taylor",
-      role: "CEO, MedGroup Inc.",
-      from: "Houston, USA",
-      to: "London, UK",
-      serviceTag: "Corporate Relocation Assistance",
+      quote: "Studying Nursing in the Philippines has been a transformative experience. Hallmark Travel Inc secured my university admission and guided me through the entire 9F Student Visa process with complete precision.",
+      name: "Aisha Yusuf",
+      role: "BSN Nursing Scholar, Manila",
+      from: "Abuja, Nigeria",
+      to: "Manila, Philippines",
+      serviceTag: "Study Abroad (Focus: Philippines)",
       rating: 5,
       milestones: [
-        "Healthcare Credentials Verification Completed",
-        "UK Tier-2 Sponsorship Visa Issued",
-        "Consolidated Group Flight Logistics",
-        "Central London Corporate Housing Onboarding"
+        "Admitted to Premier BSN Nursing Program",
+        "Notice of Acceptance (NOA) & CHED Approval",
+        "9F Student Visa Successfully Issued",
+        "Taguig Housing & Campus Onboarding Completed"
       ]
     },
     {
       id: 2,
-      quote: "Excellent visa logistics. The advisors managed my dental credentials evaluation, secured my Swiss student visa, and arranged my travel in under three weeks.",
-      name: "Sophia Vance",
-      role: "DMD Candidate, Geneva",
-      from: "Toronto, Canada",
-      to: "Geneva, Switzerland",
-      serviceTag: "Academic Relocation Pathway",
+      quote: "Hallmark arranged a breathtaking tour of Palawan and Boracay for my family. Their travel and tour packages are truly world-class, coordinating flights, premium hotels, and transfers flawlessly.",
+      name: "Mike Taylor",
+      role: "Traveler & Globetrotter",
+      from: "Houston, USA",
+      to: "El Nido, Philippines",
+      serviceTag: "Travel & Tours Packages",
       rating: 5,
       milestones: [
-        "Dental Credentials Evaluation Certified",
-        "Swiss Schengen Student Visa Approval",
-        "Fast-track Customs Clearance Approval",
-        "Geneva University Residence Settlement"
+        "Custom Island Hopping Itinerary Curated",
+        "Consolidated Multi-City Flight Tickets Booked",
+        "5-Star Resort & Spa Reservation Secured",
+        "Guided Domestic Transfer Logistics Arranged"
       ]
     },
     {
       id: 3,
-      quote: "The best flight operations team in the industry. Highly personalized flight schedules, fast-track custom approvals, and exceptional airport assistance.",
-      name: "Jonathan Harker",
-      role: "Director, Harker Relocations",
-      from: "London, UK",
-      to: "Sydney, Australia",
-      serviceTag: "Executive Travel & Relocation Desk",
+      quote: "I was facing a complex overstay issue and needed a tourist visa extension inside the Philippines. Hallmark's local Taguig desk handled the BLO lifting and ACR I-Card renewal within days.",
+      name: "Sophia Vance",
+      role: "Expat Professional, BGC",
+      from: "Toronto, Canada",
+      to: "Taguig City, Philippines",
+      serviceTag: "In-Country Foreigner Services",
       rating: 5,
       milestones: [
-        "Custom Flight Operations & Routing Scheduled",
-        "Australia Skilled Visa Documentation Drafted",
-        "Sydney Premium Airport Meet & Greet Arranged",
-        "Local Municipal Coordinator Handover"
+        "Overstay & Tourist Visa Extension Filed",
+        "ACR I-Card Renewal Processed Successfully",
+        "Blacklist Order (BLO) Lifting Cleared",
+        "9G Working Visa Conversion Advised"
       ]
     }
   ];
@@ -155,13 +155,13 @@ export default function Home() {
           <div className="lg:col-span-6 flex flex-col gap-6 text-left relative">
             
             <h1 className="font-serif font-black text-4xl sm:text-5xl md:text-[64px] leading-[1.08] text-[#181e4b] tracking-tight">
-              Study, <span className="brush-highlight text-orange-accent">travel</span> <br />
-              & relocate in or <br />
-              outside Philippines
+              Study abroad <br />
+              & premium <br />
+              <span className="brush-highlight text-orange-accent">travel packages</span>
             </h1>
 
             <p className="text-[16px] leading-relaxed text-secondary font-medium max-w-lg mt-3">
-              We are a premier global mobility agency positioned at the gateway of two-way international journeys. Secure your flight bookings, study visa preparations, and local municipal onboarding today.
+              We are a premier global mobility agency. We specialize in study abroad placements focused on the Philippines for international students, alongside custom travel & tours packages globally.
             </p>
 
             <div className="flex items-center gap-8 mt-8">
@@ -170,7 +170,7 @@ export default function Home() {
                 href="#services"
                 className="px-8 py-4 bg-gold-accent hover:bg-amber-600 text-white font-sans font-bold text-[15px] rounded-2xl shadow-xl shadow-gold-accent/25 hover:shadow-gold-accent/35 transition-all duration-300 transform hover:-translate-y-1"
               >
-                Visa Services
+                Our Services
               </a>
 
               {/* Travel Abroad Secondary Button with Rotating Plane Icon */}
@@ -182,7 +182,7 @@ export default function Home() {
                   <Plane className="w-5 h-5 text-white transform group-hover:rotate-45 transition-transform duration-300" />
                 </div>
                 <span className="text-[15px] font-sans font-bold text-secondary group-hover:text-orange-accent transition-colors duration-300">
-                  Travel Abroad
+                  Book Travel & Tours
                 </span>
               </a>
             </div>
@@ -236,17 +236,17 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 text-center relative z-10">
           
           <div className="mb-20">
-            <span className="text-[15px] uppercase tracking-[0.22em] font-black text-secondary font-sans">
-              Category
+            <span className="text-[15px] uppercase tracking-[0.22em] font-black text-[#5e6282] font-sans">
+              Our Expertise
             </span>
             <h2 className="font-serif font-black text-3xl sm:text-5xl text-[#181e4b] mt-3">
-              We Offer Best Services
+              We Offer Premium Global Mobility
             </h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 max-w-7xl mx-auto">
             
-            {/* SERVICE COLUMN A: INBOUND PATHWAYS */}
+            {/* SERVICE COLUMN A: STUDY ABROAD */}
             <div className="p-8 rounded-[38px] bg-white shadow-jadoo hover:shadow-jadoo-hover transition-all duration-500 group flex flex-col items-center text-center relative border border-gray-100/80 hover:border-white">
               {/* Offset decorative block behind the card */}
               <div className="absolute -left-3.5 -bottom-3.5 w-[90px] h-[90px] bg-gold-accent rounded-tr-[30px] rounded-bl-[30px] -z-10 group-hover:scale-105 transition-transform duration-500 shadow-lg shadow-gold-accent/20" />
@@ -259,26 +259,25 @@ export default function Home() {
                 </div>
               </div>
 
-              <h3 className="font-sans font-black text-2xl text-[#1e1d4c] mb-4">
-                Inbound Mobility
+              <h3 className="font-sans font-black text-2xl text-[#1e1d4c] mb-3">
+                Study Abroad
               </h3>
-              <span className="text-xs uppercase font-mono tracking-widest font-black text-gold-accent mb-4 block">
-                Relocate to the Philippines
+              <span className="text-[9px] uppercase font-mono tracking-widest font-black text-gold-accent mb-4 block px-3 py-1 bg-gold-accent/10 rounded-full">
+                Focus: Philippines
               </span>
-              <p className="text-[14px] leading-relaxed text-[#5e6282] font-semibold max-w-sm">
-                We welcome international travelers and students from around the globe seeking world-class, English-medium education and medical clerkships. We manage your consolidated student visa 9F preparation, ticket scheduling, and municipal accommodation settlements.
+              <p className="text-[13.5px] leading-relaxed text-[#5e6282] font-semibold max-w-sm">
+                Focused on bringing other nationalities to study in the Philippines for now (with other destinations coming later). We manage university placements and visa files for premier courses: **Nursing, Pharmacy, Dentistry, MBBS/Medicine, Accountancy, MBA, Computer Science, and International Tourism & Hospitality**. We handle Notice of Acceptance (NOA) approvals and 9F Student Visas.
               </p>
 
-              {/* Action Link */}
-              <a 
-                href="#inquiry-section" 
-                className="mt-6 flex items-center gap-1.5 text-xs text-gold-accent font-black uppercase tracking-widest hover:underline"
+              <Link 
+                href="/contact" 
+                className="mt-auto pt-6 flex items-center gap-1.5 text-xs text-gold-accent font-black uppercase tracking-widest hover:underline"
               >
-                Begin Inbound Pathway <ChevronRight className="w-4 h-4" />
-              </a>
+                Apply for Placements <ChevronRight className="w-4 h-4" />
+              </Link>
             </div>
 
-            {/* SERVICE COLUMN B: OUTBOUND PATHWAYS */}
+            {/* SERVICE COLUMN B: TRAVEL & TOURS PACKAGES */}
             <div className="p-8 rounded-[38px] bg-white shadow-jadoo hover:shadow-jadoo-hover transition-all duration-500 group flex flex-col items-center text-center relative border border-gray-100/80 hover:border-white">
               {/* Offset decorative block behind the card */}
               <div className="absolute -right-3.5 -bottom-3.5 w-[90px] h-[90px] bg-orange-accent rounded-tl-[30px] rounded-br-[30px] -z-10 group-hover:scale-105 transition-transform duration-500 shadow-lg shadow-orange-accent/20" />
@@ -291,29 +290,28 @@ export default function Home() {
                 </div>
               </div>
 
-              <h3 className="font-sans font-black text-2xl text-[#1e1d4c] mb-4">
-                Outbound Pathways
+              <h3 className="font-sans font-black text-2xl text-[#1e1d4c] mb-3">
+                Travel & Tours Packages
               </h3>
-              <span className="text-xs uppercase font-mono tracking-widest font-black text-orange-accent mb-4 block">
-                Relocate Abroad from Philippines
+              <span className="text-[9px] uppercase font-mono tracking-widest font-black text-orange-accent mb-4 block px-3 py-1 bg-orange-accent/10 rounded-full">
+                For Everybody Worldwide
               </span>
-              <p className="text-[14px] leading-relaxed text-[#5e6282] font-semibold max-w-sm">
-                We empower Filipino students and professionals aiming to travel and study outside the country. Secure world-class credentials in prestigious programs like Nursing, Dentistry, Pharmacy, MBBS (Medicine), Hospitality Management, and Culinary arts abroad.
+              <p className="text-[13.5px] leading-relaxed text-[#5e6282] font-semibold max-w-sm">
+                Premium custom travel and vacation packages designed for tourists everywhere around the globe. Whether you want to explore the tropical islands of the Philippines (Palawan, Boracay, Cebu) or tour any other place in the world, we arrange personalized itineraries, hotels, flights, internal transfers, and guided tours.
               </p>
 
-              {/* Action Link */}
-              <a 
-                href="#inquiry-section" 
-                className="mt-6 flex items-center gap-1.5 text-xs text-orange-accent font-black uppercase tracking-widest hover:underline"
+              <Link 
+                href="/contact" 
+                className="mt-auto pt-6 flex items-center gap-1.5 text-xs text-orange-accent font-black uppercase tracking-widest hover:underline"
               >
-                Begin Outbound Pathway <ChevronRight className="w-4 h-4" />
-              </a>
+                Book Travel Packages <ChevronRight className="w-4 h-4" />
+              </Link>
             </div>
 
-            {/* SERVICE COLUMN C: GLOBAL VISA SERVICES */}
+            {/* SERVICE COLUMN C: PH IN-COUNTRY SERVICES */}
             <div className="p-8 rounded-[38px] bg-white shadow-jadoo hover:shadow-jadoo-hover transition-all duration-500 group flex flex-col items-center text-center relative border border-gray-100/80 hover:border-white">
               {/* Offset decorative block behind the card */}
-              <div className="absolute -left-3.5 -bottom-3.5 w-[90px] h-[90px] bg-[#0d9488] rounded-tr-[30px] rounded-bl-[30px] -z-10 group-hover:scale-105 transition-transform duration-500 shadow-lg shadow-[#0d9488]/20" />
+              <div className="absolute -left-3.5 -bottom-3.5 w-[90px] h-[90px] bg-teal-600 rounded-tr-[30px] rounded-bl-[30px] -z-10 group-hover:scale-105 transition-transform duration-500 shadow-lg shadow-teal-600/20" />
               
               {/* Illustration Header */}
               <div className="relative w-20 h-20 flex items-center justify-center mb-6">
@@ -323,23 +321,22 @@ export default function Home() {
                 </div>
               </div>
 
-              <h3 className="font-sans font-black text-2xl text-[#1e1d4c] mb-4">
-                Visa & Immigration
+              <h3 className="font-sans font-black text-2xl text-[#1e1d4c] mb-3">
+                In-Country Foreigner Services
               </h3>
-              <span className="text-xs uppercase font-mono tracking-widest font-black text-[#0d9488] mb-4 block">
-                Official Visa & Document Desk
+              <span className="text-[9px] uppercase font-mono tracking-widest font-black text-[#0d9488] mb-4 block px-3 py-1 bg-teal-600/10 rounded-full">
+                Inside the Philippines Only
               </span>
-              <p className="text-[14px] leading-relaxed text-[#5e6282] font-semibold max-w-sm">
-                We handle the heavy lifting for all travel and study permits. Our dedicated desk provides professional student visa (9F) filing support, document authentications (Apostille), credential evaluation filings, health insurance compliance, and outbound embassy processing.
+              <p className="text-[13.5px] leading-relaxed text-[#5e6282] font-semibold max-w-sm">
+                Exclusively for foreign nationals already residing in the Philippines. Our Taguig & Manila advisory desks provide rapid professional processing for **overstay & tourist visa extensions, Blacklist Order (BLO) lifting, student visa extensions, renewal of ACR I-Card, and 9G working visas**.
               </p>
 
-              {/* Action Link */}
-              <a 
-                href="#inquiry-section" 
-                className="mt-6 flex items-center gap-1.5 text-xs text-[#0d9488] font-black uppercase tracking-widest hover:underline"
+              <Link 
+                href="/contact" 
+                className="mt-auto pt-6 flex items-center gap-1.5 text-xs text-[#0d9488] font-black uppercase tracking-widest hover:underline"
               >
-                Begin Visa Consultation <ChevronRight className="w-4 h-4" />
-              </a>
+                Inquire Immigration Desk <ChevronRight className="w-4 h-4" />
+              </Link>
             </div>
 
           </div>
@@ -389,7 +386,7 @@ export default function Home() {
               <div className="p-7 flex flex-col gap-5 text-left bg-white relative z-10">
                 <div className="flex items-center justify-between text-[17px] font-black text-[#5e6282] font-sans">
                   <span>Manila, Philippines</span>
-                  <span className="text-[#181e4b] font-black">Inbound</span>
+                  <span className="text-[#181e4b] font-black">Study Abroad</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm font-bold text-[#181e4b] font-sans">
                   <svg className="w-4 h-4 text-[#181e4b] fill-current" viewBox="0 0 24 24">
@@ -413,13 +410,13 @@ export default function Home() {
               <div className="p-7 flex flex-col gap-5 text-left bg-white relative z-10">
                 <div className="flex items-center justify-between text-[17px] font-black text-[#5e6282] font-sans">
                   <span>London, UK</span>
-                  <span className="text-[#181e4b] font-black">Outbound</span>
+                  <span className="text-[#181e4b] font-black">Global Tour</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm font-bold text-[#181e4b] font-sans">
                   <svg className="w-4 h-4 text-[#181e4b] fill-current" viewBox="0 0 24 24">
                     <path d="M21 3L3 10.5L10.5 13.5L13.5 21L21 3Z" />
                   </svg>
-                  <span className="text-secondary font-semibold">Nursing & MBBS Pathways</span>
+                  <span className="text-secondary font-semibold">Premium Tour Packages</span>
                 </div>
               </div>
             </div>
@@ -437,13 +434,13 @@ export default function Home() {
               <div className="p-7 flex flex-col gap-5 text-left bg-white relative z-10">
                 <div className="flex items-center justify-between text-[17px] font-black text-[#5e6282] font-sans">
                   <span>Geneva, Switzerland</span>
-                  <span className="text-[#181e4b] font-black">Outbound</span>
+                  <span className="text-[#181e4b] font-black">Global Tour</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm font-bold text-[#181e4b] font-sans">
                   <svg className="w-4 h-4 text-[#181e4b] fill-current" viewBox="0 0 24 24">
                     <path d="M21 3L3 10.5L10.5 13.5L13.5 21L21 3Z" />
                   </svg>
-                  <span className="text-secondary font-semibold">Dentistry & Culinary Arts</span>
+                  <span className="text-secondary font-semibold">Custom Travel Packages</span>
                 </div>
               </div>
             </div>
@@ -479,9 +476,9 @@ export default function Home() {
                   <Compass className="w-5 h-5" />
                 </div>
                 <div className="flex flex-col">
-                  <h4 className="font-black text-[16px] text-primary">Consult Your Pathway</h4>
+                  <h4 className="font-black text-[16px] text-primary">Choose Your Main Service</h4>
                   <p className="text-[13.5px] text-secondary font-medium leading-relaxed mt-1 max-w-sm">
-                    Select either an Inbound Pathway (relocating to study/travel in the Philippines) or an Outbound Pathway (relocating abroad from the Philippines).
+                    Select Study Abroad (focused on the Philippines for international scholars) or book a premium Travel & Tours package to explore any global destination.
                   </p>
                 </div>
               </div>
@@ -494,7 +491,7 @@ export default function Home() {
                 <div className="flex flex-col">
                   <h4 className="font-black text-[16px] text-primary">Secure Visas & Flight Bookings</h4>
                   <p className="text-[13.5px] text-secondary font-medium leading-relaxed mt-1 max-w-sm">
-                    Let our mobility experts draft your student visa 9F files or prepare outbound visa sponsorships, while we secure consolidated flight tickets.
+                    Our experts handle 9F student visas for inbound scholars, secure in-country foreigner permits (extensions, BLO lifting), and arrange consolidated flight tickets.
                   </p>
                 </div>
               </div>
@@ -505,9 +502,9 @@ export default function Home() {
                   <Compass className="w-5 h-5" />
                 </div>
                 <div className="flex flex-col">
-                  <h4 className="font-black text-[16px] text-primary">Relocate & Settle In</h4>
+                  <h4 className="font-black text-[16px] text-primary">Relocate or Embark on Tour</h4>
                   <p className="text-[13.5px] text-secondary font-medium leading-relaxed mt-1 max-w-sm">
-                    Fly on your scheduled date and meet your local municipal coordinator for university onboarding and housing settlement.
+                    Fly with peace of mind. Meet your local municipal coordinator for university/housing onboarding, or begin your custom curated vacation tour anywhere in the world.
                   </p>
                 </div>
               </div>

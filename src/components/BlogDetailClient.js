@@ -52,7 +52,7 @@ export default function BlogDetailClient({ post, relatedPosts }) {
         name: form.name,
         email: form.email,
         phone: form.phone,
-        service: 'Relocation & Study Support',
+        service: 'Study Abroad (Focus: Philippines)',
         message: form.message
       });
       setSubmitStatus('success');
@@ -114,7 +114,7 @@ export default function BlogDetailClient({ post, relatedPosts }) {
   const postDate = formatDateUTC(post.published_at);
 
   return (
-    <div className="relative min-h-screen bg-[#fffdfa] text-[#181e4b] pb-24 font-sans overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#fffdfa] text-[#181e4b] pb-24 font-sans overflow-x-clip">
       
       {/* Schema Injection */}
       <script
@@ -142,7 +142,7 @@ export default function BlogDetailClient({ post, relatedPosts }) {
             href="/blog"
             className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#df6951] font-extrabold hover:underline mb-8"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Relocation Hub
+            <ArrowLeft className="w-4 h-4" /> Back to Blog
           </Link>
 
           <div className="max-w-4xl text-left">
@@ -237,7 +237,7 @@ export default function BlogDetailClient({ post, relatedPosts }) {
         </article>
 
         {/* Right column - Inquiry sidebar */}
-        <aside className="lg:col-span-4 lg:self-start lg:sticky lg:top-24">
+        <aside className="lg:col-span-4 lg:self-start lg:sticky lg:top-28">
           <div className="bg-white p-6 sm:p-8 rounded-[28px] border border-gray-100 shadow-jadoo">
             
             <div className="flex items-center gap-3.5 mb-6 pb-4 border-b border-gray-100">
