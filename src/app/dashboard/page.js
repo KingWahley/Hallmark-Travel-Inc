@@ -26,13 +26,18 @@ import {
   Shield,
   Activity,
   Globe,
-  FilePlus
+  FilePlus,
+  ChevronLeft,
+  ChevronRight,
+  CheckSquare,
+  Square
 } from 'lucide-react';
 import { 
   getBlogPosts, 
   deleteBlogPost, 
   getInquiries, 
-  updateInquiryStatus 
+  updateInquiryStatus,
+  saveBlogPost
 } from '@/lib/db';
 
 export default function AdminDashboard() {
@@ -48,6 +53,13 @@ export default function AdminDashboard() {
   // Search & Filter States
   const [searchPost, setSearchPost] = useState('');
   const [inquiryFilter, setInquiryFilter] = useState('all'); // 'all', 'new', 'contacted', 'resolved'
+
+  // Selection & Pagination States
+  const [selectedInquiries, setSelectedInquiries] = useState([]);
+  const [selectedPosts, setSelectedPosts] = useState([]);
+  const [inquiriesPage, setInquiriesPage] = useState(1);
+  const [postsPage, setPostsPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     // Security check - redirect if no session
@@ -84,6 +96,7 @@ export default function AdminDashboard() {
       await updateInquiryStatus(id, newStatus);
       const updated = await getInquiries();
       setInquiries(updated);
+      setSelectedInquiries(prev => prev.filter(item => item !== id));
     } catch (err) {
       console.error(err);
     }
@@ -95,8 +108,78 @@ export default function AdminDashboard() {
     try {
       await deleteBlogPost(id);
       setPosts(prev => prev.filter(p => p.id !== id));
+      setSelectedPosts(prev => prev.filter(p => p !== id));
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  // Multi-select & Bulk Actions for Inquiries
+  const handleToggleInquiry = (id) => {
+    setSelectedInquiries(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkUpdateInquiryStatus = async (newStatus) => {
+    if (selectedInquiries.length === 0) return;
+    setLoading(true);
+    try {
+      await Promise.all(selectedInquiries.map(id => updateInquiryStatus(id, newStatus)));
+      const updated = await getInquiries();
+      setInquiries(updated);
+      setSelectedInquiries([]);
+    } catch (err) {
+      console.error("Bulk update inquiries failed:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Multi-select & Bulk Actions for Blog Posts
+  const handleTogglePost = (id) => {
+    setSelectedPosts(prev => 
+      prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkDeletePosts = async () => {
+    if (selectedPosts.length === 0) return;
+    if (!window.confirm(`Are you sure you want to permanently delete the ${selectedPosts.length} selected blog articles? This action cannot be undone.`)) return;
+    setLoading(true);
+    try {
+      await Promise.all(selectedPosts.map(id => deleteBlogPost(id)));
+      setPosts(prev => prev.filter(p => !selectedPosts.includes(p.id)));
+      setSelectedPosts([]);
+      setPostsPage(1);
+    } catch (err) {
+      console.error("Bulk delete posts failed:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBulkPublishPosts = async (shouldPublish) => {
+    if (selectedPosts.length === 0) return;
+    setLoading(true);
+    try {
+      await Promise.all(selectedPosts.map(async (id) => {
+        const post = posts.find(p => p.id === id);
+        if (post) {
+          const updatedPost = {
+            ...post,
+            published_at: shouldPublish ? new Date().toISOString() : null
+          };
+          await saveBlogPost(updatedPost);
+        }
+      }));
+      const updatedPosts = await getBlogPosts(true);
+      setPosts(updatedPosts);
+      setSelectedPosts([]);
+    } catch (err) {
+      console.error("Bulk publish posts failed:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -157,8 +240,8 @@ export default function AdminDashboard() {
         
         {/* Brand Identity / Logo */}
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-[#df6951] to-[#f1a501] flex items-center justify-center text-white shadow-md shadow-[#df6951]/15">
-            <Compass className="w-4 h-4" />
+          <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center border border-slate-100 bg-white shadow-xs">
+            <img src="/logo.png" alt="Hallmark Logo" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col text-left">
             <span className="font-sans font-extrabold text-base text-slate-800 tracking-tight leading-none">
@@ -196,6 +279,10 @@ export default function AdminDashboard() {
                 onClick={() => {
                   setActiveTab(link.id);
                   setMobileSidebarOpen(false);
+                  setSelectedInquiries([]);
+                  setSelectedPosts([]);
+                  setInquiriesPage(1);
+                  setPostsPage(1);
                 }}
                 className={`w-full px-3.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide flex items-center justify-between transition-all duration-300 ${
                   isActive 
@@ -277,9 +364,11 @@ export default function AdminDashboard() {
         
         {/* Mobile Header Top Navbar */}
         <header className="lg:hidden h-16 bg-white border-b border-slate-200/80 px-6 flex items-center justify-between sticky top-0 z-20 flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <Compass className="w-5 h-5 text-[#df6951]" />
-            <span className="font-sans font-extrabold text-base text-slate-800 tracking-tight">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center border border-slate-100 bg-white shadow-xs">
+              <img src="/logo.png" alt="Hallmark Logo" className="w-full h-full object-cover" />
+            </div>
+            <span className="font-sans font-extrabold text-base text-slate-850 tracking-tight">
               Hallmark<span className="text-[#df6951]">.</span>
             </span>
           </div>
@@ -358,8 +447,7 @@ export default function AdminDashboard() {
 
           {/* 5. WORKSPACE TABS */}
           <section className="w-full text-left">
-            
-            {/* MESSAGES TAB CONTENT */}
+                       {/* MESSAGES TAB CONTENT */}
             {activeTab === 'inquiries' && (
               <div className="flex flex-col gap-5">
                 
@@ -375,10 +463,14 @@ export default function AdminDashboard() {
                     {['all', 'new', 'contacted', 'resolved'].map(filter => (
                       <button
                         key={filter}
-                        onClick={() => setInquiryFilter(filter)}
+                        onClick={() => {
+                          setInquiryFilter(filter);
+                          setInquiriesPage(1);
+                          setSelectedInquiries([]);
+                        }}
                         className={`px-3 py-1.5 text-[9px] uppercase tracking-wider font-bold rounded-lg transition-all ${
                           inquiryFilter === filter
-                            ? 'bg-white text-slate-850 shadow-xs border border-slate-200'
+                            ? 'bg-white text-slate-805 shadow-xs border border-slate-200'
                             : 'bg-transparent text-slate-500 hover:text-slate-800'
                         }`}
                       >
@@ -387,6 +479,64 @@ export default function AdminDashboard() {
                     ))}
                   </div>
                 </div>
+
+                {/* Bulk Actions & Select All Toolbar */}
+                {filteredInquiries.length > 0 && (
+                  <div className="flex flex-wrap items-center justify-between gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/60">
+                    <div className="flex items-center gap-3">
+                      <button 
+                        onClick={() => {
+                          const currentPageInquiries = filteredInquiries.slice(
+                            (inquiriesPage - 1) * itemsPerPage,
+                            inquiriesPage * itemsPerPage
+                          );
+                          const currentIds = currentPageInquiries.map(inq => inq.id);
+                          const allCurrentSelected = currentIds.every(id => selectedInquiries.includes(id));
+                          
+                          if (allCurrentSelected) {
+                            setSelectedInquiries(prev => prev.filter(id => !currentIds.includes(id)));
+                          } else {
+                            setSelectedInquiries(prev => {
+                              const otherIds = prev.filter(id => !currentIds.includes(id));
+                              return [...otherIds, ...currentIds];
+                            });
+                          }
+                        }}
+                        className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors"
+                      >
+                        {filteredInquiries.slice((inquiriesPage - 1) * itemsPerPage, inquiriesPage * itemsPerPage).every(inq => selectedInquiries.includes(inq.id)) ? (
+                          <CheckSquare className="w-4 h-4 text-[#df6951]" />
+                        ) : (
+                          <Square className="w-4 h-4 text-slate-350" />
+                        )}
+                        <span className="text-[11px] font-semibold">Select Page</span>
+                      </button>
+                      
+                      {selectedInquiries.length > 0 && (
+                        <span className="text-[10px] text-slate-400 font-mono font-medium">
+                          ({selectedInquiries.length} selected in total)
+                        </span>
+                      )}
+                    </div>
+
+                    {selectedInquiries.length > 0 && (
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider font-mono">Bulk actions:</span>
+                        <div className="flex items-center bg-white p-0.5 rounded-lg border border-slate-250">
+                          {['new', 'contacted', 'resolved'].map(statusVal => (
+                            <button
+                              key={statusVal}
+                              onClick={() => handleBulkUpdateInquiryStatus(statusVal)}
+                              className="px-2.5 py-1 rounded text-[8px] uppercase tracking-wide font-extrabold hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-all border border-transparent"
+                            >
+                              Mark {statusVal}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Message Cards List */}
                 {filteredInquiries.length === 0 ? (
@@ -398,93 +548,164 @@ export default function AdminDashboard() {
                     </p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 gap-4">
-                    {filteredInquiries.map((inq) => {
-                      const inqDate = new Date(inq.created_at).toLocaleString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      });
+                  <div className="flex flex-col gap-4">
+                    <div className="grid grid-cols-1 gap-4">
+                      {filteredInquiries
+                        .slice((inquiriesPage - 1) * itemsPerPage, inquiriesPage * itemsPerPage)
+                        .map((inq) => {
+                          const inqDate = new Date(inq.created_at).toLocaleString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          });
 
-                      return (
-                        <div 
-                          key={inq.id}
-                          className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-slate-300 transition-all duration-300 flex flex-col gap-3 shadow-xs relative"
-                        >
-                          {/* Accent status tag */}
-                          <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl ${
-                            inq.status === 'new' ? 'bg-orange-500' :
-                            inq.status === 'contacted' ? 'bg-amber-500' :
-                            'bg-emerald-500'
-                          }`} />
+                          const isChecked = selectedInquiries.includes(inq.id);
 
-                          {/* Top row Info */}
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-                            <div className="flex flex-col text-left">
-                              <span className="font-sans font-bold text-sm text-slate-800">{inq.name}</span>
-                              <span className="text-[9px] uppercase tracking-wider text-[#df6951] font-bold font-mono mt-0.5">
-                                Interested in: {inq.service}
-                              </span>
-                            </div>
-                            
-                            <div className="flex flex-wrap items-center gap-3 self-start sm:self-center">
-                              <span className="text-[10px] text-slate-400 font-mono flex items-center gap-1">
-                                <Calendar className="w-3.5 h-3.5 text-slate-300" /> {inqDate}
-                              </span>
-                              
-                              {/* Status actions switcher */}
-                              <div className="flex items-center bg-slate-100 p-1 rounded-lg gap-0.5">
-                                {['new', 'contacted', 'resolved'].map(statusVal => (
-                                  <button
-                                    key={statusVal}
-                                    onClick={() => handleUpdateInquiryStatus(inq.id, statusVal)}
-                                    className={`px-2 py-0.5 rounded text-[8px] uppercase tracking-wide font-bold transition-all ${
-                                      inq.status === statusVal 
-                                        ? statusVal === 'new' ? 'bg-orange-500 text-white shadow-xs' :
-                                          statusVal === 'contacted' ? 'bg-amber-500 text-white shadow-xs' :
-                                          'bg-emerald-500 text-white shadow-xs'
-                                        : 'text-slate-400 hover:text-slate-700'
-                                    }`}
+                          return (
+                            <div 
+                              key={inq.id}
+                              className={`bg-white p-5 rounded-2xl border transition-all duration-350 flex gap-4 shadow-xs relative ${
+                                isChecked ? 'border-[#df6951]/40 bg-[#df6951]/[0.01]' : 'border-slate-205 hover:border-slate-300'
+                              }`}
+                            >
+                              {/* Accent status tag */}
+                              <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl ${
+                                inq.status === 'new' ? 'bg-orange-500' :
+                                inq.status === 'contacted' ? 'bg-amber-500' :
+                                'bg-emerald-500'
+                              }`} />
+
+                              {/* Checkbox column */}
+                              <button 
+                                onClick={() => handleToggleInquiry(inq.id)}
+                                className="flex-shrink-0 text-slate-400 hover:text-[#df6951] transition-colors self-start mt-0.5"
+                              >
+                                {isChecked ? (
+                                  <CheckSquare className="w-4.5 h-4.5 text-[#df6951]" />
+                                ) : (
+                                  <Square className="w-4.5 h-4.5 text-slate-300" />
+                                )}
+                              </button>
+
+                              {/* Main details */}
+                              <div className="flex-grow flex flex-col gap-3 min-w-0">
+                                {/* Top row Info */}
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                                  <div className="flex flex-col text-left min-w-0">
+                                    <span className="font-sans font-bold text-sm text-slate-800 truncate">{inq.name}</span>
+                                    <span className="text-[9px] uppercase tracking-wider text-[#df6951] font-bold font-mono mt-0.5 truncate">
+                                      Interested in: {inq.service}
+                                    </span>
+                                  </div>
+                                  
+                                  <div className="flex flex-wrap items-center gap-3 self-start sm:self-center flex-shrink-0">
+                                    <span className="text-[10px] text-slate-400 font-mono flex items-center gap-1">
+                                      <Calendar className="w-3.5 h-3.5 text-slate-300" /> {inqDate}
+                                    </span>
+                                    
+                                    {/* Status actions switcher */}
+                                    <div className="flex items-center bg-slate-100 p-1 rounded-lg gap-0.5">
+                                      {['new', 'contacted', 'resolved'].map(statusVal => (
+                                        <button
+                                          key={statusVal}
+                                          onClick={() => handleUpdateInquiryStatus(inq.id, statusVal)}
+                                          className={`px-2 py-0.5 rounded text-[8px] uppercase tracking-wide font-bold transition-all ${
+                                            inq.status === statusVal 
+                                              ? statusVal === 'new' ? 'bg-orange-500 text-white shadow-xs' :
+                                                statusVal === 'contacted' ? 'bg-amber-500 text-white shadow-xs' :
+                                                'bg-emerald-500 text-white shadow-xs'
+                                              : 'text-slate-400 hover:text-slate-700'
+                                          }`}
+                                        >
+                                          {statusVal}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Message Description */}
+                                <p className="text-xs text-slate-600 font-light leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-150 text-left">
+                                  {inq.message || 'No message contents provided.'}
+                                </p>
+
+                                {/* Contact buttons */}
+                                <div className="flex flex-wrap gap-4 text-xs font-mono text-slate-500 border-t border-slate-100 pt-2">
+                                  <a 
+                                    href={`mailto:${inq.email}`}
+                                    className="flex items-center gap-1.5 hover:text-[#df6951] transition-colors"
                                   >
-                                    {statusVal}
-                                  </button>
-                                ))}
+                                    <Mail className="w-3.5 h-3.5 text-[#df6951]" /> {inq.email}
+                                  </a>
+                                  {inq.phone && (
+                                    <a 
+                                      href={`tel:${inq.phone}`}
+                                      className="flex items-center gap-1.5 hover:text-[#df6951] transition-colors"
+                                    >
+                                      <Phone className="w-3.5 h-3.5 text-[#df6951]" /> {inq.phone}
+                                    </a>
+                                  )}
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          );
+                        })}
+                    </div>
 
-                          {/* Message Description */}
-                          <p className="text-xs text-slate-600 font-light leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-150">
-                            {inq.message || 'No message contents provided.'}
-                          </p>
-
-                          {/* Contact buttons */}
-                          <div className="flex flex-wrap gap-4 text-xs font-mono text-slate-500 border-t border-slate-100 pt-2">
-                            <a 
-                              href={`mailto:${inq.email}`}
-                              className="flex items-center gap-1.5 hover:text-[#df6951] transition-colors"
+                    {/* Pagination Controls */}
+                    {filteredInquiries.length > itemsPerPage && (
+                      <div className="flex items-center justify-between border-t border-slate-200/80 pt-4 mt-2">
+                        <span className="text-[11px] text-slate-400 font-medium">
+                          Showing {(inquiriesPage - 1) * itemsPerPage + 1} to {Math.min(inquiriesPage * itemsPerPage, filteredInquiries.length)} of {filteredInquiries.length} messages
+                        </span>
+                        
+                        <div className="flex items-center gap-1">
+                          <button
+                            disabled={inquiriesPage === 1}
+                            onClick={() => {
+                              setInquiriesPage(p => Math.max(1, p - 1));
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            className="p-2 border border-slate-200 rounded-lg hover:bg-slate-100 disabled:opacity-40 disabled:hover:bg-transparent text-slate-600 transition-colors flex items-center justify-center animate-none"
+                          >
+                            <ChevronLeft className="w-4 h-4" />
+                          </button>
+                          
+                          {Array.from({ length: Math.ceil(filteredInquiries.length / itemsPerPage) }).map((_, idx) => (
+                            <button
+                              key={idx}
+                              onClick={() => {
+                                setInquiriesPage(idx + 1);
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                              }}
+                              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${
+                                inquiriesPage === idx + 1
+                                  ? 'bg-[#df6951] border-[#df6951] text-white font-black'
+                                  : 'border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100 bg-white'
+                              }`}
                             >
-                              <Mail className="w-3.5 h-3.5 text-[#df6951]" /> {inq.email}
-                            </a>
-                            {inq.phone && (
-                              <a 
-                                href={`tel:${inq.phone}`}
-                                className="flex items-center gap-1.5 hover:text-[#df6951] transition-colors"
-                              >
-                                <Phone className="w-3.5 h-3.5 text-[#df6951]" /> {inq.phone}
-                              </a>
-                            )}
-                          </div>
+                              {idx + 1}
+                            </button>
+                          ))}
+                          
+                          <button
+                            disabled={inquiriesPage === Math.ceil(filteredInquiries.length / itemsPerPage)}
+                            onClick={() => {
+                              setInquiriesPage(p => Math.min(Math.ceil(filteredInquiries.length / itemsPerPage), p + 1));
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            className="p-2 border border-slate-200 rounded-lg hover:bg-slate-100 disabled:opacity-40 disabled:hover:bg-transparent text-slate-600 transition-colors flex items-center justify-center animate-none"
+                          >
+                            <ChevronRight className="w-4 h-4" />
+                          </button>
                         </div>
-                      );
-                    })}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
-            )}
-
-            {/* BLOG ARTICLES TAB CONTENT */}
+            )}            {/* BLOG ARTICLES TAB CONTENT */}
             {activeTab === 'blog' && (
               <div className="flex flex-col gap-5">
                 
@@ -496,7 +717,11 @@ export default function AdminDashboard() {
                       type="text"
                       placeholder="Search articles by title or tags..."
                       value={searchPost}
-                      onChange={(e) => setSearchPost(e.target.value)}
+                      onChange={(e) => {
+                        setSearchPost(e.target.value);
+                        setPostsPage(1);
+                        setSelectedPosts([]);
+                      }}
                       className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 placeholder-slate-400 focus:border-[#df6951] focus:outline-none transition-colors"
                     />
                   </div>
@@ -509,6 +734,73 @@ export default function AdminDashboard() {
                   </Link>
                 </div>
 
+                {/* Bulk Actions & Select All Toolbar */}
+                {filteredPosts.length > 0 && (
+                  <div className="flex flex-wrap items-center justify-between gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/60">
+                    <div className="flex items-center gap-3">
+                      <button 
+                        onClick={() => {
+                          const currentPagePosts = filteredPosts.slice(
+                            (postsPage - 1) * itemsPerPage,
+                            postsPage * itemsPerPage
+                          );
+                          const currentIds = currentPagePosts.map(p => p.id);
+                          const allCurrentSelected = currentIds.every(id => selectedPosts.includes(id));
+                          
+                          if (allCurrentSelected) {
+                            setSelectedPosts(prev => prev.filter(id => !currentIds.includes(id)));
+                          } else {
+                            setSelectedPosts(prev => {
+                              const otherIds = prev.filter(id => !currentIds.includes(id));
+                              return [...otherIds, ...currentIds];
+                            });
+                          }
+                        }}
+                        className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors"
+                      >
+                        {filteredPosts.slice((postsPage - 1) * itemsPerPage, postsPage * itemsPerPage).every(p => selectedPosts.includes(p.id)) ? (
+                          <CheckSquare className="w-4 h-4 text-[#df6951]" />
+                        ) : (
+                          <Square className="w-4 h-4 text-slate-350" />
+                        )}
+                        <span className="text-[11px] font-semibold">Select Page</span>
+                      </button>
+                      
+                      {selectedPosts.length > 0 && (
+                        <span className="text-[10px] text-slate-400 font-mono font-medium">
+                          ({selectedPosts.length} selected in total)
+                        </span>
+                      )}
+                    </div>
+
+                    {selectedPosts.length > 0 && (
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider font-mono">Bulk actions:</span>
+                        <div className="flex items-center bg-white p-0.5 rounded-lg border border-slate-250">
+                          <button
+                            onClick={() => handleBulkPublishPosts(true)}
+                            className="px-2.5 py-1 rounded text-[8px] uppercase tracking-wide font-extrabold hover:bg-[#df6951]/5 text-emerald-600 hover:text-emerald-700 transition-all border border-transparent"
+                          >
+                            Publish
+                          </button>
+                          <button
+                            onClick={() => handleBulkPublishPosts(false)}
+                            className="px-2.5 py-1 rounded text-[8px] uppercase tracking-wide font-extrabold hover:bg-[#df6951]/5 text-slate-600 hover:text-slate-900 transition-all border border-transparent"
+                          >
+                            Draft
+                          </button>
+                          <button
+                            onClick={handleBulkDeletePosts}
+                            className="px-2.5 py-1 rounded text-[8px] uppercase tracking-wide font-extrabold hover:bg-red-50 text-red-650 hover:text-red-700 transition-all border border-transparent"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Articles catalog list */}
                 {filteredPosts.length === 0 ? (
                   <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300 flex flex-col items-center justify-center">
@@ -519,87 +811,157 @@ export default function AdminDashboard() {
                     </p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 gap-3.5">
-                    {filteredPosts.map(post => {
-                      const postDate = post.published_at ? new Date(post.published_at).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      }) : 'Saved as Draft';
+                  <div className="flex flex-col gap-4">
+                    <div className="grid grid-cols-1 gap-3.5">
+                      {filteredPosts
+                        .slice((postsPage - 1) * itemsPerPage, postsPage * itemsPerPage)
+                        .map(post => {
+                          const postDate = post.published_at ? new Date(post.published_at).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          }) : 'Saved as Draft';
 
-                      return (
-                        <div 
-                          key={post.id}
-                          className="bg-white p-4 rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-xs transition-all duration-300 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 shadow-2xs"
-                        >
-                          {/* Image & Title Column */}
-                          <div className="flex items-center gap-3.5 text-left min-w-0">
-                            {post.featured_image ? (
-                              <img 
-                                src={post.featured_image} 
-                                alt={post.title} 
-                                className="w-12 h-12 rounded-lg object-cover border border-slate-100 flex-shrink-0"
-                              />
-                            ) : (
-                              <div className="w-12 h-12 rounded-lg bg-slate-50 border border-slate-150 flex items-center justify-center text-slate-400 flex-shrink-0">
-                                <Compass className="w-5 h-5" />
+                          const isChecked = selectedPosts.includes(post.id);
+
+                          return (
+                            <div 
+                              key={post.id}
+                              className={`bg-white p-4 rounded-2xl border transition-all duration-305 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 shadow-2xs ${
+                                isChecked ? 'border-[#df6951]/40 bg-[#df6951]/[0.01]' : 'border-slate-200 hover:border-slate-300 hover:shadow-xs'
+                              }`}
+                            >
+                              {/* Left Checkbox and info block */}
+                              <div className="flex items-center gap-3.5 text-left min-w-0 flex-grow">
+                                <button 
+                                  onClick={() => handleTogglePost(post.id)}
+                                  className="flex-shrink-0 text-slate-400 hover:text-[#df6951] transition-colors"
+                                >
+                                  {isChecked ? (
+                                    <CheckSquare className="w-4.5 h-4.5 text-[#df6951]" />
+                                  ) : (
+                                    <Square className="w-4.5 h-4.5 text-slate-300" />
+                                  )}
+                                </button>
+
+                                {post.featured_image ? (
+                                  <img 
+                                    src={post.featured_image} 
+                                    alt={post.title} 
+                                    className="w-12 h-12 rounded-lg object-cover border border-slate-100 flex-shrink-0"
+                                  />
+                                ) : (
+                                  <div className="w-12 h-12 rounded-lg bg-slate-50 border border-slate-150 flex items-center justify-center text-slate-400 flex-shrink-0">
+                                    <Compass className="w-5 h-5" />
+                                  </div>
+                                )}
+                                
+                                <div className="flex flex-col justify-center min-w-0">
+                                  <div className="flex items-center gap-2 flex-wrap">
+                                    <h4 className="font-sans font-bold text-sm text-slate-800 truncate max-w-[200px] sm:max-w-[400px]">
+                                      {post.title}
+                                    </h4>
+                                    <span className={`px-2 py-0.5 rounded-lg text-[8px] uppercase tracking-wide font-extrabold border ${
+                                      post.published_at 
+                                        ? 'bg-emerald-50 border-emerald-250 text-emerald-600' 
+                                        : 'bg-slate-100 border-slate-200 text-slate-500'
+                                    }`}>
+                                      {post.published_at ? 'Live' : 'Draft'}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-3.5 text-[9px] text-slate-400 font-mono mt-1 flex-wrap">
+                                    <span className="text-[#df6951] font-semibold">{post.category}</span>
+                                    <span className="flex items-center gap-1">
+                                      <Calendar className="w-3.5 h-3.5 text-slate-300" /> {postDate}
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
-                            )}
-                            <div className="flex flex-col justify-center min-w-0">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <h4 className="font-sans font-bold text-sm text-slate-800 truncate max-w-[200px] sm:max-w-[400px]">
-                                  {post.title}
-                                </h4>
-                                <span className={`px-2 py-0.5 rounded-lg text-[8px] uppercase tracking-wide font-extrabold border ${
-                                  post.published_at 
-                                    ? 'bg-emerald-50 border-emerald-250 text-emerald-600' 
-                                    : 'bg-slate-100 border-slate-200 text-slate-500'
-                                }`}>
-                                  {post.published_at ? 'Live' : 'Draft'}
-                                </span>
+
+                              {/* Action Options */}
+                              <div className="flex items-center justify-end gap-2 border-t md:border-t-0 border-slate-100 pt-3 md:pt-0 flex-shrink-0">
+                                {post.published_at && (
+                                  <Link
+                                    href={`/blog/${post.slug}`}
+                                    target="_blank"
+                                    className="p-2 bg-slate-50 hover:bg-[#df6951]/10 border border-slate-200 text-slate-500 hover:text-[#df6951] rounded-lg transition-all"
+                                    title="View live blog post"
+                                  >
+                                    <ExternalLink className="w-4 h-4" />
+                                  </Link>
+                                )}
+
+                                <Link
+                                  href={`/dashboard/posts/${post.id}/edit`}
+                                  className="p-2 bg-slate-50 hover:bg-[#df6951]/10 border border-slate-200 text-slate-500 hover:text-[#df6951] rounded-lg transition-all flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider"
+                                  title="Edit Article"
+                                >
+                                  <Edit3 className="w-4 h-4" /> Edit
+                                </Link>
+
+                                <button
+                                  onClick={() => handleDeletePost(post.id)}
+                                  className="p-2 bg-slate-50 hover:bg-red-50 border border-slate-200 text-slate-500 hover:text-red-550 rounded-lg transition-all"
+                                  title="Delete Article"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
                               </div>
-                              <div className="flex items-center gap-3.5 text-[9px] text-slate-400 font-mono mt-1 flex-wrap">
-                                <span className="text-[#df6951] font-semibold">{post.category}</span>
-                                <span className="flex items-center gap-1">
-                                  <Calendar className="w-3.5 h-3.5 text-slate-300" /> {postDate}
-                                </span>
-                              </div>
+
                             </div>
-                          </div>
+                          );
+                        })}
+                    </div>
 
-                          {/* Action Options */}
-                          <div className="flex items-center justify-end gap-2 border-t md:border-t-0 border-slate-100 pt-3 md:pt-0">
-                            {post.published_at && (
-                              <Link
-                                href={`/blog/${post.slug}`}
-                                target="_blank"
-                                className="p-2 bg-slate-50 hover:bg-[#df6951]/10 border border-slate-200 text-slate-500 hover:text-[#df6951] rounded-lg transition-all"
-                                title="View live blog post"
-                              >
-                                <ExternalLink className="w-4 h-4" />
-                              </Link>
-                            )}
-
-                            <Link
-                              href={`/dashboard/posts/${post.id}/edit`}
-                              className="p-2 bg-slate-50 hover:bg-[#df6951]/10 border border-slate-200 text-slate-500 hover:text-[#df6951] rounded-lg transition-all flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider"
-                              title="Edit Article"
-                            >
-                              <Edit3 className="w-4 h-4" /> Edit
-                            </Link>
-
+                    {/* Pagination Controls */}
+                    {filteredPosts.length > itemsPerPage && (
+                      <div className="flex items-center justify-between border-t border-slate-200/80 pt-4 mt-2">
+                        <span className="text-[11px] text-slate-400 font-medium">
+                          Showing {(postsPage - 1) * itemsPerPage + 1} to {Math.min(postsPage * itemsPerPage, filteredPosts.length)} of {filteredPosts.length} articles
+                        </span>
+                        
+                        <div className="flex items-center gap-1">
+                          <button
+                            disabled={postsPage === 1}
+                            onClick={() => {
+                              setPostsPage(p => Math.max(1, p - 1));
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            className="p-2 border border-slate-200 rounded-lg hover:bg-slate-100 disabled:opacity-40 disabled:hover:bg-transparent text-slate-600 transition-colors flex items-center justify-center animate-none"
+                          >
+                            <ChevronLeft className="w-4 h-4" />
+                          </button>
+                          
+                          {Array.from({ length: Math.ceil(filteredPosts.length / itemsPerPage) }).map((_, idx) => (
                             <button
-                              onClick={() => handleDeletePost(post.id)}
-                              className="p-2 bg-slate-50 hover:bg-red-50 border border-slate-200 text-slate-500 hover:text-red-500 rounded-lg transition-all"
-                              title="Delete Article"
+                              key={idx}
+                              onClick={() => {
+                                setPostsPage(idx + 1);
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                              }}
+                              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${
+                                postsPage === idx + 1
+                                  ? 'bg-[#df6951] border-[#df6951] text-white font-black'
+                                  : 'border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100 bg-white'
+                              }`}
                             >
-                              <Trash2 className="w-4 h-4" />
+                              {idx + 1}
                             </button>
-                          </div>
-
+                          ))}
+                          
+                          <button
+                            disabled={postsPage === Math.ceil(filteredPosts.length / itemsPerPage)}
+                            onClick={() => {
+                              setPostsPage(p => Math.min(Math.ceil(filteredPosts.length / itemsPerPage), p + 1));
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            className="p-2 border border-slate-200 rounded-lg hover:bg-slate-100 disabled:opacity-40 disabled:hover:bg-transparent text-slate-600 transition-colors flex items-center justify-center animate-none"
+                          >
+                            <ChevronRight className="w-4 h-4" />
+                          </button>
                         </div>
-                      );
-                    })}
+                      </div>
+                    )}
                   </div>
                 )}
 

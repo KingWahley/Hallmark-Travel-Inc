@@ -498,13 +498,13 @@ export default function AboutUs() {
             <div className="flex flex-col sm:flex-row items-center gap-4 mt-6">
               <Link 
                 href="/contact" 
-                className="w-full sm:w-auto px-8 py-4 bg-orange-accent hover:bg-[#c54b34] text-white font-sans font-bold text-[14px] rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
+                className="w-full sm:w-auto px-8 py-4 bg-orange-accent hover:bg-[#c54b34] text-white font-sans font-bold text-[14px] rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 whitespace-nowrap text-center"
               >
                 Inquire Outbound Pathway
               </Link>
               <Link 
                 href="/contact" 
-                className="w-full sm:w-auto px-8 py-4 bg-gold-accent hover:bg-amber-600 text-white font-sans font-bold text-[14px] rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
+                className="w-full sm:w-auto px-8 py-4 bg-gold-accent hover:bg-amber-600 text-white font-sans font-bold text-[14px] rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 whitespace-nowrap text-center"
               >
                 Inquire Inbound Pathway
               </Link>

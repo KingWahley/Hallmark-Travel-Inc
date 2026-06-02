@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Compass, KeyRound, Mail, Sparkles, AlertCircle, Shield } from 'lucide-react';
+import { Compass, KeyRound, Mail, Sparkles, AlertCircle } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '@/lib/supabaseClient';
 
 export default function AdminLogin() {
@@ -13,7 +13,7 @@ export default function AdminLogin() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Check if already logged in (via sessionStorage mock or real Supabase)
+    // Check if already logged in (via sessionStorage session key)
     const session = sessionStorage.getItem('hallmark_admin_session');
     if (session) {
       router.push('/dashboard');
@@ -25,37 +25,26 @@ export default function AdminLogin() {
     setLoading(true);
     setError(null);
 
-    if (isSupabaseConfigured) {
-      try {
-        const { data, error: authErr } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-        if (authErr) throw authErr;
-        
-        sessionStorage.setItem('hallmark_admin_session', JSON.stringify(data.session));
-        router.push('/dashboard');
-        router.refresh();
-      } catch (err) {
-        console.error(err);
-        setError(err.message || 'Authentication failed. Please verify credentials.');
-        setLoading(false);
-      }
-    } else {
-      // Mock administrative login check
-      setTimeout(() => {
-        if (email === 'admin@hallmarktravel.com' && password === 'adminpass') {
-          sessionStorage.setItem('hallmark_admin_session', JSON.stringify({
-            user: { email: 'admin@hallmarktravel.com', role: 'admin' },
-            token: 'mock-session-token'
-          }));
-          router.push('/dashboard');
-          router.refresh();
-        } else {
-          setError('Invalid administrative credentials. Use admin@hallmarktravel.com / adminpass for local demo.');
-          setLoading(false);
-        }
-      }, 800);
+    if (!isSupabaseConfigured) {
+      setError('Supabase authentication is not configured. Please define NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your environment configuration.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { data, error: authErr } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+      if (authErr) throw authErr;
+      
+      sessionStorage.setItem('hallmark_admin_session', JSON.stringify(data.session));
+      router.push('/dashboard');
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      setError(err.message || 'Authentication failed. Please verify credentials.');
+      setLoading(false);
     }
   };
 
@@ -71,8 +60,8 @@ export default function AdminLogin() {
           
           {/* Logo Header */}
           <div className="flex flex-col items-center gap-2 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-[#df6951]/10 flex items-center justify-center text-[#df6951]">
-              <Compass className="w-6 h-6" />
+            <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center border border-slate-100 shadow-sm bg-slate-50">
+              <img src="/logo.png" alt="Hallmark Travel Logo" className="w-full h-full object-cover" />
             </div>
             <div className="flex flex-col mt-2">
               <span className="font-sans font-extrabold text-lg text-slate-800 tracking-tight leading-none">
@@ -91,7 +80,7 @@ export default function AdminLogin() {
 
           <form onSubmit={handleLogin} className="flex flex-col gap-5 text-left">
             {error && (
-              <div className="p-3.5 bg-red-50 border border-red-200 text-red-650 text-xs rounded-xl flex items-start gap-2">
+              <div className="p-3.5 bg-red-50 border border-red-200 text-red-655 text-xs rounded-xl flex items-start gap-2">
                 <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-500" />
                 <span>{error}</span>
               </div>
@@ -144,14 +133,6 @@ export default function AdminLogin() {
               )}
             </button>
           </form>
-
-          {/* Quick instructions for demo */}
-          {!isSupabaseConfigured && (
-            <div className="mt-8 p-3 rounded-xl bg-slate-50 border border-slate-200 text-[10px] text-slate-500 font-mono text-center flex items-center justify-center gap-2">
-              <Shield className="w-3.5 h-3.5 text-[#df6951]" />
-              <span>Demo mode active: admin@hallmarktravel.com / adminpass</span>
-            </div>
-          )}
         </div>
       </div>
     </div>

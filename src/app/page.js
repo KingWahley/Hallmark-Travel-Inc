@@ -452,15 +452,15 @@ export default function Home() {
       {/* ---------------------------------------------------- */}
       {/* 4. EASY AND FAST SECTION (3 EASY STEPS & GREECE MOCKUP CARD) */}
       {/* ---------------------------------------------------- */}
-      <section className="py-24 relative overflow-hidden bg-soft-blue-gradient">
+      <section className="py-10 relative overflow-hidden bg-soft-blue-gradient">
         
         {/* Decorative ambient background elements */}
         <div className="absolute top-1/4 left-10 w-24 h-24 bg-grid-dots-gray opacity-30 pointer-events-none select-none" />
         
-        <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
           
           {/* Steps Left Info */}
-          <div className="lg:col-span-6 flex flex-col gap-6 text-left">
+          <div className="lg:col-span-6 flex flex-col gap-5 text-left">
             <span className="text-[15px] uppercase tracking-[0.2em] font-black text-secondary">
               Easy and Fast
             </span>
@@ -468,7 +468,7 @@ export default function Home() {
               Secure Your International Move In 3 Easy Steps
             </h2>
 
-            <div className="flex flex-col gap-8 mt-8">
+            <div className="flex flex-col gap-5 mt-5">
               
               {/* Step 1 */}
               <div className="flex items-start gap-5 group">
@@ -512,34 +512,34 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Floating Greek Beach Card Mockup (EXACT STYLING!) */}
-          <div className="lg:col-span-6 relative flex justify-center items-center">
+          {/* Right Floating Jadoo-Style Custom Travel & Academic Pass */}
+          <div className="lg:col-span-6 relative flex justify-center items-center py-4 px-4">
             
             {/* Concentric background glow */}
             <div className="absolute w-[400px] h-[400px] bg-sky-500/10 rounded-full blur-[80px] pointer-events-none" />
             
-            {/* The Main Greece Trip Card */}
-            <div className="bg-white p-5 rounded-[32px] shadow-trip-card border border-white/60 w-full max-w-[350px] relative z-10 text-left animate-float-card">
+            {/* 1. Main Inbound Relocation Pass Card (More compact: max-w-[360px] and p-5) */}
+            <div className="bg-white p-5 rounded-[32px] shadow-trip-card border border-white/60 w-full max-w-[360px] relative z-10 text-left animate-float-card">
               
-              {/* Greece Santorini Beach Image */}
-              <div className="h-48 w-full rounded-2xl overflow-hidden mb-5 relative">
+              {/* Contextual Academic Graduation Image */}
+              <div className="h-40 w-full rounded-xl overflow-hidden mb-4 relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=400&q=80" 
-                  alt="Greece trip relocation" 
+                  src="/academic-pass.png" 
+                  alt="Academic graduation cap and diploma" 
                   className="w-full h-full object-cover"
                 />
               </div>
 
-              {/* Title Date metadata */}
-              <h4 className="font-black text-[#080809] text-[17px] tracking-wide mb-1.5">Study in Manila</h4>
-              <div className="flex items-center gap-1.5 text-xs text-[#8f92a1] font-bold mb-4">
+              {/* Title & Date metadata */}
+              <h4 className="font-black text-[#080809] text-[17px] tracking-wide mb-1">Manila Academic Pass</h4>
+              <div className="flex items-center gap-1.5 text-xs text-[#8f92a1] font-bold mb-3">
                 <span>15-28 September</span>
                 <span className="text-gray-300">|</span>
                 <span>by Hallmark Travel</span>
               </div>
 
               {/* Circle Options Icons Row */}
-              <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center gap-4 mb-4">
                 <button className="w-9 h-9 rounded-full bg-[#f5f5f7] flex items-center justify-center text-[#5e6282] hover:bg-orange-accent hover:text-white hover:shadow-md transition-all duration-300">
                   <Compass className="w-4 h-4" />
                 </button>
@@ -551,21 +551,48 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* Bottom Heart & stats count */}
+              {/* Bottom stats count */}
               <div className="flex items-center justify-between text-xs text-[#8f92a1] font-bold">
                 <span className="flex items-center gap-2">
                   <Compass className="w-4 h-4 text-orange-accent" />
-                  <span>24 people going</span>
+                  <span>32 scholars going</span>
                 </span>
                 <button className="text-secondary hover:text-orange-accent transition-colors duration-300">
-                  <Heart className="w-4 h-4" />
+                  <Heart className="w-4 h-4 fill-orange-accent text-orange-accent" />
                 </button>
               </div>
 
             </div>
 
-          </div>
+            {/* 2. Secondary Floating Card: Visa Desk Clearance (Absolute-positioned Right) */}
+            <div className="absolute -right-6 bottom-6 z-20 bg-white/95 backdrop-blur-md p-4 rounded-[20px] shadow-2xl border border-white/80 max-w-[200px] flex items-start gap-3 text-left animate-float-card">
+              <div className="w-9 h-9 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600 flex-shrink-0 mt-0.5">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <span className="text-[9px] uppercase font-black tracking-widest text-[#8f92a1] block">9F Visa status</span>
+                <h5 className="font-sans font-black text-[12px] text-primary truncate mt-0.5">Approved & Cleared</h5>
+                <span className="inline-block mt-1 text-[8px] bg-emerald-100 text-emerald-700 font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-wider">
+                  Bureau of Immigration
+                </span>
+              </div>
+            </div>
 
+            {/* 3. Third Floating Card: Flight Operations Desk (Absolute-positioned Left) */}
+            <div className="absolute -left-8 top-6 z-20 bg-white/95 backdrop-blur-md p-4 rounded-[20px] shadow-2xl border border-white/80 max-w-[200px] flex items-start gap-3 text-left">
+              <div className="w-9 h-9 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-600 flex-shrink-0 mt-0.5">
+                <Plane className="w-5 h-5 rotate-45" />
+              </div>
+              <div className="min-w-0">
+                <span className="text-[9px] uppercase font-black tracking-widest text-[#8f92a1] block">Inbound Ticket</span>
+                <h5 className="font-sans font-black text-[12px] text-primary truncate mt-0.5">Manila Flight Operations</h5>
+                <span className="inline-block mt-1 text-[8px] bg-amber-100 text-amber-700 font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-wider">
+                  Baggage Priority
+                </span>
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
@@ -767,7 +794,6 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------------------------- */}
-          {/* ---------------------------------------------------- */}
       {/* 6.5 KNOWLEDGE HUB RELOCATION BLUEPRINTS (SEO BLOG GRID) */}
       {/* ---------------------------------------------------- */}
       <section className="py-24 relative overflow-hidden bg-gradient-to-b from-[#faf6f0]/40 to-transparent">
@@ -896,11 +922,11 @@ export default function Home() {
             Whether you want to study in the Philippines or relocate for global careers, our dedicated visa and travel experts handle every detail of your transition. Let’s build your path today.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center gap-6 w-full max-w-md justify-center">
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full max-w-2xl justify-center">
             {/* Primary Action */}
             <a 
               href="#services" 
-              className="w-full sm:w-auto px-10 py-4.5 bg-gold-accent hover:bg-amber-600 text-white font-sans font-bold text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-gold-accent/25 hover:shadow-gold-accent/35 transition-all duration-300 transform hover:-translate-y-1 text-center"
+              className="w-full sm:w-auto px-8 py-4.5 bg-gold-accent hover:bg-amber-600 text-white font-sans font-bold text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-gold-accent/25 hover:shadow-gold-accent/35 transition-all duration-300 transform hover:-translate-y-1 text-center whitespace-nowrap"
             >
               Book Visa Consultation
             </a>
@@ -908,7 +934,7 @@ export default function Home() {
             {/* Secondary Action */}
             <Link 
               href="/blog" 
-              className="w-full sm:w-auto px-10 py-4.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/25 text-white font-sans font-bold text-xs uppercase tracking-widest rounded-2xl transition-all duration-300 transform hover:-translate-y-1 text-center"
+              className="w-full sm:w-auto px-8 py-4.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/25 text-white font-sans font-bold text-xs uppercase tracking-widest rounded-2xl transition-all duration-300 transform hover:-translate-y-1 text-center whitespace-nowrap"
             >
               Explore Relocation Guides
             </Link>
