@@ -4,93 +4,43 @@ import { supabase, isSupabaseConfigured } from './supabaseClient';
 const PRESEEDED_BLOG_POSTS = [
   {
     id: "post-1",
-    title: "Can I Get a Job in the US as a Philippines Graduate? The Global Mobility Blueprint",
-    slug: "job-in-us-as-philippines-graduate-mobility-blueprint",
-    category: "Study & Relocation",
-    excerpt: "An exhaustive breakdown of how graduates from the Philippines—specifically in Nursing, MBBS/Medicine, Pharmacy, and Dentistry—can secure premium employment and licensing in the United States.",
+    title: "How much does it really cost to study in the Philippines?",
+    slug: "how-much-cost-study-philippines",
+    category: "STUDY IN PH",
+    excerpt: "A full 2026 breakdown of tuition, living costs, and visa fees by course and city.",
     content: `
-<h2>Bridging the Gap: Philippine Credentials to US Careers</h2>
-<p>For decades, the Philippines has been a primary global exporter of world-class professional talent. If you have graduated from or are planning to pursue higher education in the Philippines, you may ask: <strong>Can I get a job in the US as a Philippines graduate?</strong></p>
+<h2>A Complete Cost Breakdown for International Students</h2>
+<p>Understanding the financial aspects of studying abroad is crucial for planning. The Philippines is known as one of the most affordable English-medium education hubs in Asia. Here is a comprehensive guide to budgeting for your education and stay in 2026.</p>
 
-<p>The short answer is <strong>yes</strong>. However, the path requires navigating distinct professional credential evaluations, licensing examinations, and immigration pathways. Below, we break down the exact step-by-step career routes for healthcare and technical professionals seeking global mobility to the United States.</p>
-
-<h2>1. Nursing (BSN): The Premier US Relocation Track</h2>
-<p>Philippine-trained nurses represent the backbone of many US healthcare facilities. The curriculum of a Bachelor of Science in Nursing (BSN) in the Philippines is highly aligned with western standards. To relocate as a registered nurse (RN) in the US, graduates must complete the following:</p>
+<h2>1. Tuition Fees by Program and City</h2>
+<p>Tuition fees vary significantly depending on the course and the location of the Higher Education Institution (HEI):</p>
 <ul>
-  <li><strong>Credentials Evaluation:</strong> Submit your transcript to the Commission on Graduates of Foreign Nursing Schools (CGFNS) for a CES report, verifying that your degree is equivalent to a US BSN.</li>
-  <li><strong>NCLEX-RN Examination:</strong> Register with a US State Board of Nursing (such as New York or Texas, which do not require Social Security Numbers for foreign applicants) and pass the NCLEX-RN exam.</li>
-  <li><strong>English Proficiency:</strong> Pass an approved language exam like IELTS (Academic) or TOEFL.</li>
-  <li><strong>Visa Sponsorship:</strong> Relocate via the EB-3 immigrant visa (Green Card) or H-1B specialty occupation visa sponsored by US hospitals.</li>
+  <li><strong>Manila (NCR):</strong> Universities in the capital region offer premium programs ranging from $2,500 to $4,500 per year.</li>
+  <li><strong>Cebu & Davao:</strong> Regional centers offer tuition between $1,500 and $3,000 per year.</li>
+  <li><strong>Popular Courses:</strong> Medicine (BS/MD) and Dentistry range from $3,000 to $6,000 annually, while Nursing (BSN) and Computer Science range from $1,800 to $3,200.</li>
 </ul>
 
-<h2>2. MBBS / MD: Practicing Medicine in the United States</h2>
-<p>Graduates from Philippine medical schools (holding a Doctor of Medicine or MD degree) are considered International Medical Graduates (IMGs) in the US. The transition requires the ECFMG certification pathway:</p>
-<ol>
-  <li><strong>ECFMG Registration:</strong> Ensure your Philippine medical school is listed in the World Directory of Medical Schools.</li>
-  <li><strong>USMLE Exams:</strong> Pass the United States Medical Licensing Examination (USMLE) Step 1 (basic sciences) and Step 2 CK (clinical knowledge).</li>
-  <li><strong>Residency Match:</strong> Apply through the Electronic Residency Application Service (ERAS) to secure a residency position via the National Resident Matching Program (NRMP).</li>
-  <li><strong>Clinical Visa:</strong> Obtain a J-1 clinical visa or H-1B visa sponsored by your matching hospital.</li>
-</ol>
-
-<h2>3. Pharmacy & Dentistry Careers in the US</h2>
-<p>For Pharmacy and Dentistry graduates, the pathways are highly structured:</p>
+<h2>2. Cost of Living & Accommodation</h2>
+<p>Living costs in the Philippines are highly affordable compared to Western countries. A monthly budget of $400 to $700 typically covers all basics:</p>
 <ul>
-  <li><strong>Pharmacy:</strong> Foreign Pharmacy Graduate Examination Committee (FPGEC) certification is mandatory. This requires passing the FPGEE, taking the TOEFL iBT, and subsequently completing a set number of internship hours in a US state before taking the NAPLEX and MPJE licensing exams.</li>
-  <li><strong>Dentistry (DMD):</strong> Foreign-trained dentists must pass the Integrated National Board Dental Examination (INBDE). Most US states then require graduates to complete a 2-year Advanced Standing Program (DDS/DMD) at an accredited US dental school to qualify for state clinical licensing.</li>
+  <li><strong>Rent (Studio Apartment / Condo):</strong> $150 to $350/month depending on location and amenities.</li>
+  <li><strong>Food & Groceries:</strong> $150 to $250/month.</li>
+  <li><strong>Utilities (Electricity, Water, Internet):</strong> $80 to $150/month.</li>
 </ul>
 
-<h2>Step-by-Step US Job Placement Roadmap</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Course / Field</th>
-      <th>US Licensing Exam</th>
-      <th>Evaluation Agency</th>
-      <th>Primary US Visa</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Nursing</strong></td>
-      <td>NCLEX-RN</td>
-      <td>CGFNS / WES</td>
-      <td>EB-3 Green Card / H-1B</td>
-    </tr>
-    <tr>
-      <td><strong>Medicine / MD</strong></td>
-      <td>USMLE Step 1 & 2</td>
-      <td>ECFMG / EPIC</td>
-      <td>J-1 Exchange / H-1B</td>
-    </tr>
-    <tr>
-      <td><strong>Pharmacy</strong></td>
-      <td>FPGEE + NAPLEX</td>
-      <td>NABP / FPGEC</td>
-      <td>H-1B / EB-3</td>
-    </tr>
-    <tr>
-      <td><strong>Dentistry</strong></td>
-      <td>INBDE + Advanced DDS</td>
-      <td>ECE / WES</td>
-      <td>H-1B / H-4 EAD</td>
-    </tr>
-  </tbody>
-</table>
+<h2>3. Visa and Administrative Fees</h2>
+<p>Don't forget to budget for official immigration fees: the 9(F) Student Visa conversion, Alien Certificate of Registration (ACR I-Card), and medical clearances, which total around $250 to $400 for the first year.</p>
     `,
-    featured_image: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=800&q=80",
-    meta_title: "Can I Get a US Job as a Philippines Graduate? Licensing & Visa Guide",
-    meta_description: "An exhaustive breakdown of how graduates from the Philippines in Nursing, Medicine, Pharmacy, and Dentistry can secure premium employment and licensing in the US.",
+    featured_image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80",
+    meta_title: "How much does it really cost to study in the Philippines?",
+    meta_description: "A full 2026 breakdown of tuition, living costs, and visa fees by course and city for studying in the Philippines.",
     faq: [
       {
-        question: "Do I need a US green card before applying for US licensing?",
-        answer: "No. You can sit for the NCLEX-RN or USMLE exams as an international candidate. Once you pass, US healthcare recruiters or hospital networks will sponsor your visa (EB-3 or H-1B) to bring you to the US."
-      },
-      {
-        question: "Is the Philippine nursing curriculum taught in English?",
-        answer: "Yes, all university-level nursing instruction in the Philippines is conducted 100% in English, matching US textbook standards, which simplifies credentials evaluation."
+        question: "Is studying in the Philippines cheaper than in other countries?",
+        answer: "Yes, tuition fees and living expenses in the Philippines are typically 50% to 70% lower than in Western nations and other Asian education hubs."
       }
     ],
-    tags: ["US Careers", "NCLEX", "USMLE", "Visa Sponsorship", "Global Licensure"],
+    tags: ["Tuition Fees", "Cost of Living", "Manila Universities", "Student Budget"],
     author: "Elena Rostova (Global Relocation Lead)",
     published_at: "2026-05-10T12:00:00.000Z",
     created_at: "2026-05-10T12:00:00.000Z",
@@ -98,54 +48,39 @@ const PRESEEDED_BLOG_POSTS = [
   },
   {
     id: "post-2",
-    title: "What Jobs Can I Get with a Bachelor’s Degree from the Philippines?",
-    slug: "jobs-with-bachelors-degree-from-philippines-career-guide",
-    category: "Travel & Relocation",
-    excerpt: "Discover the high-paying international and domestic career pathways available to graduates holding degrees in Accountancy, MBA, Computer Science, and Tourism & Hospitality.",
+    title: "The 9(F) student visa: a complete step-by-step guide",
+    slug: "9f-student-visa-step-by-step-guide",
+    category: "VISA & DOCUMENTS",
+    excerpt: "Everything you need to know to apply for your Philippine student visa with confidence.",
     content: `
-<h2>Unlocking Your Philippine Degree's Global Value</h2>
-<p>If you are holding or pursuing a university degree in the Philippines, you are positioned in one of the most dynamic educational hubs in Asia. A major question faced by foreign and domestic students alike is: <strong>What jobs can I get with a bachelor’s degree from the Philippines?</strong></p>
+<h2>Securing Your 9(F) Student Visa: A Step-by-Step Blueprint</h2>
+<p>International students planning to study in the Philippines must secure a 9(F) Student Visa. This visa is mandatory for any foreign national aged 18 or older who is taking up a course higher than high school at an accredited institution.</p>
 
-<p>Philippine degrees carry tremendous international weight due to their strict alignment with global standards, particularly in tech, finance, business, and service sectors. Below, we explore the specific career pathways for Accountancy, MBA, Computer Science, and Tourism/Hospitality graduates.</p>
+<h2>Step 1: Obtain a Notice of Acceptance (NOA)</h2>
+<p>Your official visa process begins after you secure admission at a Higher Education Institution (HEI) accredited by the Bureau of Immigration (BI). The university will issue your official Notice of Acceptance and submit your documents for processing.</p>
 
-<h2>1. Accountancy & MBA: The Global Corporate & Advisory Track</h2>
-<p>The Philippines is a primary global hub for business process outsourcing and financial operations. A Bachelor of Science in Accountancy (BSA) or an MBA from the Philippines opens doors to:</p>
+<h2>Step 2: Legalization and Apostille of Documents</h2>
+<p>You must prepare and apostille or legalize the following academic and personal documents before your visa application:</p>
 <ul>
-  <li><strong>Multinational Audit & Advisory:</strong> Major international firms like EY, PwC, Deloitte, and KPMG have extensive operational divisions in Taguig (BGC) and Makati. Local graduates are highly recruited for international client advisory, financial analytics, and taxation roles.</li>
-  <li><strong>Global Management Consultancies:</strong> MBA graduates are recruited by multinational enterprises for regional project management, corporate strategy, and business development roles.</li>
-  <li><strong>Remote Financial Consulting:</strong> The rise of remote accounting platforms has allowed Philippine CPAs and financial analysts to work directly for firms in the US, Australia, and the UK, commanding premium hourly rates.</li>
+  <li>High School Transcript of Records and Diploma</li>
+  <li>National Police Clearance Certificate from your home country</li>
+  <li>Certified Medical Clearance Certificate (including chest X-ray and lab results)</li>
+  <li>Proof of financial capacity (bank statements showing sufficient funds)</li>
 </ul>
 
-<h2>2. Computer Science: Software Engineering & Global Tech Visas</h2>
-<p>Computer Science and Tech degrees from the Philippines are highly valued internationally because programming languages are universal. Graduates can secure:</p>
-<ul>
-  <li><strong>Global Tech Sponsorships:</strong> Countries like Germany, Singapore, and Canada actively sponsor experienced software engineers, cloud developers, and cybersecurity analysts. Having a Philippine Bachelor's degree verified by WES allows for rapid points-based visa processing (like Canada's Express Entry).</li>
-  <li><strong>Remote Software Development:</strong> Technical graduates work directly for international tech startups as full-stack developers, UI/UX designers, or DevOps engineers, earning high incomes without relocating.</li>
-  <li><strong>Tech BPO Leadership:</strong> Leading technical hubs in Manila recruit IT graduates for enterprise database administration, system architecture, and tech leadership roles.</li>
-</ul>
-
-<h2>3. International Tourism & Hospitality Management</h2>
-<p>The Philippines is globally recognized as the gold standard for luxury hospitality, cruise staffing, and tourism logistics:</p>
-<ol>
-  <li><strong>Global Cruise Lines:</strong> Hospitality graduates are highly recruited for executive management, guest relations, and culinary leadership roles on major luxury cruise vessels globally.</li>
-  <li><strong>Luxury International Hotels:</strong> Career paths in five-star hotels across the Middle East (Dubai, Doha), Singapore, and the US (via J-1 internships) are widely open to graduates.</li>
-  <li><strong>Tourism Desks & Destination Management:</strong> Corporate logistics roles in travel agencies, airline operations, and corporate travel desks globally.</li>
-</ol>
+<h2>Step 3: Conversion and Bureau of Immigration Compliance</h2>
+<p>You can apply for the visa at the Philippine Embassy/Consulate in your home country, or enter the Philippines on a tourist visa and convert it locally to a 9(F) Student Visa. Our relocation specialists will assist you in visiting the Bureau of Immigration (BI) offices in Manila or Taguig to complete this conversion seamlessly.</p>
     `,
-    featured_image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
-    meta_title: "What Jobs Can I Get with a Bachelor's Degree from the Philippines?",
-    meta_description: "A comprehensive guide to high-paying international careers for Philippine graduates in Accountancy, MBA, Computer Science, and Tourism & Hospitality.",
+    featured_image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80",
+    meta_title: "The 9(F) student visa: a complete step-by-step guide",
+    meta_description: "Learn how to apply for and secure your Philippine 9(F) student visa step-by-step with accredited documents.",
     faq: [
       {
-        question: "Can an international student work in the Philippines after graduation?",
-        answer: "Yes, graduates can transition to a Special Work Permit (SWP) or an Alien Employment Permit (AEP) if they secure corporate job offers in multinational companies or local enterprises."
-      },
-      {
-        question: "Are remote jobs from US and Australia open to Philippine CPAs?",
-        answer: "Yes. Many international companies hire Philippine CPAs and financial analysts remotely for international bookkeeping, cloud auditing, and strategic corporate taxation roles."
+        question: "How long does it take to get a 9(F) student visa?",
+        answer: "Immigration conversion in Manila usually takes between 2 to 4 weeks after submitting your medical clearances and apostilled documents."
       }
     ],
-    tags: ["Career Guide", "Accountancy", "Tech Careers", "Hospitality", "Remote Work"],
+    tags: ["9F Student Visa", "Immigration conversion", "Bureau of Immigration", "Apostille documents"],
     author: "Dr. Marcus Vance (International Mobility Consultant)",
     published_at: "2026-05-18T10:00:00.000Z",
     created_at: "2026-05-18T10:00:00.000Z",
@@ -153,50 +88,40 @@ const PRESEEDED_BLOG_POSTS = [
   },
   {
     id: "post-3",
-    title: "Is a Philippines Degree Accepted in Other Countries? Equivalency & WES Master Guide",
-    slug: "philippines-degree-accepted-in-other-countries-equivalency",
-    category: "Study & Relocation",
-    excerpt: "A master guide outlining the global academic equivalency of Philippine university degrees across the US, UK, Canada, Australia, and the Middle East.",
+    title: "Best times to visit the Philippines & what to pack",
+    slug: "best-times-to-visit-philippines-packing-tips",
+    category: "TRAVEL TIPS",
+    excerpt: "Seasonal travel advice, must-see destinations, and practical packing tips for your trip.",
     content: `
-<h2>Universal Recognition of Philippine Degrees</h2>
-<p>When planning your international educational path, the foremost question is often: <strong>Is a Philippines degree accepted in other countries?</strong></p>
+<h2>Planning the Perfect Trip to the Philippines</h2>
+<p>With its beautiful white sand beaches, vibrant cities, and lush mountain ranges, the Philippines is a dream destination. To make the most of your trip, it is essential to plan around the seasons and pack the right gear.</p>
 
-<p>The answer is a resounding <strong>yes</strong>. The academic system in the Philippines is closely modeled on the United States educational system. Since the implementation of the K-12 program (aligning primary and secondary education with 12-year global benchmarks), Philippine university degrees are recognized as equivalent to US and Canadian four-year bachelor's degrees by leading credentials evaluation agencies worldwide.</p>
-
-<h2>1. Credential Evaluations: The Key to Equivalency (WES, ECE, CES)</h2>
-<p>To officially present your degree to foreign employers, licensing boards, or universities, you must obtain a credentials evaluation report:</p>
+<h2>1. Best Times to Visit: Understanding the Seasons</h2>
+<p>The Philippines has two main seasons: the dry season and the wet season.</p>
 <ul>
-  <li><strong>World Education Services (WES):</strong> WES evaluates degrees for Canada and the United States. Accredited Philippine universities are routinely evaluated as equivalent to a **Four-Year US/Canadian Bachelor's Degree**, qualifying you for Master's programs and corporate positions.</li>
-  <li><strong>Educational Credential Evaluators (ECE):</strong> Commonly utilized for medical, dental, and specialized technical fields in the US.</li>
-  <li><strong>Commission on Graduates of Foreign Nursing Schools (CGFNS):</strong> Specifically evaluates nursing credentials for US state licensing boards.</li>
+  <li><strong>Dry Season (December to May):</strong> This is the best time for beach trips and island-hopping (Palawan, Boracay, Siargao). The coolest months are December to February, while the hot summer peaks from March to May.</li>
+  <li><strong>Wet/Typhoon Season (June to November):</strong> Expect heavy rain and tropical storms, especially in July and August. However, flight and hotel rates are significantly cheaper, and destinations like Siargao offer excellent surfing conditions.</li>
 </ul>
 
-<h2>2. International Board Recognition and Accords</h2>
-<p>Many professional fields in the Philippines are signatory to or aligned with global accords:</p>
-<ol>
-  <li><strong>Medical and Healthcare Boards:</strong> Degrees in MBBS/Medicine, Dentistry, and Pharmacy from accredited institutions are recognized by major licensing boards across the Middle East (DHA in Dubai, NHRA in Bahrain), the UK (GMC, GDC), and Australia.</li>
-  <li><strong>Accountancy Alignments:</strong> Philippine CPAs are highly regarded, and credits are easily validated by foreign accounting boards (such as CPA Australia or state boards in the US).</li>
-  <li><strong>Washington Accord Alignment:</strong> Engineering and technical curricula follow international outcomes-based models, facilitating easy equivalency in the UK, Australia, and the EU.</li>
-</ol>
-
-<h2>Why the English-Medium Curriculum Matters</h2>
-<p>Because English is the official language of instruction in all universities in the Philippines, you completely bypass the need for tedious translation processes. Your syllabus, transcripts, and diplomas are issued natively in English, saving thousands in certification fees and dramatically speeding up your visa and relocation timeline.</p>
+<h2>2. Essential Packing Checklist</h2>
+<p>When packing for the tropics, lightweight and functional items are key:</p>
+<ul>
+  <li><strong>Clothing:</strong> Breathable cotton or linen clothes, swimwear, a light rain jacket, and comfortable walking sandals or shoes.</li>
+  <li><strong>Protection:</strong> Reef-safe sunscreen, high-quality mosquito repellent, and polarized sunglasses.</li>
+  <li><strong>Gear:</strong> A waterproof dry bag for island hopping, universal travel adapters, and a fast-charging power bank.</li>
+</ul>
     `,
-    featured_image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80",
-    meta_title: "Is a Philippines Degree Accepted in Other Countries? WES Equivalency Guide",
-    meta_description: "Learn how university degrees from the Philippines are evaluated as equivalent to US & Canadian degrees by WES, CGFNS, and international licensing boards.",
+    featured_image: "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=800&q=80",
+    meta_title: "Best times to visit the Philippines & what to pack - Travel Tips",
+    meta_description: "Seasonal travel recommendations, top island destinations, and essential packing checklists for your holiday in the Philippines.",
     faq: [
       {
-        question: "Does WES evaluate a Philippine Bachelor's as equivalent to a US Bachelor's?",
-        answer: "Yes, for accredited universities, WES routinely evaluates standard 4-year Bachelor of Science degrees from the Philippines as equivalent to a 4-year US Bachelor's degree."
-      },
-      {
-        question: "Do I need to translate my transcripts from the Philippines?",
-        answer: "No, all university transcripts, syllabi, and graduation certificates in the Philippines are natively issued in English, which simplifies global credentials checks."
+        question: "When is the cheapest month to fly to the Philippines?",
+        answer: "The rainy months from July to October generally offer the lowest flights and hotel rates."
       }
     ],
-    tags: ["Degree Acceptance", "WES", "Equivalency", "Credential Check", "Study Abroad"],
-    author: "Dr. Marcus Vance (International Mobility Consultant)",
+    tags: ["Philippines Travel", "Best time to visit", "Packing Checklist", "Island Hopping"],
+    author: "Elena Rostova (Global Relocation Lead)",
     published_at: "2026-05-25T11:00:00.000Z",
     created_at: "2026-05-25T11:00:00.000Z",
     updated_at: "2026-05-25T11:00:00.000Z"
@@ -229,7 +154,7 @@ const PRESEEDED_BLOG_POSTS = [
   <li><strong>OSPAP Postgraduate Diploma:</strong> Complete a structured 1-year university course in the UK.</li>
   <li><strong>Pre-Registration Placement:</strong> Complete a 52-week paid clinical training period under GPhC supervision.</li>
   <li><strong>GPhC Registration Assessment:</strong> Pass the final professional licensing board exam.</li>
-</ol>
+  </ol>
     `,
     featured_image: "https://images.unsplash.com/photo-1586015555751-63bb77f4322a?auto=format&fit=crop&w=800&q=80",
     meta_title: "Pharmacy Studies & Global Licensing - Relocation Visa Guide",
@@ -321,7 +246,7 @@ function getLocalStorageDB() {
   let inquiries = localStorage.getItem('agency_inquiries');
   
   // Clean client cache if it still holds outdated preseeded posts, forcing sync with new articles
-  if (posts && (!posts.includes('job-in-us-as-philippines-graduate') || !posts.includes('pharmacy-study-relocation-licensure-blueprint'))) {
+  if (posts && (!posts.includes('how-much-cost-study-philippines') || !posts.includes('9f-student-visa-step-by-step-guide'))) {
     localStorage.removeItem('agency_blog_posts');
     posts = null;
   }
