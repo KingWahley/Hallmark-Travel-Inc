@@ -12,11 +12,7 @@ export default function Guides({ posts, loading }) {
             RESOURCES
           </span>
           <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#181e4b] mt-3">
-            Guides, tips{' '}
-            <span className="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#181e4b] text-[#181e4b] font-serif font-black text-sm sm:text-lg mx-1 sm:mx-2 align-middle select-none">
-              &amp;
-            </span>{' '}
-            updates
+            Guides, tips & updates
           </h2>
           <p className="text-[15px] sm:text-base text-gray-500 font-medium mt-4 max-w-2xl mx-auto leading-relaxed">
             Helpful articles for students and travellers — updated regularly. Have a question? Reach out anytime.
