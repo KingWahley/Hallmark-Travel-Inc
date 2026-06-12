@@ -89,13 +89,12 @@ export default function Header() {
             >
               DIY Kit
             </a>
-            <a 
-              href="#resources"
-              onClick={(e) => handleScrollToSection(e, 'resources')}
+            <Link 
+              href="/blog"
               className="text-[14px] text-[#181e4b] hover:text-[#1a7f6e] font-semibold transition-colors"
             >
               Resources
-            </a>
+            </Link>
             <a 
               href="#faq"
               onClick={(e) => handleScrollToSection(e, 'faq')}
@@ -171,13 +170,13 @@ export default function Header() {
           >
             DIY Kit
           </a>
-          <a 
-            href="#resources" 
-            onClick={(e) => handleScrollToSection(e, 'resources')}
+          <Link 
+            href="/blog" 
+            onClick={() => setMobileMenuOpen(false)}
             className="text-lg text-primary hover:text-[#1a7f6e]"
           >
             Resources
-          </a>
+          </Link>
           <a 
             href="#faq" 
             onClick={(e) => handleScrollToSection(e, 'faq')}
