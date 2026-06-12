@@ -4,6 +4,34 @@ import Link from "next/link";
 import { GraduationCap, Plane, ArrowRight } from "lucide-react";
 
 export default function Hero() {
+  const scrollToServices = (event) => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const target = document.getElementById("services");
+    const lenis = window.__lenis;
+
+    if (lenis?.scrollTo) {
+      lenis.scrollTo(target ?? "#services", {
+        offset: -96,
+        duration: 1.4,
+      });
+      return;
+    }
+
+    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <section className="relative bg-[#1b2e4b] text-white pt-10 sm:pt-10 pb-20 px-6 md:px-12 overflow-hidden border-b border-white/5">
       {/* Ambient Background Glows matching the reference design */}
@@ -60,8 +88,9 @@ export default function Hero() {
                 </p>
               </div>
               <Link
-                href="/contact"
+                href="/#services"
                 id="hero-apply-link"
+                onClick={scrollToServices}
                 className="inline-flex items-center gap-1.5 text-xs text-[#2c8979] hover:text-[#3db29f] font-bold uppercase tracking-wider transition-colors duration-200"
               >
                 Explore education <ArrowRight className="w-3.5 h-3.5" />
@@ -89,8 +118,9 @@ export default function Hero() {
                 </p>
               </div>
               <Link
-                href="/contact"
+                href="/#services"
                 id="hero-tours-link"
+                onClick={scrollToServices}
                 className="inline-flex items-center gap-1.5 text-xs text-[#cea447] hover:text-[#dec071] font-bold uppercase tracking-wider transition-colors duration-200"
               >
                 Explore travel <ArrowRight className="w-3.5 h-3.5" />

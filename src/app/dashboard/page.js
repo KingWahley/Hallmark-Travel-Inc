@@ -30,15 +30,18 @@ import {
   ChevronLeft,
   ChevronRight,
   CheckSquare,
-  Square
+  Square,
+  Download
 } from 'lucide-react';
 import { 
   getBlogPosts, 
   deleteBlogPost, 
   getInquiries, 
   updateInquiryStatus,
-  saveBlogPost
+  saveBlogPost,
+  deleteInquiry
 } from '@/lib/db';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -52,25 +55,24 @@ export default function AdminDashboard() {
 
   // Search & Filter States
   const [searchPost, setSearchPost] = useState('');
-  const [inquiryFilter, setInquiryFilter] = useState('all'); // 'all', 'new', 'contacted', 'resolved'
+  const [interestFilter, setInterestFilter] = useState('all');
 
   // Selection & Pagination States
-  const [selectedInquiries, setSelectedInquiries] = useState([]);
   const [selectedPosts, setSelectedPosts] = useState([]);
+  const [selectedInquiries, setSelectedInquiries] = useState([]);
   const [inquiriesPage, setInquiriesPage] = useState(1);
   const [postsPage, setPostsPage] = useState(1);
   const itemsPerPage = 10;
 
   useEffect(() => {
-    // Security check - redirect if no session
-    const session = sessionStorage.getItem('hallmark_admin_session');
-    if (!session) {
-      router.push('/dashboard/login');
-      return;
-    }
-
     async function loadData() {
       try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          router.push('/dashboard/login');
+          return;
+        }
+
         const postsData = await getBlogPosts(true); // Include drafts
         const inquiriesData = await getInquiries();
         
@@ -85,21 +87,10 @@ export default function AdminDashboard() {
     loadData();
   }, [router]);
 
-  const handleSignOut = () => {
-    sessionStorage.removeItem('hallmark_admin_session');
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
     router.push('/dashboard/login');
     router.refresh();
-  };
-
-  const handleUpdateInquiryStatus = async (id, newStatus) => {
-    try {
-      await updateInquiryStatus(id, newStatus);
-      const updated = await getInquiries();
-      setInquiries(updated);
-      setSelectedInquiries(prev => prev.filter(item => item !== id));
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   const handleDeletePost = async (id) => {
@@ -111,28 +102,6 @@ export default function AdminDashboard() {
       setSelectedPosts(prev => prev.filter(p => p !== id));
     } catch (err) {
       console.error(err);
-    }
-  };
-
-  // Multi-select & Bulk Actions for Inquiries
-  const handleToggleInquiry = (id) => {
-    setSelectedInquiries(prev => 
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
-    );
-  };
-
-  const handleBulkUpdateInquiryStatus = async (newStatus) => {
-    if (selectedInquiries.length === 0) return;
-    setLoading(true);
-    try {
-      await Promise.all(selectedInquiries.map(id => updateInquiryStatus(id, newStatus)));
-      const updated = await getInquiries();
-      setInquiries(updated);
-      setSelectedInquiries([]);
-    } catch (err) {
-      console.error("Bulk update inquiries failed:", err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -183,6 +152,64 @@ export default function AdminDashboard() {
     }
   };
 
+  // Multi-select & Bulk Actions for Inquiries
+  const handleToggleInquiry = (id) => {
+    setSelectedInquiries(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkDeleteInquiries = async () => {
+    if (selectedInquiries.length === 0) return;
+    if (!window.confirm(`Are you sure you want to permanently delete the ${selectedInquiries.length} selected messages? This action cannot be undone.`)) return;
+    setLoading(true);
+    try {
+      await Promise.all(selectedInquiries.map(id => deleteInquiry(id)));
+      setInquiries(prev => prev.filter(i => !selectedInquiries.includes(i.id)));
+      setSelectedInquiries([]);
+      setInquiriesPage(1);
+    } catch (err) {
+      console.error("Bulk delete inquiries failed:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDownloadContacts = () => {
+    if (filteredInquiries.length === 0) {
+      alert("No contacts to download.");
+      return;
+    }
+    
+    // Header for CSV
+    let csvContent = "Name,Email,Phone,Service,Created At\n";
+    
+    filteredInquiries.forEach(inq => {
+      // Escape values to prevent CSV injection
+      const name = `"${(inq.name || '').replace(/"/g, '""')}"`;
+      const email = `"${(inq.email || '').replace(/"/g, '""')}"`;
+      const phone = `"${(inq.phone || '').replace(/"/g, '""')}"`;
+      const service = `"${(inq.service || '').replace(/"/g, '""')}"`;
+      const createdAt = `"${(inq.created_at || '').replace(/"/g, '""')}"`;
+      
+      csvContent += `${name},${email},${phone},${service},${createdAt}\n`;
+    });
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    
+    // Name the download file based on the filter tab
+    const filterName = interestFilter === 'all' ? 'all' : interestFilter;
+    link.setAttribute("download", `hallmark_contacts_${filterName}_${new Date().toISOString().split('T')[0]}.csv`);
+    
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // Filter Logics
   const filteredPosts = posts.filter(post => 
     post.title.toLowerCase().includes(searchPost.toLowerCase()) ||
@@ -190,12 +217,17 @@ export default function AdminDashboard() {
   );
 
   const filteredInquiries = inquiries.filter(inq => {
-    if (inquiryFilter === 'all') return true;
-    return inq.status === inquiryFilter;
+    if (interestFilter === 'all') return true;
+    const service = (inq.service || '').toLowerCase();
+    if (interestFilter === 'study') return service.includes('study');
+    if (interestFilter === 'travel') return service.includes('travel') || service.includes('tour');
+    if (interestFilter === 'foreigner') return service.includes('foreigner') || service.includes('in-country');
+    if (interestFilter === 'subscribers') return service.includes('newsletter') || service.includes('subscrib');
+    return true;
   });
 
   // Simplified terminology metrics
-  const newInquiriesCount = inquiries.filter(i => i.status === 'new').length;
+  const totalInquiriesCount = inquiries.length;
   const draftPostsCount = posts.filter(p => !p.published_at).length;
   const publishedPostsCount = posts.filter(p => p.published_at).length;
 
@@ -221,8 +253,8 @@ export default function AdminDashboard() {
       id: 'inquiries',
       label: 'Visitor Messages',
       icon: Mail,
-      badge: newInquiriesCount,
-      badgeColor: 'bg-orange-500 text-white shadow-sm shadow-orange-500/20'
+      badge: totalInquiriesCount,
+      badgeColor: 'bg-[#df6951] text-white shadow-sm shadow-[#df6951]/20'
     },
     {
       id: 'blog',
@@ -279,10 +311,11 @@ export default function AdminDashboard() {
                 onClick={() => {
                   setActiveTab(link.id);
                   setMobileSidebarOpen(false);
-                  setSelectedInquiries([]);
                   setSelectedPosts([]);
+                  setSelectedInquiries([]);
                   setInquiriesPage(1);
                   setPostsPage(1);
+                  setInterestFilter('all');
                 }}
                 className={`w-full px-3.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide flex items-center justify-between transition-all duration-300 ${
                   isActive 
@@ -407,12 +440,12 @@ export default function AdminDashboard() {
             
             {/* Stat Card 1 */}
             <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-sm transition-all duration-300 flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600">
+              <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-[#df6951]">
                 <Mail className="w-5 h-5" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] uppercase font-bold text-slate-400">New Messages</span>
-                <span className="font-sans text-2xl font-extrabold text-slate-800 mt-0.5 leading-none">{newInquiriesCount}</span>
+                <span className="text-[10px] uppercase font-bold text-slate-400">Total Messages</span>
+                <span className="font-sans text-2xl font-extrabold text-slate-800 mt-0.5 leading-none">{totalInquiriesCount}</span>
                 <span className="text-[9px] text-slate-400 mt-1">From contact forms</span>
               </div>
             </div>
@@ -452,29 +485,43 @@ export default function AdminDashboard() {
               <div className="flex flex-col gap-5">
                 
                 {/* Message Filter Toolbar */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200/80">
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-[#df6951]" />
-                    <span className="text-xs font-bold text-slate-700">Visitor Contact Messages</span>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200/80">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <Mail className="w-4 h-4 text-[#df6951]" />
+                      <span className="text-xs font-bold text-slate-700">Visitor Contact Messages</span>
+                    </div>
+                    <button
+                      onClick={handleDownloadContacts}
+                      className="px-2.5 py-1 bg-[#df6951]/10 hover:bg-[#df6951]/20 text-[#df6951] text-[10px] font-bold uppercase tracking-wider rounded-lg border border-[#df6951]/20 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                      title="Download contact list as CSV"
+                    >
+                      <Download className="w-3.5 h-3.5" /> Export Contacts
+                    </button>
                   </div>
-                  
-                  {/* Filters */}
-                  <div className="flex items-center bg-slate-100 p-1 rounded-xl gap-0.5 overflow-x-auto self-start sm:self-center">
-                    {['all', 'new', 'contacted', 'resolved'].map(filter => (
+
+                  {/* Interest Tabs */}
+                  <div className="flex items-center bg-slate-100 p-1 rounded-xl gap-0.5 overflow-x-auto self-start md:self-center max-w-full">
+                    {[
+                      { id: 'all', label: 'All' },
+                      { id: 'study', label: 'Study' },
+                      { id: 'travel', label: 'Travel & Tours' },
+                      { id: 'foreigner', label: 'Foreigner Services' },
+                      { id: 'subscribers', label: 'Subscribers' }
+                    ].map(tab => (
                       <button
-                        key={filter}
+                        key={tab.id}
                         onClick={() => {
-                          setInquiryFilter(filter);
+                          setInterestFilter(tab.id);
                           setInquiriesPage(1);
-                          setSelectedInquiries([]);
                         }}
-                        className={`px-3 py-1.5 text-[9px] uppercase tracking-wider font-bold rounded-lg transition-all ${
-                          inquiryFilter === filter
+                        className={`px-3 py-1.5 text-[9px] uppercase tracking-wider font-bold rounded-lg transition-all whitespace-nowrap ${
+                          interestFilter === tab.id
                             ? 'bg-white text-slate-805 shadow-xs border border-slate-200'
                             : 'bg-transparent text-slate-500 hover:text-slate-800'
                         }`}
                       >
-                        {filter}
+                        {tab.label}
                       </button>
                     ))}
                   </div>
@@ -490,7 +537,7 @@ export default function AdminDashboard() {
                             (inquiriesPage - 1) * itemsPerPage,
                             inquiriesPage * itemsPerPage
                           );
-                          const currentIds = currentPageInquiries.map(inq => inq.id);
+                          const currentIds = currentPageInquiries.map(i => i.id);
                           const allCurrentSelected = currentIds.every(id => selectedInquiries.includes(id));
                           
                           if (allCurrentSelected) {
@@ -504,10 +551,10 @@ export default function AdminDashboard() {
                         }}
                         className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors"
                       >
-                        {filteredInquiries.slice((inquiriesPage - 1) * itemsPerPage, inquiriesPage * itemsPerPage).every(inq => selectedInquiries.includes(inq.id)) ? (
-                          <CheckSquare className="w-4 h-4 text-[#df6951]" />
+                        {filteredInquiries.slice((inquiriesPage - 1) * itemsPerPage, inquiriesPage * itemsPerPage).every(i => selectedInquiries.includes(i.id)) ? (
+                          <CheckSquare className="w-4.5 h-4.5 text-[#df6951]" />
                         ) : (
-                          <Square className="w-4 h-4 text-slate-350" />
+                          <Square className="w-4.5 h-4.5 text-slate-350" />
                         )}
                         <span className="text-[11px] font-semibold">Select Page</span>
                       </button>
@@ -523,15 +570,12 @@ export default function AdminDashboard() {
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider font-mono">Bulk actions:</span>
                         <div className="flex items-center bg-white p-0.5 rounded-lg border border-slate-250">
-                          {['new', 'contacted', 'resolved'].map(statusVal => (
-                            <button
-                              key={statusVal}
-                              onClick={() => handleBulkUpdateInquiryStatus(statusVal)}
-                              className="px-2.5 py-1 rounded text-[8px] uppercase tracking-wide font-extrabold hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-all border border-transparent"
-                            >
-                              Mark {statusVal}
-                            </button>
-                          ))}
+                          <button
+                            onClick={handleBulkDeleteInquiries}
+                            className="px-2.5 py-1 rounded text-[8px] uppercase tracking-wide font-extrabold hover:bg-red-50 text-red-650 hover:text-red-750 transition-all border border-transparent"
+                          >
+                            Delete
+                          </button>
                         </div>
                       </div>
                     )}
@@ -544,7 +588,9 @@ export default function AdminDashboard() {
                     <Inbox className="w-10 h-10 text-slate-350 mb-3" />
                     <h3 className="font-sans font-bold text-sm text-slate-700">Inbox Empty</h3>
                     <p className="text-xs text-slate-400 max-w-xs mx-auto mt-0.5">
-                      No messages match the "{inquiryFilter}" status filter.
+                      {interestFilter === 'all' 
+                        ? 'No contact messages found.' 
+                        : `No contact messages found for the selected category.`}
                     </p>
                   </div>
                 ) : (
@@ -560,7 +606,54 @@ export default function AdminDashboard() {
                             minute: '2-digit'
                           });
 
+                          const isSubscriber = (inq.service || '').toLowerCase().includes('newsletter') || (inq.service || '').toLowerCase().includes('subscrib');
                           const isChecked = selectedInquiries.includes(inq.id);
+
+                          const rawName = (inq.name || '').trim();
+                          const displayName = (!rawName || rawName.toLowerCase() === 'newsletter subscriber') ? 'Subscriber' : rawName;
+
+                          if (isSubscriber) {
+                            return (
+                              <div 
+                                key={inq.id}
+                                className={`bg-white p-4 rounded-xl border transition-all duration-350 flex items-center gap-3.5 shadow-2xs relative ${
+                                  isChecked ? 'border-[#df6951]/40 bg-[#df6951]/[0.01]' : 'border-slate-205 hover:border-slate-300'
+                                }`}
+                              >
+                                <button 
+                                  onClick={() => handleToggleInquiry(inq.id)}
+                                  className="flex-shrink-0 text-slate-400 hover:text-[#df6951] transition-colors"
+                                >
+                                  {isChecked ? (
+                                    <CheckSquare className="w-4.5 h-4.5 text-[#df6951]" />
+                                  ) : (
+                                    <Square className="w-4.5 h-4.5 text-slate-350" />
+                                  )}
+                                </button>
+                                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+                                  <span className="font-sans font-bold text-slate-800">{displayName}</span>
+                                  <span className="text-slate-300">|</span>
+                                  <a 
+                                    href={`mailto:${inq.email}`}
+                                    className="font-mono text-xs text-slate-700 hover:text-[#df6951] font-semibold transition-colors"
+                                  >
+                                    {inq.email}
+                                  </a>
+                                  {inq.phone && (
+                                    <>
+                                      <span className="text-slate-300">|</span>
+                                      <a 
+                                        href={`tel:${inq.phone}`}
+                                        className="font-mono text-xs text-slate-700 hover:text-[#df6951] font-semibold transition-colors"
+                                      >
+                                        {inq.phone}
+                                      </a>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          }
 
                           return (
                             <div 
@@ -569,31 +662,26 @@ export default function AdminDashboard() {
                                 isChecked ? 'border-[#df6951]/40 bg-[#df6951]/[0.01]' : 'border-slate-205 hover:border-slate-300'
                               }`}
                             >
-                              {/* Accent status tag */}
-                              <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl ${
-                                inq.status === 'new' ? 'bg-orange-500' :
-                                inq.status === 'contacted' ? 'bg-amber-500' :
-                                'bg-emerald-500'
-                              }`} />
-
-                              {/* Checkbox column */}
-                              <button 
-                                onClick={() => handleToggleInquiry(inq.id)}
-                                className="flex-shrink-0 text-slate-400 hover:text-[#df6951] transition-colors self-start mt-0.5"
-                              >
-                                {isChecked ? (
-                                  <CheckSquare className="w-4.5 h-4.5 text-[#df6951]" />
-                                ) : (
-                                  <Square className="w-4.5 h-4.5 text-slate-300" />
-                                )}
-                              </button>
+                              {/* Selection Checkbox */}
+                              <div className="flex items-start pt-1.5 flex-shrink-0">
+                                <button 
+                                  onClick={() => handleToggleInquiry(inq.id)}
+                                  className="text-slate-400 hover:text-[#df6951] transition-colors"
+                                >
+                                  {isChecked ? (
+                                    <CheckSquare className="w-4.5 h-4.5 text-[#df6951]" />
+                                  ) : (
+                                    <Square className="w-4.5 h-4.5 text-slate-350" />
+                                  )}
+                                </button>
+                              </div>
 
                               {/* Main details */}
                               <div className="flex-grow flex flex-col gap-3 min-w-0">
                                 {/* Top row Info */}
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
                                   <div className="flex flex-col text-left min-w-0">
-                                    <span className="font-sans font-bold text-sm text-slate-800 truncate">{inq.name}</span>
+                                    <span className="font-sans font-bold text-sm text-slate-800 truncate">{displayName}</span>
                                     <span className="text-[9px] uppercase tracking-wider text-[#df6951] font-bold font-mono mt-0.5 truncate">
                                       Interested in: {inq.service}
                                     </span>
@@ -603,25 +691,6 @@ export default function AdminDashboard() {
                                     <span className="text-[10px] text-slate-400 font-mono flex items-center gap-1">
                                       <Calendar className="w-3.5 h-3.5 text-slate-300" /> {inqDate}
                                     </span>
-                                    
-                                    {/* Status actions switcher */}
-                                    <div className="flex items-center bg-slate-100 p-1 rounded-lg gap-0.5">
-                                      {['new', 'contacted', 'resolved'].map(statusVal => (
-                                        <button
-                                          key={statusVal}
-                                          onClick={() => handleUpdateInquiryStatus(inq.id, statusVal)}
-                                          className={`px-2 py-0.5 rounded text-[8px] uppercase tracking-wide font-bold transition-all ${
-                                            inq.status === statusVal 
-                                              ? statusVal === 'new' ? 'bg-orange-500 text-white shadow-xs' :
-                                                statusVal === 'contacted' ? 'bg-amber-500 text-white shadow-xs' :
-                                                'bg-emerald-500 text-white shadow-xs'
-                                              : 'text-slate-400 hover:text-slate-700'
-                                          }`}
-                                        >
-                                          {statusVal}
-                                        </button>
-                                      ))}
-                                    </div>
                                   </div>
                                 </div>
 

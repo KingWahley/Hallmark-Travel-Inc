@@ -167,15 +167,14 @@ export default function AdminPostForm({ postId = null }) {
   const [uploadError, setUploadError] = useState(null);
 
   useEffect(() => {
-    // Session lock
-    const session = sessionStorage.getItem('hallmark_admin_session');
-    if (!session) {
-      router.push('/dashboard/login');
-      return;
-    }
+    async function checkSessionAndLoad() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push('/dashboard/login');
+        return;
+      }
 
-    if (postId) {
-      async function loadPost() {
+      if (postId) {
         try {
           const post = await getBlogPostById(postId);
           if (post) {
@@ -201,8 +200,8 @@ export default function AdminPostForm({ postId = null }) {
           setFetching(false);
         }
       }
-      loadPost();
     }
+    checkSessionAndLoad();
   }, [postId, router]);
 
   // Auto Generate Slug logic in background
@@ -247,57 +246,38 @@ export default function AdminPostForm({ postId = null }) {
     setUploading(true);
     setUploadError(null);
 
-    if (isSupabaseConfigured) {
-      try {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2, 15)}-${Date.now()}.${fileExt}`;
-        const filePath = `${fileName}`;
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2, 15)}-${Date.now()}.${fileExt}`;
+      const filePath = `${fileName}`;
 
-        // Upload file to Supabase storage
-        const { data, error } = await supabase.storage
-          .from('blog-images')
-          .upload(filePath, file, {
-            cacheControl: '3600',
-            upsert: false
-          });
+      // Upload file to Supabase storage
+      const { data, error } = await supabase.storage
+        .from('blog-images')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
 
-        if (error) {
-          // If bucket does not exist, throw a descriptive error
-          if (error.message.includes('bucket not found') || error.message.includes('does not exist')) {
-            throw new Error("The 'blog-images' storage bucket does not exist in your Supabase project. Please create a public bucket named 'blog-images' in your Supabase Storage dashboard, or run the SQL setup script to initialize storage permissions.");
-          }
-          throw error;
+      if (error) {
+        // If bucket does not exist, throw a descriptive error
+        if (error.message.includes('bucket not found') || error.message.includes('does not exist')) {
+          throw new Error("The 'blog-images' storage bucket does not exist in your Supabase project. Please create a public bucket named 'blog-images' in your Supabase Storage dashboard, or run the SQL setup script to initialize storage permissions.");
         }
-
-        // Get public URL
-        const { data: { publicUrl } } = supabase.storage
-          .from('blog-images')
-          .getPublicUrl(filePath);
-
-        setFeaturedImage(publicUrl);
-      } catch (err) {
-        console.error("Supabase Storage Upload Error:", err);
-        setUploadError(err.message || 'Storage upload failed. Try again.');
-      } finally {
-        setUploading(false);
+        throw error;
       }
-    } else {
-      // Offline / LocalStorage Mock Fallback: Convert to Base64
-      try {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setFeaturedImage(reader.result);
-          setUploading(false);
-        };
-        reader.onerror = () => {
-          setUploadError('Failed to read file locally.');
-          setUploading(false);
-        };
-        reader.readAsDataURL(file);
-      } catch (err) {
-        setUploadError('Local file reader error.');
-        setUploading(false);
-      }
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('blog-images')
+        .getPublicUrl(filePath);
+
+      setFeaturedImage(publicUrl);
+    } catch (err) {
+      console.error("Supabase Storage Upload Error:", err);
+      setUploadError(err.message || 'Storage upload failed. Try again.');
+    } finally {
+      setUploading(false);
     }
   };
 

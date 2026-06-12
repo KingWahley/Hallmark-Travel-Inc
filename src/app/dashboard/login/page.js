@@ -13,11 +13,13 @@ export default function AdminLogin() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Check if already logged in (via sessionStorage session key)
-    const session = sessionStorage.getItem('hallmark_admin_session');
-    if (session) {
-      router.push('/dashboard');
-    }
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        router.push('/dashboard');
+      }
+    };
+    checkUser();
   }, [router]);
 
   const handleLogin = async (e) => {
@@ -38,7 +40,6 @@ export default function AdminLogin() {
       });
       if (authErr) throw authErr;
       
-      sessionStorage.setItem('hallmark_admin_session', JSON.stringify(data.session));
       router.push('/dashboard');
       router.refresh();
     } catch (err) {

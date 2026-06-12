@@ -28,6 +28,8 @@ export default function SmoothScroll({ children }) {
       infinite: false,
     });
 
+    window.__lenis = lenis;
+
     // Reset scroll position to top on page load/transition
     lenis.scrollTo(0, { immediate: true });
 
@@ -51,6 +53,9 @@ export default function SmoothScroll({ children }) {
     // Clean up on unmount
     return () => {
       lenis.destroy();
+      if (window.__lenis === lenis) {
+        delete window.__lenis;
+      }
       gsap.ticker.remove(updateRaf);
       clearTimeout(timer);
     };
@@ -58,4 +63,3 @@ export default function SmoothScroll({ children }) {
 
   return <>{children}</>;
 }
-
