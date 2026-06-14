@@ -84,14 +84,14 @@ export default function BlogDetailClient({ post, relatedPosts }) {
     "author": [{
       "@type": "Person",
       "name": post.author || "Global Mobility Advisor",
-      "url": "https://hallmarkconsultancy.com"
+      "url": "https://www.hallmarkconsultancy.com"
     }],
     "publisher": {
       "@type": "Organization",
       "name": "Hallmark Travel Inc",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://hallmarkconsultancy.com/favicon.ico"
+        "url": "https://www.hallmarkconsultancy.com/favicon.ico"
       }
     },
     "description": post.excerpt

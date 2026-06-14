@@ -20,21 +20,59 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://www.hallmarkconsultancy.com"),
   title: {
-    default: "Hallmark Travel Inc | Premium International Travel & Relocation Assistance",
-    template: "%s | Hallmark Travel Inc"
+    default: "Hallmark Travel Inc. — Study in the Philippines & Travel Packages",
+    template: "%s | Hallmark Travel Inc."
   },
-  description: "Hallmark Travel Inc is your premier international mobility partner, providing high-end travel logistics, visa support, relocation guidance, and seamless global immigration.",
+  description: "Hallmark Travel Inc. helps international students study in the Philippines — school placement, student visa, and arrival support — plus travel & tour packages. More than 10 years of experience.",
   keywords: [
-    "international travel agency",
-    "relocation assistance",
-    "visa guidance",
-    "global mobility",
-    "travel logistics",
-    "study abroad relocation",
-    "immigration advice"
+    "study in the philippines",
+    "hallmark travel",
+    "hallmark consultancy",
+    "philippines student visa 9f",
+    "philippines travel packages",
+    "study abroad philippines",
+    "manila travel agency",
+    "international student visa services"
   ],
-  authors: [{ name: "Hallmark Travel Inc Group" }]
+  authors: [{ name: "Hallmark Travel Inc" }],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Hallmark Travel Inc. — Study in the Philippines & Travel Packages",
+    description: "Hallmark Travel Inc. helps international students study in the Philippines — school placement, student visa, and arrival support — plus travel & tour packages. More than 10 years of experience.",
+    url: "https://www.hallmarkconsultancy.com",
+    siteName: "Hallmark Travel Inc",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: "/logo.png",
+        width: 800,
+        height: 800,
+        alt: "Hallmark Travel Inc. Logo",
+      }
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hallmark Travel Inc. — Study in the Philippines & Travel Packages",
+    description: "Hallmark Travel Inc. helps international students study in the Philippines — school placement, student visa, and arrival support — plus travel & tour packages. More than 10 years of experience.",
+    images: ["/logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export const viewport = {

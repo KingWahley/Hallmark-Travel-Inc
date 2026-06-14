@@ -73,7 +73,7 @@ export default function Services() {
               id="services-apply-btn"
               className="w-full py-3 bg-[#1a7f6e] hover:bg-[#156759] text-white font-bold text-center rounded-full transition-all duration-300 shadow-md shadow-[#1a7f6e]/10"
             >
-              Apply placements
+              Start your application
             </Link>
           </div>
 
@@ -127,7 +127,7 @@ export default function Services() {
               id="services-tours-btn"
               className="w-full py-3 bg-[#cea447] hover:bg-[#b7903c] text-white font-bold text-center rounded-full transition-all duration-300 shadow-md shadow-[#cea447]/10"
             >
-              Book tours
+              Plan your trip
             </Link>
           </div>
         </div>

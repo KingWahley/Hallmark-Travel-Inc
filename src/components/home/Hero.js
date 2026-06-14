@@ -105,11 +105,7 @@ export default function Hero() {
                     <Plane className="w-6 h-6" />
                   </div>
                   <h3 className="font-serif text-2xl font-bold text-white leading-tight flex items-center gap-1.5 flex-wrap">
-                    Travel
-                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full border border-white text-white font-serif font-black text-xs select-none">
-                      &amp;
-                    </span>
-                    Tour Packages
+                    Travel & Tour Packages
                   </h3>
                 </div>
                 <p className="text-sm text-gray-300 leading-relaxed mb-6 font-medium">
