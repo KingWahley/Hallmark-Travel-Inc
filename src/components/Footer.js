@@ -28,9 +28,8 @@ export default function Footer() {
               Hallmark Travel Inc.
             </h4>
             <p className="text-sm leading-relaxed text-gray-400 max-w-xs font-medium">
-              Your trusted partner with more than 10 years of experience helping international students study in the Philippines and travellers explore the world.
+              Your trusted partner with more than 10 years of experience helping international students study in the Philippines and travellers explore the world
             </p>
-            {/* Social icons */}
             <div className="flex items-center gap-3 mt-2">
               <a 
                 href="https://facebook.com/hallmarktravelph" 
