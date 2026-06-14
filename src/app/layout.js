@@ -49,7 +49,7 @@ export default function RootLayout({ children }) {
       className={`${playfair.variable} ${jakarta.variable} h-full antialiased`}
     >
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/logo.png" type="image/png" />
       </head>
       <body className="bg-background text-foreground min-h-full flex flex-col font-sans">
         <SmoothScroll>
