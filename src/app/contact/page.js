@@ -1,19 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { 
   Compass, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Clock, 
   Check, 
-  Star, 
   ChevronDown, 
-  ShieldCheck, 
-  Plane, 
-  Sparkles, 
   Loader2, 
   ArrowRight,
   HelpCircle
@@ -26,7 +17,7 @@ export default function ContactUs() {
     name: '',
     email: '',
     phone: '',
-    service: 'Study Abroad (Focus: Philippines)',
+    service: 'Studying in the Philippines',
     message: ''
   });
   const [submitting, setSubmitting] = useState(false);
@@ -38,23 +29,43 @@ export default function ContactUs() {
   const faqs = [
     {
       id: 0,
-      question: "How long does student visa (9F) filing usually take?",
-      answer: "Typically, student visa (9F) preparation and filing takes between 4 to 6 weeks. This includes the university releasing the Notice of Acceptance (NOA), NICA clearance processing, and physical consular appointments. Our dedicated visa desk assists you at each of these milestones."
+      question: "Do I need a visa to study in the Philippines?",
+      answer: "Yes. If your country requires a visa to enter the Philippines, or if you’re pursuing a degree, you’ll need a 9(F) Student Visa. You cannot enter the Philippines as a tourist to study; you must secure your student visa from the Philippine Embassy or Consulate in your home country specifically for the purpose of studying. You can reach us on WhatsApp (+63 906 378 5826) for further assistance on school admission and visa applications."
     },
     {
       id: 1,
-      question: "What documents need to be authenticated (Apostille)?",
-      answer: "For both outbound and inbound pathways, academic records (transcripts and diplomas), birth certificates, and police clearances must be authenticated or Apostilled by the originating country's Department of Foreign Affairs (or equivalent authority) to be legally compliant."
+      question: "How long does the student visa (9F) process take?",
+      answer: "Processing usually takes around 3 weeks, though it can take 3–6 weeks at some embassies — for example in Nigeria, Pakistan, or Iran. Because timelines vary, we always recommend starting your application 3–4 months before your intended start date."
     },
     {
       id: 2,
-      question: "Do you coordinate consolidated group flights?",
-      answer: "Yes! Hallmark coordinates specialized consolidated group flight ticketing and airport transfers. This ensures students and relocators travel together, securing preferential baggage weights and dedicated airport meet-and-greet support."
+      question: "Which documents need to be authenticated or apostilled?",
+      answer: "Typically your academic records (transcripts and diplomas), birth certificate, and police clearance must be authenticated or apostilled by the relevant authority in your home country (usually the Department of Foreign Affairs or equivalent). Any document not originally in English must also be officially translated. Your Notice of Acceptance from the university is apostilled by the Philippine DFA before it’s couriered to you."
     },
     {
       id: 3,
-      question: "How does the local municipal housing settlement work?",
-      answer: "Once your flight lands, your assigned local municipal coordinator meets you at the airport and guides you physically through university registration, cell network setup, banking onboarding, and moving into your pre-verified apartment or campus residence."
+      question: "Are university classes taught in English?",
+      answer: "Yes — 100% of university courses in the Philippines are taught in English. We assist with admissions into all courses and programs of choice, and we also provide assistance in choosing a school that suits you if you do not have any preference. The Philippines is the third-largest English-speaking nation in the world, so there’s no language barrier for international students."
+    },
+    {
+      id: 4,
+      question: "Can international students work while studying?",
+      answer: "A student visa does not automatically grant work rights in the Philippines. Limited work is only possible with the proper permits, and the most common legal option for students is online freelancing for overseas clients. Be cautious of “easy job” offers — some are scams that can put your visa at risk. Our DIY Starter Kit explains the full legal framework in detail."
+    },
+    {
+      id: 5,
+      question: "How much does it cost to study in the Philippines?",
+      answer: "Tuition ranges from roughly $800 to $8,000 per year depending on your course, with monthly living costs of about $350–800 depending on your city. Compared to $15,000–40,000 per year in many Western countries, it’s an affordable, English-medium option. Message us for a personalised estimate for your course and city."
+    },
+    {
+      id: 6,
+      question: "Do you also handle travel and tours?",
+      answer: "Yes. Alongside our education services, Hallmark Travel Inc. provides holiday packages, group and corporate travel, visa-assisted trips, and complete flight and hotel arrangements. Just let us know what you need."
+    },
+    {
+      id: 7,
+      question: "Why should I choose Hallmark Travel Inc.?",
+      answer: "We’re a registered Philippine company with more than 10 years of experience helping international students study in the Philippines. We’ve guided students through every step of the journey — from choosing a school to settling in after arrival — and we’re always reachable on WhatsApp for quick, honest help."
     }
   ];
 
@@ -84,7 +95,7 @@ export default function ContactUs() {
         name: '',
         email: '',
         phone: '',
-        service: 'Study Abroad (Focus: Philippines)',
+        service: 'Studying in the Philippines',
         message: ''
       });
     } catch (err) {
@@ -124,11 +135,10 @@ export default function ContactUs() {
             Relocation Desk
           </div>
           <h1 className="font-serif font-black text-4xl sm:text-6xl text-primary leading-[1.1] tracking-tight">
-            Connect with our <br />
-            <span className="brush-highlight text-orange-accent">global mobility</span> experts
+            Let’s talk about your journey
           </h1>
           <p className="text-[15px] leading-relaxed text-secondary font-semibold max-w-2xl mx-auto mt-6">
-            Whether you are coordinating an outbound professional study path, or scheduling a complex group flight ticket booking, Hallmark is ready to handle your immigration compliance.
+            Whether you’re planning to study in the Philippines, booking a trip, or need help with your visa, we’re here to make it simple. Send us a message and a member of our team will get back to you — usually within 24 hours. For the fastest reply, message us directly on WhatsApp.
           </p>
         </section>
 
@@ -146,10 +156,10 @@ export default function ContactUs() {
               
               <div>
                 <h2 className="font-serif font-black text-2xl md:text-3xl text-primary mb-2">
-                  Book Mobility Consultation
+                  Send us a message
                 </h2>
                 <p className="text-[13.5px] font-semibold text-secondary mb-8">
-                  Fill in your travel parameters and credentials. An assigned pathway advisor will reach out within 24 hours.
+                  Fill in the details below and we'll get back to you soon.
                 </p>
 
                 {submitStatus === 'success' ? (
@@ -158,15 +168,23 @@ export default function ContactUs() {
                     <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600 shadow-lg shadow-emerald-500/10">
                       <Check className="w-8 h-8 stroke-[3]" />
                     </div>
-                    <h3 className="font-serif font-black text-2xl text-primary">Inquiry Secured</h3>
+                    <h3 className="font-serif font-black text-2xl text-primary">Message Sent</h3>
                     <p className="text-[13.5px] leading-relaxed text-secondary font-semibold max-w-md">
-                      Thank you! Your relocation details have been logged in our databases. A verified Hallmark pathway counselor will review your transcripts and visa requirements immediately.
+                      Thank you! We’ve received your message and will get back to you soon. For a faster reply, message us on{' '}
+                      <a 
+                        href="https://wa.me/639661389726" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-[#1a7f6e] hover:underline font-bold"
+                      >
+                        WhatsApp
+                      </a>.
                     </p>
                     <button 
                       onClick={() => setSubmitStatus(null)}
                       className="mt-4 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-sans font-black uppercase tracking-widest rounded-xl transition-all duration-300 shadow-md shadow-emerald-600/20"
                     >
-                      Book Another Pathway
+                      Send Another Message
                     </button>
                   </div>
                 ) : (
@@ -191,7 +209,7 @@ export default function ContactUs() {
 
                       {/* Email input */}
                       <div className="flex flex-col gap-2">
-                        <label className="text-[11px] font-black uppercase tracking-widest text-[#181e4b] pl-1">Email Channel *</label>
+                        <label className="text-[11px] font-black uppercase tracking-widest text-[#181e4b] pl-1">Email *</label>
                         <input 
                           type="email"
                           name="email"
@@ -222,16 +240,17 @@ export default function ContactUs() {
 
                       {/* Service selector */}
                       <div className="flex flex-col gap-2">
-                        <label className="text-[11px] font-black uppercase tracking-widest text-[#181e4b] pl-1">Pathway Category *</label>
+                        <label className="text-[11px] font-black uppercase tracking-widest text-[#181e4b] pl-1">What can we help you with? *</label>
                         <select 
                           name="service"
                           value={form.service}
                           onChange={handleInputChange}
                           className="w-full px-5 py-3.5 bg-[#fbf9f4]/60 border border-gray-100/80 rounded-xl text-sm font-medium text-primary focus:ring-2 focus:ring-orange-accent focus:outline-none appearance-none cursor-pointer"
                         >
-                          <option value="Study Abroad (Focus: Philippines)">Study Abroad (Focus: Philippines)</option>
-                          <option value="Travel & Tours Packages">Travel & Tours Packages</option>
-                          <option value="In-Country Foreigner Services (Inside PH Only)">In-Country Foreigner Services (Inside PH Only)</option>
+                          <option value="Studying in the Philippines">Studying in the Philippines</option>
+                          <option value="Travel & Tour Packages">Travel & Tour Packages</option>
+                          <option value="In-country services (for foreigners already in the Philippines)">In-country services (for foreigners already in the Philippines)</option>
+                          <option value="Something else">Something else</option>
                         </select>
                       </div>
 
@@ -239,13 +258,13 @@ export default function ContactUs() {
 
                     {/* Message Text area */}
                     <div className="flex flex-col gap-2">
-                      <label className="text-[11px] font-black uppercase tracking-widest text-[#181e4b] pl-1">Credentials & Relocation Details</label>
+                      <label className="text-[11px] font-black uppercase tracking-widest text-[#181e4b] pl-1">Your message</label>
                       <textarea 
                         name="message"
                         rows="4"
                         value={form.message}
                         onChange={handleInputChange}
-                        placeholder="Detail your intended program (e.g. Nursing BSN, Dental DMD, MBBS Medicine) or corporate group travel logistics timeline..."
+                        placeholder="Tell us a little about what you need…"
                         className="w-full px-5 py-4 bg-[#fbf9f4]/60 border border-gray-100/80 rounded-xl text-sm font-medium text-primary focus:ring-2 focus:ring-orange-accent focus:outline-none placeholder-gray-400 resize-none"
                       />
                     </div>
@@ -265,11 +284,11 @@ export default function ContactUs() {
                       {submitting ? (
                         <>
                           <Loader2 className="w-4 h-4 animate-spin" />
-                          <span>Filing Inquiries...</span>
+                          <span>Sending Message...</span>
                         </>
                       ) : (
                         <>
-                          <span>Submit Pathway Inquiry</span>
+                          <span>Send Message</span>
                           <ArrowRight className="w-4 h-4" />
                         </>
                       )}
@@ -282,88 +301,93 @@ export default function ContactUs() {
           </div>
 
           {/* RIGHT: Coordinates & Office Info (5 Cols) */}
-          <div className="lg:col-span-5 flex flex-col gap-6 justify-between text-left">
+          <div className="lg:col-span-5 flex flex-col gap-6 justify-start text-left">
             
             {/* Coordinates Box */}
             <div className="bg-white p-7 md:p-8 rounded-[38px] border border-gray-100 shadow-xl shadow-black/5 flex flex-col gap-6 relative overflow-hidden">
               <div className="absolute -right-2 -bottom-2 w-24 h-24 bg-gold-accent/5 rounded-tl-[32px] rounded-br-[38px] -z-10" />
               
               <h3 className="font-serif font-black text-xl text-primary border-b border-gray-100 pb-4">
-                Office Support Desks
+                Prefer to talk now?
               </h3>
 
               <div className="flex flex-col gap-5">
                 
-                {/* Office 1 */}
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-orange-accent/10 flex items-center justify-center text-orange-accent flex-shrink-0 mt-0.5">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-black tracking-widest text-orange-accent block">Philippines HQ</span>
-                    <h4 className="font-sans font-black text-sm text-primary mt-0.5">Hallmark Travel Inc.</h4>
-                    <p className="text-xs text-secondary font-medium leading-relaxed mt-1 max-w-[220px]">
-                      20th floor, Uptown place Tower, 2 11th As, Uptown Bonifacio, Taguig, 1634, Metro Manila
-                    </p>
-                  </div>
-                </div>
-
-                {/* Office 2 */}
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-gold-accent/10 flex items-center justify-center text-gold-accent flex-shrink-0 mt-0.5">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-black tracking-widest text-gold-accent block">Nigeria Branch</span>
-                    <h4 className="font-sans font-black text-sm text-primary mt-0.5">Hallmark Travel Inc.</h4>
-                    <p className="text-xs text-secondary font-medium leading-relaxed mt-1 max-w-[220px]">
-                      #1 paint industry, Umuayalu (opposite comprehensive secondary school) Egbu, Owerri, Imo State
-                    </p>
+                {/* WhatsApp */}
+                <div className="flex items-start gap-3">
+                  <span className="text-xl flex-shrink-0" role="img" aria-label="WhatsApp">💬</span>
+                  <div className="text-sm font-semibold text-secondary leading-relaxed">
+                    <span className="text-primary font-bold">WhatsApp us:</span>{' '}
+                    <a 
+                      href="https://wa.me/639661389726" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-[#1a7f6e] hover:underline font-black whitespace-nowrap"
+                    >
+                      +63 966 138 9726
+                    </a>{' '}
+                    <span className="text-xs text-gray-500 block sm:inline">— fastest way to reach us</span>
                   </div>
                 </div>
 
-                {/* Phone contact */}
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-600 flex-shrink-0 mt-0.5">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-black tracking-widest text-teal-600 block">Immediate Hotlines</span>
-                    <div className="flex flex-col gap-1.5 mt-1">
-                      <span className="text-xs text-primary font-bold block"><strong className="text-orange-accent">PH Globe:</strong> +63 (906) 378 5826</span>
-                      <span className="text-xs text-primary font-bold block"><strong className="text-orange-accent">PH Smart:</strong> +63 (949) 365 9365</span>
-                      <span className="text-xs text-primary font-bold block"><strong className="text-gold-accent">NG Hotline:</strong> +234 803 321 7084</span>
-                    </div>
+                {/* Email */}
+                <div className="flex items-start gap-3">
+                  <span className="text-xl flex-shrink-0" role="img" aria-label="Email">✉️</span>
+                  <div className="text-sm font-semibold text-secondary leading-relaxed break-all">
+                    <span className="text-primary font-bold">Email:</span>{' '}
+                    <a 
+                      href="mailto:admission@hallmarkconsultancy.com" 
+                      className="text-[#1a7f6e] hover:underline font-black"
+                    >
+                      admission@hallmarkconsultancy.com
+                    </a>
                   </div>
                 </div>
 
-                {/* Email Support */}
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-600 flex-shrink-0 mt-0.5">
-                    <Mail className="w-5 h-5" />
+                {/* Website */}
+                <div className="flex items-start gap-3">
+                  <span className="text-xl flex-shrink-0" role="img" aria-label="Website">🌐</span>
+                  <div className="text-sm font-semibold text-secondary leading-relaxed">
+                    <a 
+                      href="https://hallmarkconsultancy.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-primary hover:underline font-bold"
+                    >
+                      hallmarkconsultancy.com
+                    </a>
                   </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-black tracking-widest text-indigo-600 block">Electronic Mailing</span>
-                    <h4 className="font-sans font-black text-sm text-primary mt-0.5">support@hallmarktravel.com</h4>
-                    <span className="text-[11px] text-secondary font-medium block">Official documentation submissions</span>
+                </div>
+
+                {/* Address */}
+                <div className="flex items-start gap-3">
+                  <span className="text-xl flex-shrink-0" role="img" aria-label="Address">📍</span>
+                  <div className="text-sm font-semibold text-secondary leading-relaxed">
+                    <span>#250 Northbay Blvd., Navotas City, Metro Manila</span>
                   </div>
                 </div>
 
               </div>
+
+              {/* Green WhatsApp button */}
+              <a 
+                href="https://wa.me/639661389726"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3.5 bg-[#25d366] hover:bg-[#20ba59] text-white font-sans font-black uppercase tracking-wider text-xs rounded-xl shadow-lg shadow-[#25d366]/20 transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-2 mt-2"
+              >
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.964 9.964 0 0 0 1.333 4.993L2 22l5.13-1.347a9.96 9.96 0 0 0 4.88 1.28c5.508 0 9.99-4.479 9.991-9.986.002-5.507-4.48-9.985-9.989-9.985zm7.154 14.137c-.31.868-1.787 1.62-2.477 1.704-.69.083-1.554.084-2.502-.22a10.99 10.99 0 0 1-5.111-3.237c-.328-.328-.624-.68-.888-1.054a11.164 11.164 0 0 1-1.637-3.155c-.276-.906-.296-1.764-.08-2.482.21-.698.814-1.22 1.135-1.536.321-.316.643-.314.857-.314h.6c.19 0 .428.007.618.455.19.448.653 1.594.71 1.708.058.113.095.245.02.395-.077.15-.156.324-.265.45-.11.127-.23.284-.33.398-.108.125-.224.26-.096.48.128.22.569.939 1.22 1.52.839.75 1.543 1.018 1.763 1.128.22.11.35.093.48-.057.13-.15.565-.66.715-.886.15-.226.3-.188.508-.113.208.075 1.32.622 1.547.735.227.113.378.17.435.264.057.094.057.546-.253 1.414z"/>
+                </svg>
+                <span>Chat with us on WhatsApp</span>
+              </a>
+
             </div>
 
-            {/* Quick Trust Seal Box */}
-            <div className="glass-panel p-6 rounded-[28px] border border-white/60 shadow-md text-left flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600 flex-shrink-0 shadow-inner">
-                <ShieldCheck className="w-6 h-6 stroke-[2]" />
-              </div>
-              <div>
-                <h4 className="font-sans font-black text-sm text-primary">Fully Certified Advisor Agency</h4>
-                <p className="text-[11px] leading-relaxed text-secondary font-medium mt-0.5">
-                  Our visa legal desk holds official accreditations for filing inbound student visa 9F permits and credentials evaluations.
-                </p>
-              </div>
-            </div>
+            {/* Trust Line */}
+            <p className="text-[11px] leading-relaxed text-secondary font-semibold pl-4">
+              Hallmark Travel Inc. — a registered Philippine company with more than 10 years of experience helping international students study in the Philippines.
+            </p>
 
           </div>
 
@@ -409,7 +433,7 @@ export default function ContactUs() {
                   </button>
 
                   <div className={`transition-all duration-500 overflow-hidden ${
-                    isOpen ? 'max-h-56 border-t border-gray-50' : 'max-h-0'
+                    isOpen ? 'max-h-72 border-t border-gray-50' : 'max-h-0'
                   }`}>
                     <p className="px-6 py-5 text-xs sm:text-[13.5px] leading-relaxed text-secondary font-semibold bg-[#faf9f4]/30 text-left">
                       {faq.answer}

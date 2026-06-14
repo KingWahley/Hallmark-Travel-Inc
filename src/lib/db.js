@@ -106,6 +106,34 @@ export async function submitInquiry(inquiryData) {
     created_at: new Date().toISOString()
   };
 
+  // Submit to Web3Forms (sends copy to hallmarksconsultancy@gmail.com)
+  try {
+    if (typeof window !== 'undefined') {
+      const formData = new FormData();
+      formData.append("access_key", "38ba8e07-d0d3-4c6a-9fae-5208b9a791b9");
+      formData.append("name", newInquiry.name || "Subscriber");
+      formData.append("email", newInquiry.email);
+      if (newInquiry.phone) {
+        formData.append("phone", newInquiry.phone);
+      }
+      if (newInquiry.service) {
+        formData.append("subject", `New Inquiry: ${newInquiry.service}`);
+        formData.append("service", newInquiry.service);
+      } else {
+        formData.append("subject", "New Inquiry / Subscription");
+      }
+      formData.append("message", newInquiry.message || "No message details provided.");
+
+      await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+    }
+  } catch (web3Err) {
+    console.error("submitInquiry: Web3Forms submission failed:", web3Err);
+  }
+
+  // Submit to Supabase (saves copy for the admin dashboard)
   try {
     const { data, error } = await supabase
       .from('inquiries')

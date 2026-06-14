@@ -33,7 +33,7 @@ export default function Footer() {
             {/* Social icons */}
             <div className="flex items-center gap-3 mt-2">
               <a 
-                href="https://facebook.com" 
+                href="https://facebook.com/hallmarktravelph" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/[0.06] hover:bg-[#1a7f6e] text-white transition-all duration-300"
@@ -44,7 +44,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a 
-                href="https://instagram.com" 
+                href="https://instagram.com/hallmarktravelph" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/[0.06] hover:bg-[#1a7f6e] text-white transition-all duration-300"
@@ -78,7 +78,7 @@ export default function Footer() {
             <ul className="flex flex-col gap-3 text-sm font-medium text-gray-400">
               <li><Link href="/#resources" className="hover:text-white transition-colors">Study in the Philippines</Link></li>
               <li><Link href="/#estimator" className="hover:text-white transition-colors">Cost calculator</Link></li>
-              <li><Link href="/contact" className="hover:text-white transition-colors">DIY Starter Kit</Link></li>
+              <li><a href="https://payhip.com/b/ArLHI" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">DIY Starter Kit</a></li>
               <li><Link href="/contact" className="hover:text-white transition-colors">Student visa help</Link></li>
             </ul>
           </div>

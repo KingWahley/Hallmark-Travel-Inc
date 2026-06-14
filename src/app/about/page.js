@@ -84,7 +84,7 @@ export default function AboutUs() {
     {
       year: "2025",
       title: "Premium Digital Relocation Hub",
-      description: "Inaugurated our consolidated digital relocation platform, uniting airline ticketing, embassy processing, and local Taguig immigration services under a single high-fidelity banner.",
+      description: "Inaugurated our consolidated digital relocation platform, uniting airline ticketing, embassy processing, and local immigration services under a single high-fidelity banner.",
       icon: <Sparkles className="w-5 h-5 text-indigo-600" />,
       badge: "State of the Art"
     }
@@ -484,15 +484,15 @@ export default function AboutUs() {
 
           <div className="max-w-4xl mx-auto px-6 relative z-10 flex flex-col items-center gap-6">
             <span className="text-xs uppercase font-sans font-black tracking-[0.25em] text-gold-accent bg-amber-500/10 px-4 py-1.5 rounded-full border border-amber-500/25">
-              Secure Mobility Desk
+              Study & Travel Desk
             </span>
 
             <h2 className="font-serif font-black text-3xl sm:text-5xl text-white leading-tight max-w-2xl">
-              Ready to construct your global academic or travel pathway?
+              Ready to start your academic or travel journey?
             </h2>
 
             <p className="text-[15px] text-indigo-200/90 leading-relaxed font-semibold max-w-xl">
-              Connect with our dedicated visa legal counsels and airline ticketing operations team to fast-track your inbound or outbound migration.
+              Connect with our dedicated team to simplify your student visa process or plan your next travel tour.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 mt-6">
@@ -500,13 +500,13 @@ export default function AboutUs() {
                 href="/contact" 
                 className="w-full sm:w-auto px-8 py-4 bg-orange-accent hover:bg-[#c54b34] text-white font-sans font-bold text-[14px] rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 whitespace-nowrap text-center"
               >
-                Inquire Outbound Pathway
+                Inquire About Travel
               </Link>
               <Link 
                 href="/contact" 
                 className="w-full sm:w-auto px-8 py-4 bg-gold-accent hover:bg-amber-600 text-white font-sans font-bold text-[14px] rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 whitespace-nowrap text-center"
               >
-                Inquire Inbound Pathway
+                Study in the Philippines
               </Link>
             </div>
           </div>

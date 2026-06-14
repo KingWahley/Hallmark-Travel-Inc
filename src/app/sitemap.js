@@ -1,7 +1,7 @@
 import { getBlogPosts } from "@/lib/db";
 
 export default async function sitemap() {
-  const baseUrl = "https://hallmarktravel.com";
+  const baseUrl = "https://hallmarkconsultancy.com";
   
   // 1. Define Static Landing URLs
   const routes = [

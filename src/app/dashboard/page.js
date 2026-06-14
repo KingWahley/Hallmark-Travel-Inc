@@ -293,7 +293,7 @@ export default function AdminDashboard() {
           </div>
           <div className="flex flex-col text-left overflow-hidden">
             <span className="text-[11px] font-semibold text-slate-700 leading-tight">Administrator</span>
-            <span className="text-[9px] text-slate-400 truncate">admin@hallmarktravel.com</span>
+            <span className="text-[9px] text-slate-400 truncate">admin@hallmarkconsultancy.com</span>
           </div>
         </div>
 

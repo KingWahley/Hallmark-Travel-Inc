@@ -330,10 +330,10 @@ export default function BlogIndex() {
                       
                       <div className="flex flex-col gap-2">
                         <h4 className="font-serif font-black text-xl leading-tight">
-                          Need a Tailored Immigration Path?
+                          Need Help with Your Journey?
                         </h4>
                         <p className="text-xs text-white/80 leading-relaxed font-medium">
-                          Our visa pathways and documentation desks in Manila & Owerri offer personalized consultations to finalize your global relocation.
+                          Our visa and travel advisors offer personalized consultations to help you study in the Philippines or plan your next trip.
                         </p>
                       </div>
 
@@ -341,7 +341,7 @@ export default function BlogIndex() {
                         href="/contact" 
                         className="w-full py-3 px-4 bg-orange-accent hover:bg-orange-600 text-white text-xs font-sans font-black uppercase tracking-widest rounded-xl text-center shadow-lg shadow-orange-accent/25 transition-all group-hover:scale-105"
                       >
-                        Book Relocation Desk
+                        Contact Us
                       </Link>
                     </div>
                   </div>

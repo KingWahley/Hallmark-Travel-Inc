@@ -57,7 +57,7 @@ export default function Services() {
                   <span className="w-5 h-5 rounded-full bg-[#e6f4f1] text-[#1a7f6e] flex items-center justify-center flex-shrink-0">
                     <Check className="w-3.5 h-3.5" />
                   </span>
-                  CHED & Bureau of Immigration coordination
+                  Bureau of Immigration coordination
                 </li>
                 <li className="flex items-center gap-3 text-sm font-semibold text-secondary">
                   <span className="w-5 h-5 rounded-full bg-[#e6f4f1] text-[#1a7f6e] flex items-center justify-center flex-shrink-0">

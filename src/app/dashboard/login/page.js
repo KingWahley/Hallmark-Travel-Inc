@@ -97,7 +97,7 @@ export default function AdminLogin() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="e.g. admin@hallmarktravel.com"
+                  placeholder="e.g. admin@hallmarkconsultancy.com"
                   className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:border-[#df6951] focus:bg-white focus:outline-none transition-all"
                 />
               </div>

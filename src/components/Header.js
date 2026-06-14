@@ -83,8 +83,9 @@ export default function Header() {
               Cost Calculator
             </a>
             <a 
-              href="#expat"
-              onClick={(e) => handleScrollToSection(e, 'expat')}
+              href="https://payhip.com/b/ArLHI"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-[14px] text-[#181e4b] hover:text-[#1a7f6e] font-semibold transition-colors"
             >
               DIY Kit
@@ -113,7 +114,7 @@ export default function Header() {
           {/* Action button: WhatsApp */}
           <div className="flex items-center font-sans">
             <a 
-              href="https://wa.me/639123456789" 
+              href="https://wa.me/639661389726" 
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-2.5 bg-[#1a7f6e] hover:bg-[#156759] text-white rounded-full text-[14px] font-bold shadow-sm shadow-[#1a7f6e]/20 transition-all duration-300 transform hover:-translate-y-0.5 inline-flex items-center gap-2"
@@ -164,8 +165,10 @@ export default function Header() {
             Cost Calculator
           </a>
           <a 
-            href="#expat" 
-            onClick={(e) => handleScrollToSection(e, 'expat')}
+            href="https://payhip.com/b/ArLHI" 
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMobileMenuOpen(false)}
             className="text-lg text-primary hover:text-[#1a7f6e]"
           >
             DIY Kit
@@ -193,7 +196,7 @@ export default function Header() {
           </Link>
           <div className="w-full h-[1px] bg-gray-100 my-2" />
           <a 
-            href="https://wa.me/639123456789" 
+            href="https://wa.me/639661389726" 
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setMobileMenuOpen(false)}

@@ -97,13 +97,15 @@ export default function ExpatCorner() {
               </span>
               <span className="text-2xl font-black text-white">$49.99</span>
             </div>
-            <Link
-              href="/contact"
+            <a
+              href="https://payhip.com/b/ArLHI"
+              target="_blank"
+              rel="noopener noreferrer"
               id="expat-consult-btn"
               className="px-8 py-3.5 bg-[#f1a501] hover:bg-amber-600 text-white font-bold rounded-full transition-all duration-300 shadow-md shadow-[#f1a501]/10 text-center"
             >
               Get the guide
-            </Link>
+            </a>
           </div>
         </div>
       </div>
