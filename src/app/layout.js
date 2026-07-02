@@ -1,9 +1,9 @@
 import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import MainWrapper from "@/components/MainWrapper";
+import ConditionalHeader from "@/components/ConditionalHeader";
+import ConditionalFooter from "@/components/ConditionalFooter";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -91,11 +91,11 @@ export default function RootLayout({ children }) {
       </head>
       <body className="bg-background text-foreground min-h-full flex flex-col font-sans">
         <SmoothScroll>
-          <Header />
+          <ConditionalHeader />
           <MainWrapper>
             {children}
           </MainWrapper>
-          <Footer />
+          <ConditionalFooter />
         </SmoothScroll>
       </body>
     </html>
