@@ -1,10 +1,13 @@
-import { supabase } from './supabaseClient';
+import { supabase, isSupabaseConfigured } from './supabaseClient';
 
 // ----------------------------------------------------
 // DATABASE API INTERFACE (SUPABASE ONLY)
 // ----------------------------------------------------
 
 export async function getBlogPosts(includeDrafts = false) {
+  if (!isSupabaseConfigured) {
+    return [];
+  }
   try {
     let query = supabase.from('blog_posts').select('*').order('published_at', { ascending: false });
     
@@ -18,12 +21,15 @@ export async function getBlogPosts(includeDrafts = false) {
     
     return data || [];
   } catch (err) {
-    console.error("getBlogPosts: Supabase connection failed:", err);
-    throw new Error(`Supabase Database Query Failed: ${err.message || err}`);
+    console.error("getBlogPosts: Supabase connection failed:", err?.message || err);
+    return [];
   }
 }
 
 export async function getBlogPostBySlug(slug) {
+  if (!isSupabaseConfigured) {
+    return null;
+  }
   try {
     const { data, error } = await supabase
       .from('blog_posts')
@@ -34,12 +40,15 @@ export async function getBlogPostBySlug(slug) {
     if (error) throw error;
     return data || null;
   } catch (err) {
-    console.error(`getBlogPostBySlug: Supabase fetch failed for slug "${slug}":`, err);
-    throw new Error(`Supabase Fetch Failed: ${err.message || err}`);
+    console.error(`getBlogPostBySlug: Supabase fetch failed for slug "${slug}":`, err?.message || err);
+    return null;
   }
 }
 
 export async function getBlogPostById(id) {
+  if (!isSupabaseConfigured) {
+    return null;
+  }
   try {
     const { data, error } = await supabase
       .from('blog_posts')
@@ -50,12 +59,15 @@ export async function getBlogPostById(id) {
     if (error) throw error;
     return data || null;
   } catch (err) {
-    console.error(`getBlogPostById: Supabase fetch failed for ID "${id}":`, err);
-    throw new Error(`Supabase Fetch Failed: ${err.message || err}`);
+    console.error(`getBlogPostById: Supabase fetch failed for ID "${id}":`, err?.message || err);
+    return null;
   }
 }
 
 export async function saveBlogPost(postData) {
+  if (!isSupabaseConfigured) {
+    throw new Error("Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
+  }
   const isEditing = !!postData.id;
   const postToSave = {
     ...postData,
@@ -83,19 +95,22 @@ export async function saveBlogPost(postData) {
       return data;
     }
   } catch (err) {
-    console.error("saveBlogPost: Supabase insert/update failed:", err);
-    throw new Error(`Supabase Save Failed: ${err.message || err}`);
+    console.error("saveBlogPost: Supabase insert/update failed:", err?.message || err);
+    throw new Error(`Supabase Save Failed: ${err?.message || err}`);
   }
 }
 
 export async function deleteBlogPost(id) {
+  if (!isSupabaseConfigured) {
+    throw new Error("Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
+  }
   try {
     const { error } = await supabase.from('blog_posts').delete().eq('id', id);
     if (error) throw error;
     return true;
   } catch (err) {
-    console.error(`deleteBlogPost: Supabase delete failed for ID "${id}":`, err);
-    throw new Error(`Supabase Delete Failed: ${err.message || err}`);
+    console.error(`deleteBlogPost: Supabase delete failed for ID "${id}":`, err?.message || err);
+    throw new Error(`Supabase Delete Failed: ${err?.message || err}`);
   }
 }
 
@@ -130,10 +145,14 @@ export async function submitInquiry(inquiryData) {
       });
     }
   } catch (web3Err) {
-    console.error("submitInquiry: Web3Forms submission failed:", web3Err);
+    console.error("submitInquiry: Web3Forms submission failed:", web3Err?.message || web3Err);
   }
 
-  // Submit to Supabase (saves copy for the admin dashboard)
+  // Submit to Supabase (saves copy for the admin dashboard if configured)
+  if (!isSupabaseConfigured) {
+    return newInquiry;
+  }
+
   try {
     const { data, error } = await supabase
       .from('inquiries')
@@ -143,12 +162,15 @@ export async function submitInquiry(inquiryData) {
     if (error) throw error;
     return data;
   } catch (err) {
-    console.error("submitInquiry: Supabase submission failed:", err);
-    throw new Error(`Supabase Inquiry Submission Failed: ${err.message || err}`);
+    console.error("submitInquiry: Supabase submission failed:", err?.message || err);
+    return newInquiry;
   }
 }
 
 export async function getInquiries() {
+  if (!isSupabaseConfigured) {
+    return [];
+  }
   try {
     const { data, error } = await supabase
       .from('inquiries')
@@ -158,12 +180,15 @@ export async function getInquiries() {
     
     return data || [];
   } catch (err) {
-    console.error("getInquiries: Supabase fetch failed:", err);
-    throw new Error(`Supabase Fetch Failed: ${err.message || err}`);
+    console.error("getInquiries: Supabase fetch failed:", err?.message || err);
+    return [];
   }
 }
 
 export async function updateInquiryStatus(id, status) {
+  if (!isSupabaseConfigured) {
+    throw new Error("Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
+  }
   try {
     const { data, error } = await supabase
       .from('inquiries')
@@ -174,18 +199,21 @@ export async function updateInquiryStatus(id, status) {
     if (error) throw error;
     return data;
   } catch (err) {
-    console.error(`updateInquiryStatus: Supabase status update failed for ID "${id}":`, err);
-    throw new Error(`Supabase Status Update Failed: ${err.message || err}`);
+    console.error(`updateInquiryStatus: Supabase status update failed for ID "${id}":`, err?.message || err);
+    throw new Error(`Supabase Status Update Failed: ${err?.message || err}`);
   }
 }
 
 export async function deleteInquiry(id) {
+  if (!isSupabaseConfigured) {
+    throw new Error("Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
+  }
   try {
     const { error } = await supabase.from('inquiries').delete().eq('id', id);
     if (error) throw error;
     return true;
   } catch (err) {
-    console.error(`deleteInquiry: Supabase delete failed for ID "${id}":`, err);
-    throw new Error(`Supabase Delete Failed: ${err.message || err}`);
+    console.error(`deleteInquiry: Supabase delete failed for ID "${id}":`, err?.message || err);
+    throw new Error(`Supabase Delete Failed: ${err?.message || err}`);
   }
 }
